@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:clean_flutter_app/presentation/task_screen/task_screen.dart';
+
 void main() {
   runApp(App());
 }
@@ -7,9 +9,9 @@ void main() {
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Container(),
+    return MaterialApp(
+      home: SafeArea(
+        child: TaskScreen(),
       ),
     );
   }
