@@ -9,10 +9,16 @@ class TaskScreenBloc with SubscriptionHolder {
   TaskScreenBloc({
     @required this.useCases,
   }) : assert(useCases != null) {
-    Rx.merge([
-      Stream.value(null),
-      _onTryAgainSubject.stream,
-    ])
+    updateNewStateSubject(
+      Rx.merge([
+        Stream.value(null),
+        _onTryAgainSubject.stream,
+      ]),
+    );
+  }
+
+  void updateNewStateSubject(Stream inputStreamData) {
+    inputStreamData
         .flatMap((_) => _fetchData())
         .listen(_onNewStateSubject.add)
         .addTo(subscriptions);

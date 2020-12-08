@@ -4,9 +4,8 @@ import 'package:clean_flutter_app/common/indicator/error_indicator.dart';
 import 'package:clean_flutter_app/common/indicator/loading_indicator.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_screen_bloc.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_screen_model.dart';
+import 'package:clean_flutter_app/presentation/task_screen/widget/task_list_view.dart';
 import 'package:flutter/material.dart';
-
-import 'package:clean_flutter_app/presentation/task_screen/widget/task_list_item.dart';
 
 class TaskScreen extends StatelessWidget {
   const TaskScreen({
@@ -16,15 +15,20 @@ class TaskScreen extends StatelessWidget {
   final TaskScreenBloc bloc;
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-        ),
-        body: StreamBuilder<TaskScreenState>(
-          stream: bloc.onNewState,
-          builder: (context, snapshot) =>
-              AsyncSnapshotResponseView<Loading, Error, Success>(
+  Widget build(BuildContext context) => StreamBuilder<TaskScreenState>(
+      stream: bloc.onNewState,
+      builder: (context, snapshot) {
+        final screenState = snapshot.data;
+
+        return Scaffold(
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
+          floatingActionButton: screenState is Success
+              ? FloatingActionButton(
+                  onPressed: () {},
+                )
+              : null,
+          body: AsyncSnapshotResponseView<Loading, Error, Success>(
             snapshot: snapshot,
             loadingWidgetBuilder: (context, loading) => LoadingIndicator(),
             errorWidgetBuilder: (context, error) => ErrorIndicator(
@@ -33,17 +37,14 @@ class TaskScreen extends StatelessWidget {
             ),
             successWidgetBuilder: (context, success) {
               if (success is Listing) {
-                return ListView.builder(
-                  itemBuilder: (context, index) => TaskListItem(
-                    task: success.tasks[index],
-                  ),
-                  itemCount: success.tasks.length,
+                return TaskListView(
+                  tasks: success.tasks,
                 );
               } else {
                 return EmptyListIndicator();
               }
             },
           ),
-        ),
-      );
+        );
+      });
 }
