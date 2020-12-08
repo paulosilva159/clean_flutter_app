@@ -2,7 +2,7 @@ import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'package:clean_flutter_app/common/subscription_holder.dart';
-import 'package:clean_flutter_app/presentation/task_screen/task_Screen_uc.dart';
+import 'package:clean_flutter_app/presentation/task_screen/task_screen_uc.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_screen_model.dart';
 
 class TaskScreenBloc with SubscriptionHolder {

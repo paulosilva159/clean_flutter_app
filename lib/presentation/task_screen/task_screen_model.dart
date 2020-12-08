@@ -1,5 +1,7 @@
 import 'package:meta/meta.dart';
 
+import 'package:domain/model/task.dart';
+
 abstract class TaskScreenState {}
 
 class Loading implements TaskScreenState {}
@@ -22,12 +24,4 @@ class Listing implements Success {
   }) : assert(tasks != null);
 
   final List<Task> tasks;
-}
-
-class Task {
-  Task({
-    @required this.title,
-  }) : assert(title != null);
-
-  final String title;
 }

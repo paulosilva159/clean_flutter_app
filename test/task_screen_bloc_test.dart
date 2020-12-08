@@ -1,10 +1,12 @@
 import 'package:test/test.dart';
 import 'package:mockito/mockito.dart';
 
-import 'package:clean_flutter_app/presentation/task_screen/task_Screen_bloc.dart';
-import 'package:clean_flutter_app/presentation/task_screen/task_Screen_uc.dart';
-
+import 'package:clean_flutter_app/presentation/task_screen/task_screen_bloc.dart';
+import 'package:clean_flutter_app/presentation/task_screen/task_screen_uc.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_screen_model.dart';
+
+import 'package:domain/exceptions.dart';
+import 'package:domain/model/task.dart';
 
 class TaskScreenUseCasesSpy extends Mock implements TaskScreenUseCases {}
 
@@ -29,12 +31,10 @@ void main() {
 
     void mockFailure() => mockRequestCall().thenThrow(UseCaseException());
 
-    setUp(() {
-      mockSuccess();
-    });
-
     test('Should emit Empty if use case return null or an empty list',
         () async {
+      mockSuccess();
+
       await Future.delayed(const Duration(seconds: 0));
 
       bloc.onNewState.listen(
@@ -92,6 +92,8 @@ void main() {
     });
 
     test('Should emit Success in case of successful try again', () async {
+      mockSuccess();
+
       bloc.onTryAgain.add(null);
       await Future.delayed(const Duration(seconds: 0));
 
