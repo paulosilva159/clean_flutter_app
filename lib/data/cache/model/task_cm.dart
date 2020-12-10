@@ -1,5 +1,9 @@
+import 'package:hive/hive.dart';
 import 'package:meta/meta.dart';
 
+part 'task_cm.g.dart';
+
+@HiveType(typeId: 0)
 class TaskCM {
   const TaskCM({
     @required this.title,
@@ -7,6 +11,8 @@ class TaskCM {
   })  : assert(title != null),
         assert(id != null);
 
-  final String title;
+  @HiveField(0)
   final int id;
+  @HiveField(1)
+  final String title;
 }

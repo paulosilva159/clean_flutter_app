@@ -1,8 +1,13 @@
+import 'package:clean_flutter_app/hive_initializer.dart';
 import 'package:flutter/material.dart';
 
 import 'package:clean_flutter_app/presentation/task_screen/task_screen.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await hiveInitializer();
+
   runApp(
     App(),
   );

@@ -57,7 +57,7 @@ void main() {
 
   testWidgets('Should emit ListView if found list is not empty',
       (tester) async {
-    mockSuccess(tasks: <Task>[Task(title: 'title')]);
+    mockSuccess(tasks: <Task>[Task(id: 0, title: 'title')]);
 
     await tester.pumpWidget(screen);
 

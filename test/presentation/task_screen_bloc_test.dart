@@ -47,7 +47,7 @@ void main() {
     });
 
     test('Should emit Listing if use case return a list not empty', () async {
-      mockSuccess(tasks: <Task>[Task(title: 'title')]);
+      mockSuccess(tasks: <Task>[Task(id: 0, title: 'title')]);
 
       await Future.delayed(const Duration(seconds: 0));
 
