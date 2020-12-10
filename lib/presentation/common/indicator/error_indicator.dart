@@ -12,10 +12,8 @@ class ErrorIndicator extends StatelessWidget {
   final VoidCallback onTryAgainTap;
 
   @override
-  Widget build(BuildContext context) => Column(
-        children: [
-          const Text('Error'),
-          TryAgainButton(onTryAgainTap: onTryAgainTap),
-        ],
-      );
+  Widget build(BuildContext context) => Column(children: [
+        const Text('Error'),
+        TryAgainButton(onTryAgainTap: onTryAgainTap),
+      ]);
 }

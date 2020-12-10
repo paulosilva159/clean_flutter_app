@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 class TryAgainButton extends StatelessWidget {
-  const TryAgainButton({
-    @required this.onTryAgainTap,
-  }) : assert(onTryAgainTap != null);
+  const TryAgainButton({@required this.onTryAgainTap})
+      : assert(onTryAgainTap != null);
 
   final VoidCallback onTryAgainTap;
 

@@ -9,9 +9,7 @@ import 'package:clean_flutter_app/presentation/task_screen/task_screen_model.dar
 import 'package:clean_flutter_app/presentation/task_screen/widget/task_list_view.dart';
 
 class TaskScreen extends StatelessWidget {
-  const TaskScreen({
-    @required this.bloc,
-  }) : assert(bloc != null);
+  const TaskScreen({@required this.bloc}) : assert(bloc != null);
 
   final TaskScreenBloc bloc;
 
@@ -25,9 +23,7 @@ class TaskScreen extends StatelessWidget {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
           floatingActionButton: screenState is Success
-              ? FloatingActionButton(
-                  onPressed: () {},
-                )
+              ? FloatingActionButton(onPressed: () {})
               : null,
           body: AsyncSnapshotResponseView<Loading, Error, Success>(
             snapshot: snapshot,
@@ -38,9 +34,7 @@ class TaskScreen extends StatelessWidget {
             ),
             successWidgetBuilder: (context, success) {
               if (success is Listing) {
-                return TaskListView(
-                  tasks: success.tasks,
-                );
+                return TaskListView(tasks: success.tasks);
               } else {
                 return EmptyListIndicator();
               }

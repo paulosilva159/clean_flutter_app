@@ -1,9 +1,7 @@
 import 'package:meta/meta.dart';
 
 class Task {
-  Task({
-    @required this.title,
-  }) : assert(title != null);
+  Task({@required this.title}) : assert(title != null);
 
   final String title;
 }

@@ -47,9 +47,7 @@ class TaskScreenBloc with SubscriptionHolder {
         yield Listing(tasks: taskList);
       }
     } catch (error) {
-      yield Error(
-        error: error,
-      );
+      yield Error(error: error);
     }
   }
 
