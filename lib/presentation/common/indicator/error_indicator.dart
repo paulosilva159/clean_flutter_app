@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:clean_flutter_app/common/try_again_button.dart';
+import 'package:clean_flutter_app/presentation/common/try_again_button.dart';
 
 class ErrorIndicator extends StatelessWidget {
   const ErrorIndicator({

@@ -2,8 +2,10 @@ import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'package:clean_flutter_app/common/subscription_holder.dart';
-import 'package:clean_flutter_app/presentation/task_screen/task_screen_uc.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_screen_model.dart';
+
+import 'package:domain/model/task.dart';
+import 'package:domain/use_case/get_task_list_uc.dart';
 
 class TaskScreenBloc with SubscriptionHolder {
   TaskScreenBloc({
@@ -17,12 +19,10 @@ class TaskScreenBloc with SubscriptionHolder {
     );
   }
 
-  void updateNewStateSubject(Stream inputStreamData) {
-    inputStreamData
-        .flatMap((_) => _fetchData())
-        .listen(_onNewStateSubject.add)
-        .addTo(subscriptions);
-  }
+  void updateNewStateSubject(Stream inputStream) => inputStream
+      .flatMap((_) => _fetchData())
+      .listen(_onNewStateSubject.add)
+      .addTo(subscriptions);
 
   final TaskScreenUseCases useCases;
 
@@ -58,4 +58,13 @@ class TaskScreenBloc with SubscriptionHolder {
     _onNewStateSubject.close();
     disposeSubscriptions();
   }
+}
+
+class TaskScreenUseCases {
+  TaskScreenUseCases({@required this.getTaskListUC})
+      : assert(getTaskListUC != null);
+
+  final GetTaskListUC getTaskListUC;
+
+  Future<List<Task>> getTasksList() => getTaskListUC.getFuture();
 }

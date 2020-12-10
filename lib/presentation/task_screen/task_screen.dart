@@ -1,11 +1,12 @@
-import 'package:clean_flutter_app/common/async_snapshot_response_view.dart';
-import 'package:clean_flutter_app/common/indicator/empty_list_indicator.dart';
-import 'package:clean_flutter_app/common/indicator/error_indicator.dart';
-import 'package:clean_flutter_app/common/indicator/loading_indicator.dart';
+import 'package:flutter/material.dart';
+
+import 'package:clean_flutter_app/presentation/common/async_snapshot_response_view.dart';
+import 'package:clean_flutter_app/presentation/common/indicator/empty_list_indicator.dart';
+import 'package:clean_flutter_app/presentation/common/indicator/error_indicator.dart';
+import 'package:clean_flutter_app/presentation/common/indicator/loading_indicator.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_screen_bloc.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_screen_model.dart';
 import 'package:clean_flutter_app/presentation/task_screen/widget/task_list_view.dart';
-import 'package:flutter/material.dart';
 
 class TaskScreen extends StatelessWidget {
   const TaskScreen({

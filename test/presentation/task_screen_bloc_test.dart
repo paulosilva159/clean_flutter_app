@@ -2,7 +2,6 @@ import 'package:test/test.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:clean_flutter_app/presentation/task_screen/task_screen_bloc.dart';
-import 'package:clean_flutter_app/presentation/task_screen/task_screen_uc.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_screen_model.dart';
 
 import 'package:domain/exceptions.dart';
