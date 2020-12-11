@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:clean_flutter_app/generated/l10n.dart';
 
 class TryAgainButton extends StatelessWidget {
   const TryAgainButton({@required this.onTryAgainTap})
@@ -9,6 +10,6 @@ class TryAgainButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => RaisedButton(
         onPressed: onTryAgainTap,
-        child: const Text('Tente Novamente'),
+        child: Text(S.of(context).tryAgainButtonLabel),
       );
 }

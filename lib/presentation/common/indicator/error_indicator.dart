@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:clean_flutter_app/presentation/common/try_again_button.dart';
+import 'package:clean_flutter_app/generated/l10n.dart';
 
 class ErrorIndicator extends StatelessWidget {
   const ErrorIndicator({
@@ -13,7 +14,7 @@ class ErrorIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(children: [
-        const Text('Error'),
+        Text(S.of(context).errorIndicatorMessage),
         TryAgainButton(onTryAgainTap: onTryAgainTap),
       ]);
 }

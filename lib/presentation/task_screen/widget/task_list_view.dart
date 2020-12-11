@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
+
 import 'package:clean_flutter_app/presentation/task_screen/widget/task_list_item.dart';
 import 'package:domain/model/task.dart';
-import 'package:flutter/material.dart';
 
 class TaskListView extends StatelessWidget {
   const TaskListView({@required this.tasks}) : assert(tasks != null);
