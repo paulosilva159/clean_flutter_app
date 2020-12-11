@@ -22,7 +22,7 @@ void main() {
     expect(await bloc.onNewState.first, const TypeMatcher<Loading>());
   });
 
-  group('Should call correct state on get list', () {
+  group('Should call correct state on get task list', () {
     PostExpectation mockRequestCall() => when(useCases.getTasksList());
 
     void mockSuccess({List<Task> tasks = const <Task>[]}) =>
@@ -105,4 +105,6 @@ void main() {
       );
     });
   });
+
+  group('Should call correct state on add task', () {});
 }

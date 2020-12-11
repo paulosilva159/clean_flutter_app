@@ -15,4 +15,16 @@ class TaskRepository extends TaskDataRepository {
   Future<List<Task>> getTaskList() => taskCDS.getTaskList().then(
         (list) => list.map((task) => task.toDM()).toList(),
       );
+
+  @override
+  Future<void> addTask(Task task) {
+    // TODO: implement addTask
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> removeTask(Task task) {
+    // TODO: implement removeTask
+    throw UnimplementedError();
+  }
 }

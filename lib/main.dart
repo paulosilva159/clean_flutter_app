@@ -26,7 +26,7 @@ class App extends StatelessWidget {
         ],
         supportedLocales: S.delegate.supportedLocales,
         home: SafeArea(
-          child: Container(),
+          child: TaskScreen(),
         ),
       );
 }

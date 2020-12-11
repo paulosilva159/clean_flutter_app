@@ -1,3 +1,5 @@
+import 'package:domain/use_case/add_task_uc.dart';
+import 'package:domain/use_case/remove_task_uc.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -51,6 +53,12 @@ class TaskScreenBloc with SubscriptionHolder {
     }
   }
 
+  // Stream<TaskScreenState> _upsertData(Task task) async* {
+  //   final currentState = _onNewStateSubject.value;
+  // }
+  //
+  // Stream<TaskScreenState> _deleteData(Task task) async* {}
+
   void dispose() {
     _onTryAgainSubject.close();
     _onNewStateSubject.close();
@@ -59,10 +67,23 @@ class TaskScreenBloc with SubscriptionHolder {
 }
 
 class TaskScreenUseCases {
-  TaskScreenUseCases({@required this.getTaskListUC})
-      : assert(getTaskListUC != null);
+  TaskScreenUseCases({
+    @required this.getTaskListUC,
+    @required this.removeTaskUC,
+    @required this.addTaskUC,
+  })  : assert(getTaskListUC != null),
+        assert(removeTaskUC != null),
+        assert(addTaskUC != null);
 
   final GetTaskListUC getTaskListUC;
+  final RemoveTaskUC removeTaskUC;
+  final AddTaskUC addTaskUC;
 
   Future<List<Task>> getTasksList() => getTaskListUC.getFuture();
+
+  Future<void> addTask(AddTaskUCParams params) =>
+      addTaskUC.getFuture(params: params);
+
+  Future<void> removeTask(RemoveTaskUCParams params) =>
+      removeTaskUC.getFuture(params: params);
 }

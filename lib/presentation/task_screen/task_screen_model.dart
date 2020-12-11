@@ -12,12 +12,18 @@ class Error implements TaskScreenState {
   final dynamic error;
 }
 
-abstract class Success implements TaskScreenState {}
-
-class Empty implements Success {}
-
-class Listing implements Success {
-  Listing({@required this.tasks}) : assert(tasks != null);
+abstract class Success implements TaskScreenState {
+  Success({@required this.tasks}) : assert(tasks != null);
 
   final List<Task> tasks;
+}
+
+class Empty extends Success {
+  Empty() : super(tasks: <Task>[]);
+}
+
+class Listing extends Success {
+  Listing({@required List<Task> tasks})
+      : assert(tasks != null),
+        super(tasks: tasks);
 }
