@@ -10,7 +10,7 @@ import 'package:clean_flutter_app/presentation/task_screen/task_screen_bloc.dart
 
 import 'package:domain/data_observables.dart';
 import 'package:domain/data_repository/task_repository.dart';
-import 'package:domain/use_case/add_task_uc.dart';
+import 'package:domain/use_case/upsert_task_uc.dart';
 import 'package:domain/use_case/get_task_list_uc.dart';
 import 'package:domain/use_case/remove_task_uc.dart';
 
@@ -65,27 +65,37 @@ class _GlobalProviderState extends State<GlobalProvider> {
             repository: taskRepository,
           ),
         ),
-        ProxyProvider2<Log, TaskDataRepository, AddTaskUC>(
-          update: (context, log, taskRepository, _) => AddTaskUC(
+        ProxyProvider3<Log, TaskDataRepository,
+            ActiveTaskStorageUpdateSinkWrapper, UpsertTaskUC>(
+          update: (context, log, taskRepository,
+                  activeTaskStorageUpdateSinkWrapper, _) =>
+              UpsertTaskUC(
             logger: log.errorLogger,
             repository: taskRepository,
+            activeTaskStorageUpdateSinkWrapper:
+                activeTaskStorageUpdateSinkWrapper,
           ),
         ),
-        ProxyProvider2<Log, TaskDataRepository, RemoveTaskUC>(
-          update: (context, log, taskRepository, _) => RemoveTaskUC(
+        ProxyProvider3<Log, TaskDataRepository,
+            ActiveTaskStorageUpdateSinkWrapper, RemoveTaskUC>(
+          update: (context, log, taskRepository,
+                  activeTaskStorageUpdateSinkWrapper, _) =>
+              RemoveTaskUC(
             logger: log.errorLogger,
             repository: taskRepository,
+            activeTaskStorageUpdateSinkWrapper:
+                activeTaskStorageUpdateSinkWrapper,
           ),
         ),
       ];
 
   SingleChildWidget _buildTaskScreenUseCasesProvider() => ProxyProvider3<
-          GetTaskListUC, AddTaskUC, RemoveTaskUC, TaskScreenUseCases>(
-        update: (context, getTaskListUC, addTaskUC, removeTaskUC, _) =>
+          GetTaskListUC, UpsertTaskUC, RemoveTaskUC, TaskScreenUseCases>(
+        update: (context, getTaskListUC, upsertTaskUC, removeTaskUC, _) =>
             TaskScreenUseCases(
           getTaskListUC: getTaskListUC,
           removeTaskUC: removeTaskUC,
-          addTaskUC: addTaskUC,
+          upsertTaskUC: upsertTaskUC,
         ),
       );
 

@@ -7,7 +7,7 @@ abstract class TaskDataRepository {
 
   Future<List<Task>> getTaskList();
 
-  Future<void> addTask(Task task);
+  Future<void> upsertTask(Task task);
 
   Future<void> removeTask(Task task);
 }

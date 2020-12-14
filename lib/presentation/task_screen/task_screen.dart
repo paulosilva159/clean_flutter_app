@@ -1,4 +1,5 @@
 import 'package:domain/data_observables.dart';
+import 'package:domain/model/task.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 

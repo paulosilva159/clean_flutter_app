@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart';
 
 class Task {
-  Task({
+  const Task({
     @required this.id,
     @required this.title,
   })  : assert(id != null),

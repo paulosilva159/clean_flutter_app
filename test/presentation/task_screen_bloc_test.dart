@@ -1,4 +1,6 @@
 import 'package:domain/data_observables.dart';
+import 'package:domain/use_case/upsert_task_uc.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:test/test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -10,17 +12,21 @@ import 'package:domain/model/task.dart';
 
 class TaskScreenUseCasesSpy extends Mock implements TaskScreenUseCases {}
 
-class ActiveTaskStorageUpdateStreamWrapperSpy extends Mock
-    implements ActiveTaskStorageUpdateStreamWrapper {}
-
 void main() {
-  ActiveTaskStorageUpdateStreamWrapperSpy activeTaskStorageUpdateStreamWrapper;
+  final _activeTaskStorageSubject = PublishSubject<void>();
+
+  void dispose() {
+    _activeTaskStorageSubject.close();
+  }
+
+  ActiveTaskStorageUpdateStreamWrapper activeTaskStorageUpdateStreamWrapper;
   TaskScreenUseCasesSpy useCases;
   TaskScreenBloc bloc;
 
   setUp(() {
-    activeTaskStorageUpdateStreamWrapper =
-        ActiveTaskStorageUpdateStreamWrapperSpy();
+    activeTaskStorageUpdateStreamWrapper = ActiveTaskStorageUpdateStreamWrapper(
+      _activeTaskStorageSubject.stream,
+    );
     useCases = TaskScreenUseCasesSpy();
     bloc = TaskScreenBloc(
       useCases: useCases,
@@ -58,7 +64,7 @@ void main() {
     });
 
     test('Should emit Listing if use case return a list not empty', () async {
-      mockSuccess(tasks: <Task>[Task(id: 0, title: 'title')]);
+      mockSuccess(tasks: const <Task>[Task(id: 0, title: 'title')]);
 
       await Future.delayed(const Duration(seconds: 0));
 
@@ -117,5 +123,65 @@ void main() {
     });
   });
 
-  group('Should call correct state on add task', () {});
+  group('Should call correct state on add task', () {
+    Task task;
+
+    PostExpectation mockRequestCall() => when(
+          useCases.upsertTask(UpsertTaskUCParams(task: task)),
+        );
+
+    void mockSuccess() =>
+        mockRequestCall().thenAnswer((_) => Future<void>.value());
+
+    void mockFailure() => mockRequestCall().thenThrow(UseCaseException());
+
+    setUp(() async {
+      task = const Task(id: 0, title: 'title');
+
+      bloc.getTaskItemListSubject(Stream.value(null));
+      await Future.delayed(const Duration(seconds: 0));
+    });
+
+    test('Should correctly save a task', () async {
+      mockSuccess();
+
+      bloc.onUpsertTaskItem.add(task);
+
+      await Future.delayed(const Duration(seconds: 0));
+
+      bloc.onNewState.listen(
+        expectAsync1(
+          (state) {
+            expect(state, const TypeMatcher<Success>());
+          },
+        ),
+      );
+    });
+
+    test('Should present Error state on failed save task', () async {
+      mockFailure();
+
+      when(
+        useCases.upsertTask(UpsertTaskUCParams(task: task)),
+      ).thenThrow(UseCaseException());
+
+      bloc.onUpsertTaskItem.add(task);
+      await Future.delayed(const Duration(seconds: 0));
+
+      //verify(useCases.upsertTask(UpsertTaskUCParams(task: task))).called(1);
+
+      expect(
+        useCases.upsertTask(UpsertTaskUCParams(task: task)),
+        throwsA(isA<UseCaseException>()),
+      );
+
+      bloc.onNewState.listen(
+        expectAsync1(
+          (state) {
+            expect(state, const TypeMatcher<Error>());
+          },
+        ),
+      );
+    });
+  });
 }

@@ -18,9 +18,6 @@ import 'package:clean_flutter_app/presentation/common/try_again_button.dart';
 import 'package:clean_flutter_app/presentation/task_screen/widget/task_list_view.dart';
 import 'package:rxdart/rxdart.dart';
 
-class ActiveTaskStorageUpdateStreamWrapperSpy extends Mock
-    implements ActiveTaskStorageUpdateStreamWrapper {}
-
 class TaskScreenUseCasesSpy extends Mock implements TaskScreenUseCases {}
 
 void main() {
@@ -31,7 +28,7 @@ void main() {
     _activeTaskStorageSubject.close();
   }
 
-  ActiveTaskStorageUpdateStreamWrapperSpy activeTaskStorageUpdateStreamWrapper;
+  ActiveTaskStorageUpdateStreamWrapper activeTaskStorageUpdateStreamWrapper;
   TaskScreenUseCasesSpy useCases;
   TaskScreenBloc bloc;
   Widget screen;
@@ -45,7 +42,7 @@ void main() {
 
   setUp(() {
     activeTaskStorageUpdateStreamWrapper =
-        ActiveTaskStorageUpdateStreamWrapperSpy();
+        ActiveTaskStorageUpdateStreamWrapper(_activeTaskStorageSubject.stream);
     useCases = TaskScreenUseCasesSpy();
     bloc = TaskScreenBloc(
       useCases: useCases,
@@ -84,7 +81,7 @@ void main() {
     await tester.pumpWidget(screen);
     await tester.pump();
 
-    bloc.updateNewStateSubject(Stream.value(null));
+    bloc.getTaskItemListSubject(Stream.value(null));
     await tester.pump();
 
     expect(find.byType(EmptyListIndicator), findsOneWidget);
@@ -99,7 +96,7 @@ void main() {
     await tester.pumpWidget(screen);
     await tester.pump();
 
-    bloc.updateNewStateSubject(Stream.value(null));
+    bloc.getTaskItemListSubject(Stream.value(null));
     await tester.pump();
 
     expect(find.byType(TaskListView), findsOneWidget);
@@ -113,7 +110,7 @@ void main() {
     await tester.pumpWidget(screen);
     await tester.pump();
 
-    bloc.updateNewStateSubject(Stream.value(null));
+    bloc.getTaskItemListSubject(Stream.value(null));
     await tester.pump();
 
     expect(find.byType(TryAgainButton), findsOneWidget);
@@ -138,7 +135,7 @@ void main() {
     await tester.pumpWidget(screen);
     await tester.pump();
 
-    bloc.updateNewStateSubject(Stream.value(null));
+    bloc.getTaskItemListSubject(Stream.value(null));
     await tester.pump();
 
     expect(find.byType(FloatingActionButton), findsNothing);
