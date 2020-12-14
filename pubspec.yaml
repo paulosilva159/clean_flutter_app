@@ -36,8 +36,9 @@ dev_dependencies:
     sdk: flutter
 
 flutter:
+  generate: true
   uses-material-design: true
 
 flutter_intl:
   enabled: true
-  main_locale: pt_BR
+  main_locale: en_US

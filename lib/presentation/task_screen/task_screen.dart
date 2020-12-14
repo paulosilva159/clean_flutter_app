@@ -1,3 +1,5 @@
+import 'package:domain/data_observables.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:clean_flutter_app/presentation/common/async_snapshot_response_view.dart';
@@ -12,6 +14,26 @@ class TaskScreen extends StatelessWidget {
   const TaskScreen({@required this.bloc}) : assert(bloc != null);
 
   final TaskScreenBloc bloc;
+
+  static Widget create() => ProxyProvider2<ActiveTaskStorageUpdateStreamWrapper,
+          TaskScreenUseCases, TaskScreenBloc>(
+        update: (
+          context,
+          activeTaskStorageUpdateStreamWrapper,
+          taskScreenUseCases,
+          taskScreenBloc,
+        ) =>
+            taskScreenBloc ??
+            TaskScreenBloc(
+              activeTaskStorageUpdateStreamWrapper:
+                  activeTaskStorageUpdateStreamWrapper,
+              useCases: taskScreenUseCases,
+            ),
+        dispose: (context, bloc) => bloc.dispose(),
+        child: Consumer<TaskScreenBloc>(
+          builder: (context, bloc, child) => TaskScreen(bloc: bloc),
+        ),
+      );
 
   @override
   Widget build(BuildContext context) => StreamBuilder<TaskScreenState>(

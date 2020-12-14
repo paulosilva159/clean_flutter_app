@@ -7,12 +7,12 @@ import 'package:domain/data_repository/task_repository.dart';
 import 'package:domain/model/task.dart';
 
 class TaskRepository extends TaskDataRepository {
-  TaskRepository({@required this.taskCDS}) : assert(taskCDS != null);
+  TaskRepository({@required this.cacheDS}) : assert(cacheDS != null);
 
-  final TaskCDS taskCDS;
+  final TaskCDS cacheDS;
 
   @override
-  Future<List<Task>> getTaskList() => taskCDS.getTaskList().then(
+  Future<List<Task>> getTaskList() => cacheDS.getTaskList().then(
         (list) => list.map((task) => task.toDM()).toList(),
       );
 

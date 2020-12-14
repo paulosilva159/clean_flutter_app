@@ -1,3 +1,4 @@
+import 'package:domain/data_observables.dart';
 import 'package:test/test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -9,13 +10,23 @@ import 'package:domain/model/task.dart';
 
 class TaskScreenUseCasesSpy extends Mock implements TaskScreenUseCases {}
 
+class ActiveTaskStorageUpdateStreamWrapperSpy extends Mock
+    implements ActiveTaskStorageUpdateStreamWrapper {}
+
 void main() {
+  ActiveTaskStorageUpdateStreamWrapperSpy activeTaskStorageUpdateStreamWrapper;
   TaskScreenUseCasesSpy useCases;
   TaskScreenBloc bloc;
 
   setUp(() {
+    activeTaskStorageUpdateStreamWrapper =
+        ActiveTaskStorageUpdateStreamWrapperSpy();
     useCases = TaskScreenUseCasesSpy();
-    bloc = TaskScreenBloc(useCases: useCases);
+    bloc = TaskScreenBloc(
+      useCases: useCases,
+      activeTaskStorageUpdateStreamWrapper:
+          activeTaskStorageUpdateStreamWrapper,
+    );
   });
 
   test('Should start with Loading state', () async {

@@ -1,3 +1,4 @@
+import 'package:domain/data_observables.dart';
 import 'package:domain/use_case/add_task_uc.dart';
 import 'package:domain/use_case/remove_task_uc.dart';
 import 'package:meta/meta.dart';
@@ -12,7 +13,9 @@ import 'package:domain/use_case/get_task_list_uc.dart';
 class TaskScreenBloc with SubscriptionHolder {
   TaskScreenBloc({
     @required this.useCases,
-  }) : assert(useCases != null) {
+    @required this.activeTaskStorageUpdateStreamWrapper,
+  })  : assert(useCases != null),
+        assert(activeTaskStorageUpdateStreamWrapper != null) {
     updateNewStateSubject(
       Rx.merge([
         Stream.value(null),
@@ -27,6 +30,8 @@ class TaskScreenBloc with SubscriptionHolder {
       .addTo(subscriptions);
 
   final TaskScreenUseCases useCases;
+  final ActiveTaskStorageUpdateStreamWrapper
+      activeTaskStorageUpdateStreamWrapper;
 
   final _onTryAgainSubject = PublishSubject<void>();
   final _onNewStateSubject = BehaviorSubject<TaskScreenState>.seeded(

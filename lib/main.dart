@@ -1,3 +1,4 @@
+import 'package:clean_flutter_app/global_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -26,7 +27,9 @@ class App extends StatelessWidget {
         ],
         supportedLocales: S.delegate.supportedLocales,
         home: SafeArea(
-          child: TaskScreen(),
+          child: GlobalProvider(
+            child: TaskScreen.create(),
+          ),
         ),
       );
 }
