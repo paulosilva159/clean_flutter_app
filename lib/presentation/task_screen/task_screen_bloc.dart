@@ -96,9 +96,7 @@ class TaskScreenBloc with SubscriptionHolder {
       await useCases.upsertTask(
         UpsertTaskUCParams(task: task),
       );
-      print('success');
     } catch (error) {
-      print('fail');
       yield Error(error: error);
     }
   }

@@ -40,12 +40,12 @@ void main() {
   });
 
   group('Should call correct state on get task list', () {
-    PostExpectation mockRequestCall() => when(useCases.getTasksList());
+    PostExpectation mockRequestGetCall() => when(useCases.getTasksList());
 
     void mockSuccess({List<Task> tasks = const <Task>[]}) =>
-        mockRequestCall().thenAnswer((_) => Future.value(tasks));
+        mockRequestGetCall().thenAnswer((_) => Future.value(tasks));
 
-    void mockFailure() => mockRequestCall().thenThrow(UseCaseException());
+    void mockFailure() => mockRequestGetCall().thenThrow(UseCaseException());
 
     test('Should emit Empty if use case return null or an empty list',
         () async {
@@ -126,14 +126,14 @@ void main() {
   group('Should call correct state on add task', () {
     Task task;
 
-    PostExpectation mockRequestCall() => when(
-          useCases.upsertTask(UpsertTaskUCParams(task: task)),
+    PostExpectation mockRequestAddCall() => when(
+          useCases.upsertTask(any),
         );
 
     void mockSuccess() =>
-        mockRequestCall().thenAnswer((_) => Future<void>.value());
+        mockRequestAddCall().thenAnswer((_) => Future<void>.value());
 
-    void mockFailure() => mockRequestCall().thenThrow(UseCaseException());
+    void mockFailure() => mockRequestAddCall().thenThrow(UseCaseException());
 
     setUp(() async {
       task = const Task(id: 0, title: 'title');
@@ -161,19 +161,8 @@ void main() {
     test('Should present Error state on failed save task', () async {
       mockFailure();
 
-      when(
-        useCases.upsertTask(UpsertTaskUCParams(task: task)),
-      ).thenThrow(UseCaseException());
-
       bloc.onUpsertTaskItem.add(task);
       await Future.delayed(const Duration(seconds: 0));
-
-      //verify(useCases.upsertTask(UpsertTaskUCParams(task: task))).called(1);
-
-      expect(
-        useCases.upsertTask(UpsertTaskUCParams(task: task)),
-        throwsA(isA<UseCaseException>()),
-      );
 
       bloc.onNewState.listen(
         expectAsync1(
