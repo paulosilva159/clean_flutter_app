@@ -44,7 +44,7 @@ class TaskScreenBloc with SubscriptionHolder {
   }
 
   void getTaskItemListSubject(Stream<void> inputStream) => inputStream
-      .flatMap<TaskScreenState>((_) => _fetchData())
+      .switchMap<TaskScreenState>((_) => _fetchData())
       .listen(_onNewStateSubject.add)
       .addTo(subscriptions);
 

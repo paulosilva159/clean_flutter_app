@@ -134,7 +134,7 @@ void main() {
     dispose();
   });
 
-  group('Should call correct state on add task', () {
+  group('Should call correct state on upsert task', () {
     Task task;
 
     PostExpectation mockRequestAddCall() => when(
@@ -153,7 +153,7 @@ void main() {
       await Future.delayed(const Duration(seconds: 0));
     });
 
-    test('Should correctly save a task', () async {
+    test('Should correctly upsert a task', () async {
       mockSuccess();
 
       bloc.onUpsertTaskItem.add(task);
@@ -175,6 +175,60 @@ void main() {
       mockFailure();
 
       bloc.onUpsertTaskItem.add(task);
+      await Future.delayed(const Duration(seconds: 0));
+
+      bloc.onNewState.listen(
+        expectAsync1(
+          (state) {
+            expect(state, const TypeMatcher<Error>());
+          },
+        ),
+      );
+    });
+
+    dispose();
+  });
+
+  group('Should call correct state on remove task', () {
+    Task task;
+
+    PostExpectation mockRequestAddCall() => when(
+          useCases.removeTask(any),
+        );
+
+    void mockSuccess() =>
+        mockRequestAddCall().thenAnswer((_) => Future<void>.value());
+
+    void mockFailure() => mockRequestAddCall().thenThrow(UseCaseException());
+
+    setUp(() async {
+      task = const Task(id: 0, title: 'title');
+
+      bloc.getTaskItemListSubject(Stream.value(null));
+      await Future.delayed(const Duration(seconds: 0));
+    });
+
+    test('Should correctly remove a task', () async {
+      mockSuccess();
+
+      bloc.onRemoveTaskItem.add(task);
+      await Future.delayed(const Duration(seconds: 0));
+
+      bloc.onNewState.listen(
+        expectAsync1(
+          (state) {
+            expect(state, const TypeMatcher<Success>());
+          },
+        ),
+      );
+
+      dispose();
+    });
+
+    test('Should present Error state on failed remove task', () async {
+      mockFailure();
+
+      bloc.onRemoveTaskItem.add(task);
       await Future.delayed(const Duration(seconds: 0));
 
       bloc.onNewState.listen(
