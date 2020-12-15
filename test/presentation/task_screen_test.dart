@@ -1,10 +1,8 @@
 import 'package:clean_flutter_app/generated/l10n.dart';
-import 'package:clean_flutter_app/global_provider.dart';
 import 'package:domain/data_observables.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:domain/exceptions.dart';
@@ -91,7 +89,7 @@ void main() {
 
   testWidgets('Should emit ListView if found list is not empty',
       (tester) async {
-    mockSuccess(tasks: <Task>[Task(id: 0, title: 'title')]);
+    mockSuccess(tasks: <Task>[const Task(id: 0, title: 'title')]);
 
     await tester.pumpWidget(screen);
     await tester.pump();

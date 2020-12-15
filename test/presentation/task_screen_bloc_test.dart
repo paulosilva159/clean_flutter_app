@@ -37,6 +37,8 @@ void main() {
 
   test('Should start with Loading state', () async {
     expect(await bloc.onNewState.first, const TypeMatcher<Loading>());
+
+    dispose();
   });
 
   group('Should call correct state on get task list', () {
@@ -61,6 +63,8 @@ void main() {
           },
         ),
       );
+
+      dispose();
     });
 
     test('Should emit Listing if use case return a list not empty', () async {
@@ -76,6 +80,8 @@ void main() {
           },
         ),
       );
+
+      dispose();
     });
 
     test('Should emit Error if use case throws', () async {
@@ -90,6 +96,8 @@ void main() {
           },
         ),
       );
+
+      dispose();
     });
 
     test('Should emit Error in case of failed try again', () async {
@@ -105,6 +113,8 @@ void main() {
           },
         ),
       );
+
+      dispose();
     });
 
     test('Should emit Success in case of successful try again', () async {
@@ -121,6 +131,8 @@ void main() {
         ),
       );
     });
+
+    dispose();
   });
 
   group('Should call correct state on add task', () {
@@ -156,6 +168,8 @@ void main() {
           },
         ),
       );
+
+      dispose();
     });
 
     test('Should present Error state on failed save task', () async {
@@ -172,5 +186,7 @@ void main() {
         ),
       );
     });
+
+    dispose();
   });
 }
