@@ -44,17 +44,20 @@ class TaskScreen extends StatelessWidget {
           final screenState = snapshot.data;
 
           return Scaffold(
+            resizeToAvoidBottomPadding: false,
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
             floatingActionButton: screenState is Success
-                ? FloatingActionButton(onPressed: () {
-                    AdaptiveFormDialog(
-                      formDialogTitle: 'title',
-                      formDialogMessage: 'message',
-                      onUpsertTask: bloc.onUpsertTaskItem.add,
-                      child: Container(),
-                    ).show(context);
-                  })
+                ? FloatingActionButton(
+                    onPressed: () {
+                      AdaptiveFormDialog(
+                        formDialogTitle: 'title',
+                        formDialogMessage: 'message',
+                        onUpsertTask: bloc.onUpsertTaskItem.add,
+                        child: Container(),
+                      ).show(context);
+                    },
+                  )
                 : null,
             body: AsyncSnapshotResponseView<Loading, Error, Success>(
               snapshot: snapshot,
