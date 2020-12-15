@@ -1,5 +1,6 @@
-import 'package:domain/logger.dart';
 import 'package:logger/logger.dart';
+
+import 'package:domain/logger.dart';
 
 class Log {
   final Logger logger = Logger(printer: PrettyPrinter());

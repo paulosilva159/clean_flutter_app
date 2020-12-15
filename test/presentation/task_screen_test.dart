@@ -1,20 +1,20 @@
-import 'package:clean_flutter_app/generated/l10n.dart';
-import 'package:domain/data_observables.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:rxdart/rxdart.dart';
 
+import 'package:domain/data_observables.dart';
 import 'package:domain/exceptions.dart';
 import 'package:domain/model/task.dart';
 
+import 'package:clean_flutter_app/generated/l10n.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_screen.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_screen_bloc.dart';
 import 'package:clean_flutter_app/presentation/common/indicator/empty_list_indicator.dart';
 import 'package:clean_flutter_app/presentation/common/indicator/loading_indicator.dart';
 import 'package:clean_flutter_app/presentation/common/try_again_button.dart';
 import 'package:clean_flutter_app/presentation/task_screen/widget/task_list_view.dart';
-import 'package:rxdart/rxdart.dart';
 
 class TaskScreenUseCasesSpy extends Mock implements TaskScreenUseCases {}
 

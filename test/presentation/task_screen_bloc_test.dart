@@ -1,4 +1,3 @@
-import 'package:domain/data_observables.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:test/test.dart';
 import 'package:mockito/mockito.dart';
@@ -6,6 +5,7 @@ import 'package:mockito/mockito.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_screen_bloc.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_screen_model.dart';
 
+import 'package:domain/data_observables.dart';
 import 'package:domain/exceptions.dart';
 import 'package:domain/model/task.dart';
 

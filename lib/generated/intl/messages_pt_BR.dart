@@ -21,6 +21,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "addTaskDialogTitle" : MessageLookupByLibrary.simpleMessage("Adicionar tarefa"),
     "emptyListIndicatorMessage" : MessageLookupByLibrary.simpleMessage("Lista vazia. Adicione novas tarefas"),
     "errorIndicatorMessage" : MessageLookupByLibrary.simpleMessage("Deu erro"),
     "tryAgainButtonLabel" : MessageLookupByLibrary.simpleMessage("Tente Novamente")

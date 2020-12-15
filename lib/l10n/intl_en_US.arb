@@ -2,5 +2,6 @@
   "@@locale": "en_US",
   "tryAgainButtonLabel": "Try Again",
   "emptyListIndicatorMessage": "Empty list. Add new task",
-  "errorIndicatorMessage": "Error"
+  "errorIndicatorMessage": "Error",
+  "addTaskDialogTitle": "Add task"
 }

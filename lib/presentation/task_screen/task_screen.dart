@@ -1,8 +1,9 @@
-import 'package:domain/data_observables.dart';
-import 'package:domain/model/task.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
+import 'package:domain/data_observables.dart';
+
+import 'package:clean_flutter_app/presentation/common/dialogs/simple_dialogs/adaptive_form_dialog.dart';
 import 'package:clean_flutter_app/presentation/common/async_snapshot_response_view.dart';
 import 'package:clean_flutter_app/presentation/common/indicator/empty_list_indicator.dart';
 import 'package:clean_flutter_app/presentation/common/indicator/error_indicator.dart';
@@ -38,31 +39,43 @@ class TaskScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => StreamBuilder<TaskScreenState>(
-      stream: bloc.onNewState,
-      builder: (context, snapshot) {
-        final screenState = snapshot.data;
+        stream: bloc.onNewState,
+        builder: (context, snapshot) {
+          final screenState = snapshot.data;
 
-        return Scaffold(
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerFloat,
-          floatingActionButton: screenState is Success
-              ? FloatingActionButton(onPressed: () {})
-              : null,
-          body: AsyncSnapshotResponseView<Loading, Error, Success>(
-            snapshot: snapshot,
-            loadingWidgetBuilder: (context, loading) => LoadingIndicator(),
-            errorWidgetBuilder: (context, error) => ErrorIndicator(
-              error: error,
-              onTryAgainTap: () => bloc.onTryAgain.add(null),
+          return Scaffold(
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+            floatingActionButton: screenState is Success
+                ? FloatingActionButton(onPressed: () {
+                    AdaptiveFormDialog(
+                      formDialogTitle: 'title',
+                      formDialogMessage: 'message',
+                      onUpsertTask: bloc.onUpsertTaskItem.add,
+                      child: Container(),
+                    ).show(context);
+                  })
+                : null,
+            body: AsyncSnapshotResponseView<Loading, Error, Success>(
+              snapshot: snapshot,
+              loadingWidgetBuilder: (context, loading) => LoadingIndicator(),
+              errorWidgetBuilder: (context, error) => ErrorIndicator(
+                error: error,
+                onTryAgainTap: () => bloc.onTryAgain.add(null),
+              ),
+              successWidgetBuilder: (context, success) {
+                if (success is Listing) {
+                  return TaskListView(
+                    tasks: success.tasks,
+                    onRemoveTaskItem: bloc.onRemoveTaskItem.add,
+                    onUpdateTaskItem: bloc.onUpsertTaskItem.add,
+                  );
+                } else {
+                  return EmptyListIndicator();
+                }
+              },
             ),
-            successWidgetBuilder: (context, success) {
-              if (success is Listing) {
-                return TaskListView(tasks: success.tasks);
-              } else {
-                return EmptyListIndicator();
-              }
-            },
-          ),
-        );
-      });
+          );
+        },
+      );
 }

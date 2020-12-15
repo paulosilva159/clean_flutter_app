@@ -2,5 +2,6 @@
   "@@locale": "pt_BR",
   "tryAgainButtonLabel": "Tente Novamente",
   "emptyListIndicatorMessage": "Lista vazia. Adicione novas tarefas",
-  "errorIndicatorMessage": "Deu erro"
+  "errorIndicatorMessage": "Deu erro",
+  "addTaskDialogTitle": "Adicionar tarefa"
 }

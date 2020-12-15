@@ -1,7 +1,8 @@
 import 'dart:async';
 
-import 'package:clean_flutter_app/data/cache/model/task_cm.dart';
 import 'package:hive/hive.dart';
+
+import 'package:clean_flutter_app/data/cache/model/task_cm.dart';
 
 class TaskCDS {
   static const String _taskListBoxName = '_taskListBoxName';
@@ -18,8 +19,6 @@ class TaskCDS {
             : box.put(task.id, task),
       );
 
-  Future<void> removeTask(TaskCM task) =>
-      Hive.openBox(_taskListBoxName).then<void>(
-        (box) => box.deleteAt(task.id),
-      );
+  Future<void> removeTask(TaskCM task) => Hive.openBox<TaskCM>(_taskListBoxName)
+      .then<void>((box) => box.delete(task.id));
 }

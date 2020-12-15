@@ -64,6 +64,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Add task`
+  String get addTaskDialogTitle {
+    return Intl.message(
+      'Add task',
+      name: 'addTaskDialogTitle',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

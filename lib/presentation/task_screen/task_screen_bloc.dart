@@ -1,14 +1,14 @@
-import 'package:domain/data_observables.dart';
-import 'package:domain/use_case/upsert_task_uc.dart';
-import 'package:domain/use_case/remove_task_uc.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'package:clean_flutter_app/common/subscription_holder.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_screen_model.dart';
 
+import 'package:domain/data_observables.dart';
 import 'package:domain/model/task.dart';
 import 'package:domain/use_case/get_task_list_uc.dart';
+import 'package:domain/use_case/upsert_task_uc.dart';
+import 'package:domain/use_case/remove_task_uc.dart';
 
 class TaskScreenBloc with SubscriptionHolder {
   TaskScreenBloc({
@@ -18,7 +18,7 @@ class TaskScreenBloc with SubscriptionHolder {
         assert(activeTaskStorageUpdateStreamWrapper != null) {
     getTaskItemListSubject(
       Rx.merge<void>([
-        Stream.value(null),
+        Stream<void>.value(null),
         _onTryAgainSubject.stream,
         activeTaskStorageUpdateStreamWrapper.value,
       ]),
@@ -31,16 +31,6 @@ class TaskScreenBloc with SubscriptionHolder {
     removeTaskItemSubject(
       _onRemoveTaskItemSubject.stream,
     );
-
-    // Rx.merge([
-    //   Rx.merge<void>([
-    //     Stream.value(null),
-    //     _onTryAgainSubject.stream,
-    //     activeTaskStorageUpdateStreamWrapper.value,
-    //   ]).switchMap<TaskScreenState>((_) => _fetchData()).distinct(),
-    //   _onUpsertTaskItemSubject.stream.flatMap<TaskScreenState>(_upsertData),
-    //   _onRemoveTaskItemSubject.stream.flatMap<TaskScreenState>(_removeData),
-    // ]).distinct().listen(_onNewStateSubject.add).addTo(subscriptions);
   }
 
   void getTaskItemListSubject(Stream<void> inputStream) => inputStream
@@ -49,12 +39,20 @@ class TaskScreenBloc with SubscriptionHolder {
       .addTo(subscriptions);
 
   void upsertTaskItemSubject(Stream<Task> inputStream) => inputStream
-      .flatMap<TaskScreenState>(_upsertData)
+      .debounceTime(const Duration(seconds: 1))
+      .flatMap<TaskScreenState>(
+        (task) => _upsertData(task: task, actionSink: _onNewActionSubject.sink),
+      )
       .listen(_onNewStateSubject.add)
       .addTo(subscriptions);
 
   void removeTaskItemSubject(Stream<Task> inputStream) => inputStream
-      .flatMap<TaskScreenState>(_removeData)
+      .flatMap<TaskScreenState>(
+        (task) => _removeData(
+          task: task,
+          actionSink: _onNewActionSubject.sink,
+        ),
+      )
       .listen(_onNewStateSubject.add)
       .addTo(subscriptions);
 
@@ -63,6 +61,7 @@ class TaskScreenBloc with SubscriptionHolder {
       activeTaskStorageUpdateStreamWrapper;
 
   final _onTryAgainSubject = PublishSubject<void>();
+  final _onNewActionSubject = PublishSubject<TaskScreenAction>();
   final _onUpsertTaskItemSubject = PublishSubject<Task>();
   final _onRemoveTaskItemSubject = PublishSubject<Task>();
   final _onNewStateSubject = BehaviorSubject<TaskScreenState>.seeded(
@@ -74,6 +73,7 @@ class TaskScreenBloc with SubscriptionHolder {
   Sink<Task> get onRemoveTaskItem => _onRemoveTaskItemSubject.sink;
 
   Stream<TaskScreenState> get onNewState => _onNewStateSubject.stream;
+  Stream<TaskScreenAction> get onNewAction => _onNewActionSubject.stream;
 
   Stream<TaskScreenState> _fetchData() async* {
     yield Loading();
@@ -91,7 +91,10 @@ class TaskScreenBloc with SubscriptionHolder {
     }
   }
 
-  Stream<TaskScreenState> _upsertData(Task task) async* {
+  Stream<TaskScreenState> _upsertData({
+    @required Task task,
+    @required Sink<TaskScreenAction> actionSink,
+  }) async* {
     try {
       await useCases.upsertTask(
         UpsertTaskUCParams(task: task),
@@ -101,12 +104,17 @@ class TaskScreenBloc with SubscriptionHolder {
     }
   }
 
-  Stream<TaskScreenState> _removeData(Task task) async* {
+  Stream<TaskScreenState> _removeData({
+    @required Task task,
+    @required Sink<TaskScreenAction> actionSink,
+  }) async* {
     try {
       await useCases.removeTask(
         RemoveTaskUCParams(task: task),
       );
     } catch (error) {
+      print(error);
+
       yield Error(error: error);
     }
   }
@@ -114,6 +122,7 @@ class TaskScreenBloc with SubscriptionHolder {
   void dispose() {
     _onTryAgainSubject.close();
     _onNewStateSubject.close();
+    _onNewActionSubject.close();
     _onUpsertTaskItemSubject.close();
     _onRemoveTaskItemSubject.close();
     disposeSubscriptions();

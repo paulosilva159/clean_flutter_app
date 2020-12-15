@@ -19,7 +19,7 @@ abstract class Success implements TaskScreenState {
 }
 
 class Empty extends Success {
-  Empty() : super(tasks: <Task>[]);
+  Empty() : super(tasks: const <Task>[]);
 }
 
 class Listing extends Success {
@@ -27,3 +27,7 @@ class Listing extends Success {
       : assert(tasks != null),
         super(tasks: tasks);
 }
+
+abstract class TaskScreenAction {}
+
+class UpsertTaskAction implements TaskScreenAction {}

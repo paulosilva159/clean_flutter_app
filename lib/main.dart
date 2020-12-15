@@ -1,8 +1,8 @@
-import 'package:clean_flutter_app/global_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:clean_flutter_app/generated/l10n.dart';
+import 'package:clean_flutter_app/global_provider.dart';
 import 'package:clean_flutter_app/hive_initializer.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_screen.dart';
 
