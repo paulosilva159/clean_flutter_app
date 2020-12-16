@@ -1,112 +1,148 @@
 import 'dart:io';
-import 'dart:math';
 
-import 'package:domain/model/task.dart';
+import 'package:clean_flutter_app/presentation/common/save_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
-class AdaptiveFormDialog extends StatefulWidget {
-  const AdaptiveFormDialog({
-    @required this.onUpsertTask,
+class AdaptiveFormDialog extends StatelessWidget {
+  AdaptiveFormDialog({
     @required this.formDialogTitle,
-    @required this.child,
-    this.updatingTask,
-  })  : assert(onUpsertTask != null),
-        assert(formDialogTitle != null),
-        assert(child != null);
+    @required this.onSavedFieldFunctions,
+    @required this.onTextEdittingControllerDispose,
+    @required this.formFields,
+  })  : assert(formDialogTitle != null),
+        assert(onSavedFieldFunctions != null),
+        assert(onTextEdittingControllerDispose != null),
+        assert(formFields != null);
 
-  final void Function(Task) onUpsertTask;
   final String formDialogTitle;
-  final Task updatingTask;
-  final Widget child;
+  final VoidCallback onSavedFieldFunctions;
+  final VoidCallback onTextEdittingControllerDispose;
+  final List<FormField> formFields;
 
   Future<bool> show(BuildContext context) async => Platform.isIOS
       ? showCupertinoDialog(context: context, builder: (context) => this)
       : showDialog(context: context, builder: (context) => this);
 
-  @override
-  _AdaptiveFormDialogState createState() => _AdaptiveFormDialogState();
-}
-
-class _AdaptiveFormDialogState extends State<AdaptiveFormDialog> {
   final _formKey = GlobalKey<FormState>();
-  final _titleFieldTextEditingController = TextEditingController();
-
-  @override
-  void dispose() {
-    _titleFieldTextEditingController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) => Platform.isIOS
-      ? const CupertinoPopupSurface()
-      : SimpleDialog(
-          title: Text(widget.formDialogTitle),
-          children: [
-            Form(
-              key: _formKey,
-              child: TaskFormDialogFields(
-                titleFieldTextEditingController:
-                    _titleFieldTextEditingController,
-                initialValue: widget.updatingTask?.title,
-              ),
-            ),
-            SaveFormButton(
-              onSaveTap: () async {
-                _formKey.currentState.save();
-
-                widget.onUpsertTask(
-                  Task(
-                    title: _titleFieldTextEditingController.value.text,
-                    id: widget.updatingTask?.id ?? Random().nextInt(99999),
-                  ),
-                );
-
-                await Future.delayed(
-                  const Duration(milliseconds: 375),
-                  Navigator.of(context).pop,
-                );
-              },
-            ),
-          ],
+      ? _CupertinoFormDialog(
+          formDialogTitle: formDialogTitle,
+          onSavedFieldFunctions: onSavedFieldFunctions,
+          onTextEdittingControllerDispose: onTextEdittingControllerDispose,
+          formFields: formFields,
+          formKey: _formKey,
+        )
+      : _MaterialFormDialog(
+          formDialogTitle: formDialogTitle,
+          onSavedFieldFunctions: onSavedFieldFunctions,
+          onTextEdittingControllerDispose: onTextEdittingControllerDispose,
+          formFields: formFields,
+          formKey: _formKey,
         );
 }
 
-class TaskFormDialogFields extends StatelessWidget {
-  const TaskFormDialogFields({
-    @required this.titleFieldTextEditingController,
-    this.initialValue = '',
-  }) : assert(titleFieldTextEditingController != null);
+class _MaterialFormDialog extends StatelessWidget {
+  const _MaterialFormDialog({
+    @required this.formDialogTitle,
+    @required this.onSavedFieldFunctions,
+    @required this.onTextEdittingControllerDispose,
+    @required this.formFields,
+    @required this.formKey,
+  })  : assert(formDialogTitle != null),
+        assert(onSavedFieldFunctions != null),
+        assert(onTextEdittingControllerDispose != null),
+        assert(formFields != null),
+        assert(formKey != null);
 
-  final TextEditingController titleFieldTextEditingController;
-  final String initialValue;
+  final GlobalKey<FormState> formKey;
+  final String formDialogTitle;
+  final VoidCallback onSavedFieldFunctions;
+  final VoidCallback onTextEdittingControllerDispose;
+  final List<FormField> formFields;
 
   @override
-  Widget build(BuildContext context) => Column(
+  Widget build(BuildContext context) => SimpleDialog(
+        title: Text(formDialogTitle),
         children: [
-          TextFormField(
-            initialValue: initialValue,
-            keyboardType: TextInputType.text,
-            onSaved: (text) {
-              titleFieldTextEditingController.text = text;
+          Form(
+            key: formKey,
+            child: Column(
+              children: formFields,
+            ),
+          ),
+          SaveButton(
+            onSaveTap: () async {
+              formKey.currentState.save();
+
+              onSavedFieldFunctions();
+
+              await Future.delayed(
+                const Duration(milliseconds: 375),
+                Navigator.of(context).pop,
+              );
             },
           ),
         ],
       );
 }
 
-class SaveFormButton extends StatelessWidget {
-  const SaveFormButton({
-    @required this.onSaveTap,
-  }) : assert(onSaveTap != null);
+class _CupertinoFormDialog extends StatelessWidget {
+  const _CupertinoFormDialog({
+    @required this.formDialogTitle,
+    @required this.onSavedFieldFunctions,
+    @required this.onTextEdittingControllerDispose,
+    @required this.formFields,
+    @required this.formKey,
+  })  : assert(formDialogTitle != null),
+        assert(onSavedFieldFunctions != null),
+        assert(onTextEdittingControllerDispose != null),
+        assert(formFields != null),
+        assert(formKey != null);
 
-  final VoidCallback onSaveTap;
+  final GlobalKey<FormState> formKey;
+  final String formDialogTitle;
+  final VoidCallback onSavedFieldFunctions;
+  final VoidCallback onTextEdittingControllerDispose;
+  final List<FormField> formFields;
 
   @override
-  Widget build(BuildContext context) => RaisedButton(
-        onPressed: onSaveTap,
-        child: const Text('save'),
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.all(50),
+        child: Flex(
+          direction: Axis.vertical,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CupertinoPopupSurface(
+              isSurfacePainted: false,
+              child: Material(
+                  child: Column(
+                children: [
+                  Text(formDialogTitle),
+                  Form(
+                    key: formKey,
+                    child: Column(
+                      children: formFields,
+                    ),
+                  ),
+                  SaveButton(
+                    onSaveTap: () async {
+                      formKey.currentState.save();
+
+                      onSavedFieldFunctions();
+
+                      await Future.delayed(
+                        const Duration(milliseconds: 375),
+                        Navigator.of(context).pop,
+                      );
+                    },
+                  ),
+                ],
+              )),
+            ),
+          ],
+        ),
       );
 }

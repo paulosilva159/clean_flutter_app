@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:domain/data_observables.dart';
 
-import 'package:clean_flutter_app/presentation/common/dialogs/simple_dialogs/adaptive_form_dialog.dart';
+import 'package:clean_flutter_app/presentation/common/dialogs/simple_dialogs/upsert_task_form_dialog.dart';
 import 'package:clean_flutter_app/presentation/common/async_snapshot_response_view.dart';
 import 'package:clean_flutter_app/presentation/common/indicator/empty_list_indicator.dart';
 import 'package:clean_flutter_app/presentation/common/indicator/error_indicator.dart';
@@ -50,12 +50,13 @@ class TaskScreen extends StatelessWidget {
             floatingActionButton: screenState is Success
                 ? FloatingActionButton(
                     onPressed: () {
-                      AdaptiveFormDialog(
+                      showUpsertTaskFormDialog(
+                        context,
                         formDialogTitle: 'add',
                         onUpsertTask: bloc.onUpsertTaskItem.add,
-                        child: Container(),
-                      ).show(context);
+                      );
                     },
+                    child: const Icon(Icons.add),
                   )
                 : null,
             body: AsyncSnapshotResponseView<Loading, Error, Success>(

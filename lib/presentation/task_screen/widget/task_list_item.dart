@@ -1,4 +1,5 @@
 import 'package:clean_flutter_app/presentation/common/dialogs/simple_dialogs/adaptive_form_dialog.dart';
+import 'package:clean_flutter_app/presentation/common/dialogs/simple_dialogs/upsert_task_form_dialog.dart';
 import 'package:flutter/material.dart';
 
 import 'package:domain/model/task.dart';
@@ -29,12 +30,12 @@ class TaskListItem extends StatelessWidget {
                 child: IconButton(
                   icon: const Icon(Icons.edit_rounded),
                   onPressed: () {
-                    AdaptiveFormDialog(
+                    showUpsertTaskFormDialog(
+                      context,
                       formDialogTitle: 'update',
                       onUpsertTask: onUpdateTask,
-                      updatingTask: task,
-                      child: Container(),
-                    ).show(context);
+                      upsertingTask: task,
+                    );
                   },
                 ),
               ),
