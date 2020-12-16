@@ -41,4 +41,4 @@ flutter:
 
 flutter_intl:
   enabled: true
-  main_locale: en_US
+  main_locale: pt_BR

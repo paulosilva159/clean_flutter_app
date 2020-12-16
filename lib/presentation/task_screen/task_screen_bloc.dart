@@ -95,6 +95,8 @@ class TaskScreenBloc with SubscriptionHolder {
     @required Task task,
     @required Sink<TaskScreenAction> actionSink,
   }) async* {
+    yield Loading();
+
     try {
       await useCases.upsertTask(
         UpsertTaskUCParams(task: task),
@@ -108,6 +110,8 @@ class TaskScreenBloc with SubscriptionHolder {
     @required Task task,
     @required Sink<TaskScreenAction> actionSink,
   }) async* {
+    yield Loading();
+
     try {
       await useCases.removeTask(
         RemoveTaskUCParams(task: task),

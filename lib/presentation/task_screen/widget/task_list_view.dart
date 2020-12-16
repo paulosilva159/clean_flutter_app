@@ -13,8 +13,8 @@ class TaskListView extends StatelessWidget {
         assert(onRemoveTaskItem != null);
 
   final List<Task> tasks;
-  final Function(Task) onRemoveTaskItem;
-  final Function(Task) onUpdateTaskItem;
+  final void Function(Task) onRemoveTaskItem;
+  final void Function(Task) onUpdateTaskItem;
 
   @override
   Widget build(BuildContext context) => ListView.builder(

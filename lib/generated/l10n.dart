@@ -35,40 +35,40 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-  /// `Try Again`
+  /// `Tente Novamente`
   String get tryAgainButtonLabel {
     return Intl.message(
-      'Try Again',
+      'Tente Novamente',
       name: 'tryAgainButtonLabel',
       desc: '',
       args: [],
     );
   }
 
-  /// `Empty list. Add new task`
+  /// `Lista vazia. Adicione novas tarefas`
   String get emptyListIndicatorMessage {
     return Intl.message(
-      'Empty list. Add new task',
+      'Lista vazia. Adicione novas tarefas',
       name: 'emptyListIndicatorMessage',
       desc: '',
       args: [],
     );
   }
 
-  /// `Error`
+  /// `Deu erro`
   String get errorIndicatorMessage {
     return Intl.message(
-      'Error',
+      'Deu erro',
       name: 'errorIndicatorMessage',
       desc: '',
       args: [],
     );
   }
 
-  /// `Add task`
+  /// `Adicionar tarefa`
   String get addTaskDialogTitle {
     return Intl.message(
-      'Add task',
+      'Adicionar tarefa',
       name: 'addTaskDialogTitle',
       desc: '',
       args: [],
@@ -81,8 +81,8 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
 
   List<Locale> get supportedLocales {
     return const <Locale>[
-      Locale.fromSubtags(languageCode: 'en', countryCode: 'US'),
       Locale.fromSubtags(languageCode: 'pt', countryCode: 'BR'),
+      Locale.fromSubtags(languageCode: 'en', countryCode: 'US'),
     ];
   }
 

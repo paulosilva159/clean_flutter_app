@@ -51,8 +51,7 @@ class TaskScreen extends StatelessWidget {
                 ? FloatingActionButton(
                     onPressed: () {
                       AdaptiveFormDialog(
-                        formDialogTitle: 'title',
-                        formDialogMessage: 'message',
+                        formDialogTitle: 'add',
                         onUpsertTask: bloc.onUpsertTaskItem.add,
                         child: Container(),
                       ).show(context);

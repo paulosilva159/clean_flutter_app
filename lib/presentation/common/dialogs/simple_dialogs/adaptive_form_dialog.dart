@@ -4,23 +4,21 @@ import 'dart:math';
 import 'package:domain/model/task.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class AdaptiveFormDialog extends StatefulWidget {
   const AdaptiveFormDialog({
-    @required this.formDialogTitle,
-    @required this.formDialogMessage,
     @required this.onUpsertTask,
+    @required this.formDialogTitle,
     @required this.child,
-    this.taskItemId,
-  })  : assert(formDialogTitle != null),
-        assert(formDialogMessage != null),
-        assert(onUpsertTask != null),
+    this.updatingTask,
+  })  : assert(onUpsertTask != null),
+        assert(formDialogTitle != null),
         assert(child != null);
 
+  final void Function(Task) onUpsertTask;
   final String formDialogTitle;
-  final String formDialogMessage;
-  final Function(Task) onUpsertTask;
-  final int taskItemId;
+  final Task updatingTask;
   final Widget child;
 
   Future<bool> show(BuildContext context) async => Platform.isIOS
@@ -52,17 +50,23 @@ class _AdaptiveFormDialogState extends State<AdaptiveFormDialog> {
               child: TaskFormDialogFields(
                 titleFieldTextEditingController:
                     _titleFieldTextEditingController,
+                initialValue: widget.updatingTask?.title,
               ),
             ),
             SaveFormButton(
-              onSaveTap: () {
+              onSaveTap: () async {
                 _formKey.currentState.save();
 
                 widget.onUpsertTask(
                   Task(
                     title: _titleFieldTextEditingController.value.text,
-                    id: widget.taskItemId ?? Random().nextInt(99999),
+                    id: widget.updatingTask?.id ?? Random().nextInt(99999),
                   ),
+                );
+
+                await Future.delayed(
+                  const Duration(milliseconds: 375),
+                  Navigator.of(context).pop,
                 );
               },
             ),
@@ -73,15 +77,18 @@ class _AdaptiveFormDialogState extends State<AdaptiveFormDialog> {
 class TaskFormDialogFields extends StatelessWidget {
   const TaskFormDialogFields({
     @required this.titleFieldTextEditingController,
+    this.initialValue = '',
   }) : assert(titleFieldTextEditingController != null);
 
   final TextEditingController titleFieldTextEditingController;
+  final String initialValue;
 
   @override
   Widget build(BuildContext context) => Column(
         children: [
           TextFormField(
-            initialValue: 'Tarefa',
+            initialValue: initialValue,
+            keyboardType: TextInputType.text,
             onSaved: (text) {
               titleFieldTextEditingController.text = text;
             },
