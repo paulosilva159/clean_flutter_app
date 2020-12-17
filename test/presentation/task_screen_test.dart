@@ -65,79 +65,82 @@ void main() {
     mockSuccess();
   });
 
-  testWidgets('Should start with Loading Indicator', (tester) async {
-    await tester.pumpWidget(screen);
-    await tester.pump();
+  group('Should correctly load all screen states', () {
+    testWidgets('Should start with Loading Indicator', (tester) async {
+      await tester.pumpWidget(screen);
+      await tester.pump();
 
-    expect(find.byType(LoadingIndicator), findsOneWidget);
+      expect(find.byType(LoadingIndicator), findsOneWidget);
 
-    dispose();
-  });
+      dispose();
+    });
 
-  testWidgets('Should emit EmptyList Indicator if found list is empty',
-      (tester) async {
-    await tester.pumpWidget(screen);
-    await tester.pump();
+    testWidgets('Should emit EmptyList Indicator if found list is empty',
+        (tester) async {
+      await tester.pumpWidget(screen);
+      await tester.pump();
 
-    bloc.getTaskItemListSubject(Stream.value(null));
-    await tester.pump();
+      bloc.getTaskItemListSubject(Stream.value(null));
+      await tester.pump();
 
-    expect(find.byType(EmptyListIndicator), findsOneWidget);
+      expect(find.byType(EmptyListIndicator), findsOneWidget);
 
-    dispose();
-  });
+      dispose();
+    });
 
-  testWidgets('Should emit ListView if found list is not empty',
-      (tester) async {
-    mockSuccess(tasks: <Task>[const Task(id: 0, title: 'title')]);
+    testWidgets('Should emit ListView if found list is not empty',
+        (tester) async {
+      mockSuccess(tasks: <Task>[const Task(id: 0, title: 'title')]);
 
-    await tester.pumpWidget(screen);
-    await tester.pump();
+      await tester.pumpWidget(screen);
+      await tester.pump();
 
-    bloc.getTaskItemListSubject(Stream.value(null));
-    await tester.pump();
+      bloc.getTaskItemListSubject(Stream.value(null));
+      await tester.pump();
 
-    expect(find.byType(TaskListView), findsOneWidget);
+      expect(find.byType(TaskListView), findsOneWidget);
 
-    dispose();
-  });
+      dispose();
+    });
 
-  testWidgets('Should present TryAgainButton in case of Error', (tester) async {
-    mockFailure();
+    testWidgets('Should present TryAgainButton in case of Error',
+        (tester) async {
+      mockFailure();
 
-    await tester.pumpWidget(screen);
-    await tester.pump();
+      await tester.pumpWidget(screen);
+      await tester.pump();
 
-    bloc.getTaskItemListSubject(Stream.value(null));
-    await tester.pump();
+      bloc.getTaskItemListSubject(Stream.value(null));
+      await tester.pump();
 
-    expect(find.byType(TryAgainButton), findsOneWidget);
+      expect(find.byType(TryAgainButton), findsOneWidget);
 
-    dispose();
-  });
+      dispose();
+    });
 
-  testWidgets('Should not present FloatActionButton in case of Loading State',
-      (tester) async {
-    await tester.pumpWidget(screen);
-    await tester.pump();
+    testWidgets('Should not present FloatActionButton in case of Loading State',
+        (tester) async {
+      await tester.pumpWidget(screen);
+      await tester.pump();
 
-    expect(find.byType(FloatingActionButton), findsNothing);
+      expect(find.byType(FloatingActionButton), findsNothing);
 
-    dispose();
-  });
+      dispose();
+    });
 
-  testWidgets('Should not present FloatActionButton in case of Error State',
-      (tester) async {
-    mockFailure();
+    testWidgets('Should not present FloatActionButton in case of Error State',
+        (tester) async {
+      mockFailure();
 
-    await tester.pumpWidget(screen);
-    await tester.pump();
+      await tester.pumpWidget(screen);
+      await tester.pump();
 
-    bloc.getTaskItemListSubject(Stream.value(null));
-    await tester.pump();
+      bloc.getTaskItemListSubject(Stream.value(null));
+      await tester.pump();
 
-    expect(find.byType(FloatingActionButton), findsNothing);
+      expect(find.byType(FloatingActionButton), findsNothing);
 
-    dispose();
+      dispose();
+    });
   });
 }

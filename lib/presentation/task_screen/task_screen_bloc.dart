@@ -39,7 +39,6 @@ class TaskScreenBloc with SubscriptionHolder {
       .addTo(subscriptions);
 
   void upsertTaskItemSubject(Stream<Task> inputStream) => inputStream
-      .debounceTime(const Duration(seconds: 1))
       .flatMap<TaskScreenState>(
         (task) => _upsertData(task: task, actionSink: _onNewActionSubject.sink),
       )
@@ -48,10 +47,7 @@ class TaskScreenBloc with SubscriptionHolder {
 
   void removeTaskItemSubject(Stream<Task> inputStream) => inputStream
       .flatMap<TaskScreenState>(
-        (task) => _removeData(
-          task: task,
-          actionSink: _onNewActionSubject.sink,
-        ),
+        (task) => _removeData(task: task, actionSink: _onNewActionSubject.sink),
       )
       .listen(_onNewStateSubject.add)
       .addTo(subscriptions);
@@ -76,8 +72,6 @@ class TaskScreenBloc with SubscriptionHolder {
   Stream<TaskScreenAction> get onNewAction => _onNewActionSubject.stream;
 
   Stream<TaskScreenState> _fetchData() async* {
-    yield Loading();
-
     try {
       final taskList = await useCases.getTasksList();
 
@@ -117,8 +111,6 @@ class TaskScreenBloc with SubscriptionHolder {
         RemoveTaskUCParams(task: task),
       );
     } catch (error) {
-      print(error);
-
       yield Error(error: error);
     }
   }
