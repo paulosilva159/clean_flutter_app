@@ -1,3 +1,4 @@
+import 'package:clean_flutter_app/presentation/task_screen/task_list_view/task_list_view_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -89,15 +90,22 @@ class _GlobalProviderState extends State<GlobalProvider> {
         ),
       ];
 
-  SingleChildWidget _buildTaskScreenUseCasesProvider() => ProxyProvider3<
-          GetTaskListUC, UpsertTaskUC, RemoveTaskUC, TaskScreenUseCases>(
-        update: (context, getTaskListUC, upsertTaskUC, removeTaskUC, _) =>
-            TaskScreenUseCases(
-          getTaskListUC: getTaskListUC,
-          removeTaskUC: removeTaskUC,
-          upsertTaskUC: upsertTaskUC,
+  List<SingleChildWidget> _buildScreensUseCasesProvider() => [
+        ProxyProvider<UpsertTaskUC, TaskScreenUseCases>(
+          update: (context, upsertTaskUC, _) => TaskScreenUseCases(
+            upsertTaskUC: upsertTaskUC,
+          ),
         ),
-      );
+        ProxyProvider3<GetTaskListUC, UpsertTaskUC, RemoveTaskUC,
+            TaskListViewUseCases>(
+          update: (context, getTaskListUC, upsertTaskUC, removeTaskUC, _) =>
+              TaskListViewUseCases(
+            getTaskListUC: getTaskListUC,
+            removeTaskUC: removeTaskUC,
+            upsertTaskUC: upsertTaskUC,
+          ),
+        )
+      ];
 
   @override
   Widget build(BuildContext context) => MultiProvider(
@@ -107,7 +115,7 @@ class _GlobalProviderState extends State<GlobalProvider> {
           _buildCacheDataSourceProvider(),
           _buildRepositoryProvider(),
           ..._buildUseCasesProvider(),
-          _buildTaskScreenUseCasesProvider()
+          ..._buildScreensUseCasesProvider()
         ],
         child: widget.child,
       );

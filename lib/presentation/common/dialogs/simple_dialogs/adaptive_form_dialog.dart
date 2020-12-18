@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:clean_flutter_app/presentation/common/save_button.dart';
+import 'package:clean_flutter_app/presentation/common/upsert_task_dialog_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -73,7 +73,7 @@ class _MaterialFormDialog extends StatelessWidget {
               children: formFields,
             ),
           ),
-          SaveButton(
+          UpsertTaskDialogButton(
             onSaveTap: () async {
               formKey.currentState.save();
 
@@ -127,7 +127,7 @@ class _CupertinoFormDialog extends StatelessWidget {
                       children: formFields,
                     ),
                   ),
-                  SaveButton(
+                  UpsertTaskDialogButton(
                     onSaveTap: () async {
                       formKey.currentState.save();
 

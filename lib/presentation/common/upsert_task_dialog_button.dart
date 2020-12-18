@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SaveButton extends StatelessWidget {
-  const SaveButton({
+class UpsertTaskDialogButton extends StatelessWidget {
+  const UpsertTaskDialogButton({
     @required this.onSaveTap,
   }) : assert(onSaveTap != null);
 
