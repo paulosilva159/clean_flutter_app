@@ -29,9 +29,9 @@ class TaskScreenBloc with SubscriptionHolder {
         final _lastListingState = _onNewStateSubject.value;
 
         if (taskListStatus == TaskListStatus.loaded &&
-            _lastListingState is! SuccessfullyLoadedList) {
+            _lastListingState is! DataLoaded) {
           _onNewStateSubject.add(
-            SuccessfullyLoadedList(),
+            DataLoaded(),
           );
         }
       }).addTo(subscriptions);
@@ -41,7 +41,7 @@ class TaskScreenBloc with SubscriptionHolder {
   final _onNewActionSubject = PublishSubject<TaskScreenAction>();
   final _onUpsertTaskItemSubject = PublishSubject<Task>();
   final _onNewStateSubject = BehaviorSubject<TaskScreenState>.seeded(
-    LoadingList(),
+    WaitingData(),
   );
   final _onNewTaskListStatusSubject = BehaviorSubject<TaskListStatus>.seeded(
     TaskListStatus.loading,
@@ -63,7 +63,7 @@ class TaskScreenBloc with SubscriptionHolder {
         UpsertTaskUCParams(task: task),
       );
     } catch (error) {
-      yield Error(error: error);
+      // TODO(paulosilva): #1 implementar Action de erro
     }
   }
 

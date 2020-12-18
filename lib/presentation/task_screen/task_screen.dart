@@ -30,7 +30,7 @@ class TaskScreen extends StatelessWidget {
             resizeToAvoidBottomPadding: false,
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
-            floatingActionButton: screenState is SuccessfullyLoadedList
+            floatingActionButton: screenState is DataLoaded
                 ? FloatingActionButton(
                     onPressed: () {
                       showUpsertTaskFormDialog(
