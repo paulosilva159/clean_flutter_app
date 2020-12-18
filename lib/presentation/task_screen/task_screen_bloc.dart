@@ -1,3 +1,4 @@
+import 'package:clean_flutter_app/presentation/common/task_list_status.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -11,9 +12,9 @@ class TaskScreenBloc with SubscriptionHolder {
   TaskScreenBloc({
     @required this.useCases,
   }) : assert(useCases != null) {
-    upsertTaskItemSubject(
-      _onUpsertTaskItemSubject.stream,
-    );
+    upsertTaskItemSubject(_onUpsertTaskItemSubject.stream);
+
+    updateTaskListStatusSubject(_onNewTaskListStatusSubject.stream);
   }
 
   void upsertTaskItemSubject(Stream<Task> inputStream) => inputStream
@@ -23,15 +24,32 @@ class TaskScreenBloc with SubscriptionHolder {
       .listen(_onNewStateSubject.add)
       .addTo(subscriptions);
 
+  void updateTaskListStatusSubject(Stream<TaskListStatus> inputStream) =>
+      inputStream.listen((taskListStatus) {
+        final _lastListingState = _onNewStateSubject.value;
+
+        if (taskListStatus == TaskListStatus.loaded &&
+            _lastListingState is! SuccessfullyLoadedList) {
+          _onNewStateSubject.add(
+            SuccessfullyLoadedList(),
+          );
+        }
+      }).addTo(subscriptions);
+
   final TaskScreenUseCases useCases;
 
   final _onNewActionSubject = PublishSubject<TaskScreenAction>();
   final _onUpsertTaskItemSubject = PublishSubject<Task>();
   final _onNewStateSubject = BehaviorSubject<TaskScreenState>.seeded(
-    Loading(),
+    LoadingList(),
+  );
+  final _onNewTaskListStatusSubject = BehaviorSubject<TaskListStatus>.seeded(
+    TaskListStatus.loading,
   );
 
   Sink<Task> get onUpsertTaskItem => _onUpsertTaskItemSubject.sink;
+  Sink<TaskListStatus> get onNewTaskListStatus =>
+      _onNewTaskListStatusSubject.sink;
 
   Stream<TaskScreenState> get onNewState => _onNewStateSubject.stream;
   Stream<TaskScreenAction> get onNewAction => _onNewActionSubject.stream;
@@ -40,8 +58,6 @@ class TaskScreenBloc with SubscriptionHolder {
     @required Task task,
     @required Sink<TaskScreenAction> actionSink,
   }) async* {
-    yield Loading();
-
     try {
       await useCases.upsertTask(
         UpsertTaskUCParams(task: task),
@@ -55,6 +71,7 @@ class TaskScreenBloc with SubscriptionHolder {
     _onNewStateSubject.close();
     _onNewActionSubject.close();
     _onUpsertTaskItemSubject.close();
+    _onNewTaskListStatusSubject.close();
     disposeSubscriptions();
   }
 }

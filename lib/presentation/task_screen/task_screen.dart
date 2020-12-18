@@ -30,7 +30,7 @@ class TaskScreen extends StatelessWidget {
             resizeToAvoidBottomPadding: false,
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
-            floatingActionButton: screenState is Success
+            floatingActionButton: screenState is SuccessfullyLoadedList
                 ? FloatingActionButton(
                     onPressed: () {
                       showUpsertTaskFormDialog(
@@ -44,7 +44,11 @@ class TaskScreen extends StatelessWidget {
                 : null,
             body: Column(
               children: [
-                TaskListView.create(),
+                Expanded(
+                  child: TaskListView.create(
+                    onNewTaskListStatus: bloc.onNewTaskListStatus.add,
+                  ),
+                ),
               ],
             ),
           );

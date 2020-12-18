@@ -6,7 +6,7 @@ import 'package:clean_flutter_app/common/subscription_holder.dart';
 
 import 'package:domain/data_observables.dart';
 import 'package:domain/model/task.dart';
-import 'package:domain/use_case/get_task_list_uc.dart';
+import 'package:domain/use_case/get_vertical_task_list_uc.dart';
 import 'package:domain/use_case/upsert_task_uc.dart';
 import 'package:domain/use_case/remove_task_uc.dart';
 
@@ -134,7 +134,7 @@ class TaskListViewUseCases {
         assert(removeTaskUC != null),
         assert(upsertTaskUC != null);
 
-  final GetTaskListUC getTaskListUC;
+  final GetTaskVerticalListUC getTaskListUC;
   final RemoveTaskUC removeTaskUC;
   final UpsertTaskUC upsertTaskUC;
 

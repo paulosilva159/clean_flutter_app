@@ -12,7 +12,7 @@ import 'package:clean_flutter_app/presentation/task_screen/task_screen_bloc.dart
 import 'package:domain/data_observables.dart';
 import 'package:domain/data_repository/task_repository.dart';
 import 'package:domain/use_case/upsert_task_uc.dart';
-import 'package:domain/use_case/get_task_list_uc.dart';
+import 'package:domain/use_case/get_vertical_task_list_uc.dart';
 import 'package:domain/use_case/remove_task_uc.dart';
 
 class GlobalProvider extends StatefulWidget {
@@ -60,8 +60,8 @@ class _GlobalProviderState extends State<GlobalProvider> {
       );
 
   List<SingleChildWidget> _buildUseCasesProvider() => [
-        ProxyProvider2<Log, TaskDataRepository, GetTaskListUC>(
-          update: (context, log, taskRepository, _) => GetTaskListUC(
+        ProxyProvider2<Log, TaskDataRepository, GetTaskVerticalListUC>(
+          update: (context, log, taskRepository, _) => GetTaskVerticalListUC(
             logger: log.errorLogger,
             repository: taskRepository,
           ),
@@ -96,7 +96,7 @@ class _GlobalProviderState extends State<GlobalProvider> {
             upsertTaskUC: upsertTaskUC,
           ),
         ),
-        ProxyProvider3<GetTaskListUC, UpsertTaskUC, RemoveTaskUC,
+        ProxyProvider3<GetTaskVerticalListUC, UpsertTaskUC, RemoveTaskUC,
             TaskListViewUseCases>(
           update: (context, getTaskListUC, upsertTaskUC, removeTaskUC, _) =>
               TaskListViewUseCases(
