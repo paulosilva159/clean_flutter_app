@@ -116,26 +116,5 @@ void main() {
 
       expect(find.byType(TryAgainButton), findsOneWidget);
     });
-
-    // testWidgets('Should not present FloatActionButton in case of Loading State',
-    //     (tester) async {
-    //   await tester.pumpWidget(screen);
-    //   await tester.pump();
-    //
-    //   expect(find.byType(FloatingActionButton), findsNothing);
-    // });
-    //
-    // testWidgets('Should not present FloatActionButton in case of Error State',
-    //     (tester) async {
-    //   mockFailure();
-    //
-    //   await tester.pumpWidget(screen);
-    //   await tester.pump();
-    //
-    //   bloc.getTaskItemListSubject(Stream.value(null));
-    //   await tester.pump();
-    //
-    //   expect(find.byType(FloatingActionButton), findsNothing);
-    // });
   });
 }
