@@ -6,20 +6,20 @@ import 'package:clean_flutter_app/common/subscription_holder.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_screen_model.dart';
 
 import 'package:domain/model/task.dart';
-import 'package:domain/use_case/upsert_task_uc.dart';
+import 'package:domain/use_case/add_task_uc.dart';
 
 class TaskScreenBloc with SubscriptionHolder {
   TaskScreenBloc({
     @required this.useCases,
   }) : assert(useCases != null) {
-    upsertTaskItemSubject(_onUpsertTaskItemSubject.stream);
+    addTaskItemSubject(_onAddTaskItemSubject.stream);
 
     updateTaskListStatusSubject(_onNewTaskListStatusSubject.stream);
   }
 
-  void upsertTaskItemSubject(Stream<Task> inputStream) => inputStream
+  void addTaskItemSubject(Stream<Task> inputStream) => inputStream
       .flatMap<TaskScreenState>(
-        (task) => _upsertData(task: task, actionSink: _onNewActionSubject.sink),
+        (task) => _addData(task: task, actionSink: _onNewActionSubject.sink),
       )
       .listen(_onNewStateSubject.add)
       .addTo(subscriptions);
@@ -29,7 +29,7 @@ class TaskScreenBloc with SubscriptionHolder {
         final _lastListingState = _onNewStateSubject.value;
 
         if (taskListStatus == TaskListStatus.loaded &&
-            _lastListingState is! DataLoaded) {
+            _lastListingState is WaitingData) {
           _onNewStateSubject.add(
             DataLoaded(),
           );
@@ -39,7 +39,7 @@ class TaskScreenBloc with SubscriptionHolder {
   final TaskScreenUseCases useCases;
 
   final _onNewActionSubject = PublishSubject<TaskScreenAction>();
-  final _onUpsertTaskItemSubject = PublishSubject<Task>();
+  final _onAddTaskItemSubject = PublishSubject<Task>();
   final _onNewStateSubject = BehaviorSubject<TaskScreenState>.seeded(
     WaitingData(),
   );
@@ -47,21 +47,23 @@ class TaskScreenBloc with SubscriptionHolder {
     TaskListStatus.loading,
   );
 
-  Sink<Task> get onUpsertTaskItem => _onUpsertTaskItemSubject.sink;
+  Sink<Task> get onAddTaskItem => _onAddTaskItemSubject.sink;
   Sink<TaskListStatus> get onNewTaskListStatus =>
       _onNewTaskListStatusSubject.sink;
 
   Stream<TaskScreenState> get onNewState => _onNewStateSubject.stream;
   Stream<TaskScreenAction> get onNewAction => _onNewActionSubject.stream;
 
-  Stream<TaskScreenState> _upsertData({
+  Stream<TaskScreenState> _addData({
     @required Task task,
     @required Sink<TaskScreenAction> actionSink,
   }) async* {
     try {
-      await useCases.upsertTask(
-        UpsertTaskUCParams(task: task),
+      await useCases.addTask(
+        AddTaskUCParams(task: task),
       );
+
+      actionSink.add(AddTaskAction());
     } catch (error) {
       // TODO(paulosilva): #1 implementar Action de erro
     }
@@ -70,7 +72,7 @@ class TaskScreenBloc with SubscriptionHolder {
   void dispose() {
     _onNewStateSubject.close();
     _onNewActionSubject.close();
-    _onUpsertTaskItemSubject.close();
+    _onAddTaskItemSubject.close();
     _onNewTaskListStatusSubject.close();
     disposeSubscriptions();
   }
@@ -78,11 +80,11 @@ class TaskScreenBloc with SubscriptionHolder {
 
 class TaskScreenUseCases {
   TaskScreenUseCases({
-    @required this.upsertTaskUC,
-  }) : assert(upsertTaskUC != null);
+    @required this.addTaskUC,
+  }) : assert(addTaskUC != null);
 
-  final UpsertTaskUC upsertTaskUC;
+  final AddTaskUC addTaskUC;
 
-  Future<void> upsertTask(UpsertTaskUCParams params) =>
-      upsertTaskUC.getFuture(params: params);
+  Future<void> addTask(AddTaskUCParams params) =>
+      addTaskUC.getFuture(params: params);
 }

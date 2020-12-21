@@ -6,4 +6,4 @@ class DataLoaded implements TaskScreenState {}
 
 abstract class TaskScreenAction {}
 
-class UpsertTaskAction implements TaskScreenAction {}
+class AddTaskAction implements TaskScreenAction {}

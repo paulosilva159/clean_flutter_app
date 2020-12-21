@@ -1,6 +1,5 @@
 import 'package:clean_flutter_app/global_provider.dart';
 import 'package:clean_flutter_app/hive_initializer.dart';
-import 'package:clean_flutter_app/presentation/common/dialogs/simple_dialogs/upsert_task_form_dialog.dart';
 import 'package:clean_flutter_app/presentation/common/upsert_task_dialog_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -14,7 +13,6 @@ import 'package:clean_flutter_app/generated/l10n.dart';
 import 'package:clean_flutter_app/presentation/common/task_list_status.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_screen.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_screen_bloc.dart';
-import 'package:clean_flutter_app/presentation/common/dialogs/simple_dialogs/adaptive_form_dialog.dart';
 
 class TaskScreenUseCasesSpy extends Mock implements TaskScreenUseCases {}
 
@@ -25,7 +23,7 @@ void main() {
   TaskScreenBloc bloc;
   Widget screen;
 
-  PostExpectation mockRequestCall() => when(useCases.upsertTask(any));
+  PostExpectation mockRequestCall() => when(useCases.addTask(any));
 
   void mockSuccess({List<Task> tasks = const <Task>[]}) =>
       mockRequestCall().thenAnswer((_) async => Future<void>.value());
@@ -96,7 +94,7 @@ void main() {
     await tester.tap(button);
     await tester.pump(Duration.zero);
 
-    // Dont know how to summon Dialog?
+    // Dont know how to summon Dialog
 
     expect(find.byType(UpsertTaskDialogButton), findsOneWidget);
   }, skip: true);

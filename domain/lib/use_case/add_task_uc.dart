@@ -5,8 +5,8 @@ import 'package:domain/model/task.dart';
 import 'package:meta/meta.dart';
 import 'package:domain/use_case/use_case.dart';
 
-class UpsertTaskUC extends UseCase<void, UpsertTaskUCParams> {
-  UpsertTaskUC({
+class AddTaskUC extends UseCase<void, AddTaskUCParams> {
+  AddTaskUC({
     @required this.repository,
     @required ErrorLogger logger,
     @required this.activeTaskStorageUpdateSinkWrapper,
@@ -18,13 +18,13 @@ class UpsertTaskUC extends UseCase<void, UpsertTaskUCParams> {
   final ActiveTaskStorageUpdateSinkWrapper activeTaskStorageUpdateSinkWrapper;
 
   @override
-  Future<void> getRawFuture({UpsertTaskUCParams params}) => repository
+  Future<void> getRawFuture({AddTaskUCParams params}) => repository
       .upsertTask(params.task)
       .then((_) => activeTaskStorageUpdateSinkWrapper.value.add(null));
 }
 
-class UpsertTaskUCParams {
-  UpsertTaskUCParams({@required this.task}) : assert(task != null);
+class AddTaskUCParams {
+  AddTaskUCParams({@required this.task}) : assert(task != null);
 
   final Task task;
 }

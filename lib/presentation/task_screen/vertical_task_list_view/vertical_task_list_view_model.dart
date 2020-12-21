@@ -2,17 +2,17 @@ import 'package:meta/meta.dart';
 
 import 'package:domain/model/task.dart';
 
-abstract class TaskListViewState {}
+abstract class VerticalTaskListViewState {}
 
-class Loading implements TaskListViewState {}
+class Loading implements VerticalTaskListViewState {}
 
-class Error implements TaskListViewState {
+class Error implements VerticalTaskListViewState {
   Error({@required this.error}) : assert(error != null);
 
   final dynamic error;
 }
 
-abstract class Success implements TaskListViewState {
+abstract class Success implements VerticalTaskListViewState {
   Success({@required this.tasks}) : assert(tasks != null);
 
   final List<Task> tasks;
@@ -28,8 +28,8 @@ class Listing extends Success {
         super(tasks: tasks);
 }
 
-abstract class TaskScreenAction {}
+abstract class VerticalTaskListAction {}
 
-class UpdateTaskAction implements TaskScreenAction {}
+class UpdateTaskAction implements VerticalTaskListAction {}
 
-class RemoveTaskAction implements TaskScreenAction {}
+class RemoveTaskAction implements VerticalTaskListAction {}

@@ -31,7 +31,7 @@ class AdaptiveFormDialog extends StatelessWidget {
       ? _CupertinoFormDialog(
           formDialogTitle: formDialogTitle,
           onSavedFieldFunctions: onSavedFieldFunctions,
-          onTextEdittingControllerDispose: onTextEdittingControllerDispose,
+          onTextEditingControllerDispose: onTextEdittingControllerDispose,
           formFields: formFields,
           formKey: _formKey,
         )
@@ -80,7 +80,7 @@ class _MaterialFormDialog extends StatelessWidget {
               onSavedFieldFunctions();
 
               await Future.delayed(
-                const Duration(milliseconds: 375),
+                const Duration(milliseconds: 275),
                 Navigator.of(context).pop,
               );
             },
@@ -93,19 +93,19 @@ class _CupertinoFormDialog extends StatelessWidget {
   const _CupertinoFormDialog({
     @required this.formDialogTitle,
     @required this.onSavedFieldFunctions,
-    @required this.onTextEdittingControllerDispose,
+    @required this.onTextEditingControllerDispose,
     @required this.formFields,
     @required this.formKey,
   })  : assert(formDialogTitle != null),
         assert(onSavedFieldFunctions != null),
-        assert(onTextEdittingControllerDispose != null),
+        assert(onTextEditingControllerDispose != null),
         assert(formFields != null),
         assert(formKey != null);
 
   final GlobalKey<FormState> formKey;
   final String formDialogTitle;
   final VoidCallback onSavedFieldFunctions;
-  final VoidCallback onTextEdittingControllerDispose;
+  final VoidCallback onTextEditingControllerDispose;
   final List<FormField> formFields;
 
   @override

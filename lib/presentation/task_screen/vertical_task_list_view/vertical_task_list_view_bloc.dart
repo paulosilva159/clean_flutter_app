@@ -1,17 +1,18 @@
-import 'package:clean_flutter_app/presentation/task_screen/task_list_view/task_list_view_model.dart';
+import 'package:domain/data_repository/task_repository.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
-
-import 'package:clean_flutter_app/common/subscription_holder.dart';
 
 import 'package:domain/data_observables.dart';
 import 'package:domain/model/task.dart';
 import 'package:domain/use_case/get_vertical_task_list_uc.dart';
-import 'package:domain/use_case/upsert_task_uc.dart';
+import 'package:domain/use_case/update_task_uc.dart';
 import 'package:domain/use_case/remove_task_uc.dart';
 
-class TaskListViewBloc with SubscriptionHolder {
-  TaskListViewBloc({
+import 'package:clean_flutter_app/common/subscription_holder.dart';
+import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view_model.dart';
+
+class VerticalTaskListViewBloc with SubscriptionHolder {
+  VerticalTaskListViewBloc({
     @required this.useCases,
     @required this.activeTaskStorageUpdateStreamWrapper,
   })  : assert(useCases != null),
@@ -24,8 +25,8 @@ class TaskListViewBloc with SubscriptionHolder {
       ]),
     );
 
-    upsertTaskItemSubject(
-      _onUpsertTaskItemSubject.stream,
+    updateTaskItemSubject(
+      _onUpdateTaskItemSubject.stream,
     );
 
     removeTaskItemSubject(
@@ -34,44 +35,44 @@ class TaskListViewBloc with SubscriptionHolder {
   }
 
   void getTaskItemListSubject(Stream<void> inputStream) => inputStream
-      .switchMap<TaskListViewState>((_) => _fetchData())
+      .switchMap<VerticalTaskListViewState>((_) => _fetchData())
       .listen(_onNewStateSubject.add)
       .addTo(subscriptions);
 
-  void upsertTaskItemSubject(Stream<Task> inputStream) => inputStream
-      .flatMap<TaskListViewState>(
-        (task) => _upsertData(task: task, actionSink: _onNewActionSubject.sink),
+  void updateTaskItemSubject(Stream<Task> inputStream) => inputStream
+      .flatMap<VerticalTaskListViewState>(
+        (task) => _updateData(task: task, actionSink: _onNewActionSubject.sink),
       )
       .listen(_onNewStateSubject.add)
       .addTo(subscriptions);
 
   void removeTaskItemSubject(Stream<Task> inputStream) => inputStream
-      .flatMap<TaskListViewState>(
+      .flatMap<VerticalTaskListViewState>(
         (task) => _removeData(task: task, actionSink: _onNewActionSubject.sink),
       )
       .listen(_onNewStateSubject.add)
       .addTo(subscriptions);
 
-  final TaskListViewUseCases useCases;
+  final VerticalTaskListViewUseCases useCases;
   final ActiveTaskStorageUpdateStreamWrapper
       activeTaskStorageUpdateStreamWrapper;
 
   final _onTryAgainSubject = PublishSubject<void>();
-  final _onNewActionSubject = PublishSubject<TaskScreenAction>();
-  final _onUpsertTaskItemSubject = PublishSubject<Task>();
+  final _onNewActionSubject = PublishSubject<VerticalTaskListAction>();
+  final _onUpdateTaskItemSubject = PublishSubject<Task>();
   final _onRemoveTaskItemSubject = PublishSubject<Task>();
-  final _onNewStateSubject = BehaviorSubject<TaskListViewState>.seeded(
+  final _onNewStateSubject = BehaviorSubject<VerticalTaskListViewState>.seeded(
     Loading(),
   );
 
   Sink<void> get onTryAgain => _onTryAgainSubject.sink;
-  Sink<Task> get onUpsertTaskItem => _onUpsertTaskItemSubject.sink;
+  Sink<Task> get onUpdateTaskItem => _onUpdateTaskItemSubject.sink;
   Sink<Task> get onRemoveTaskItem => _onRemoveTaskItemSubject.sink;
 
-  Stream<TaskListViewState> get onNewState => _onNewStateSubject.stream;
-  Stream<TaskScreenAction> get onNewAction => _onNewActionSubject.stream;
+  Stream<VerticalTaskListViewState> get onNewState => _onNewStateSubject.stream;
+  Stream<VerticalTaskListAction> get onNewAction => _onNewActionSubject.stream;
 
-  Stream<TaskListViewState> _fetchData() async* {
+  Stream<VerticalTaskListViewState> _fetchData() async* {
     try {
       final taskList = await useCases.getTasksList();
 
@@ -85,24 +86,26 @@ class TaskListViewBloc with SubscriptionHolder {
     }
   }
 
-  Stream<TaskListViewState> _upsertData({
+  Stream<VerticalTaskListViewState> _updateData({
     @required Task task,
-    @required Sink<TaskScreenAction> actionSink,
+    @required Sink<VerticalTaskListAction> actionSink,
   }) async* {
     yield Loading();
 
     try {
-      await useCases.upsertTask(
-        UpsertTaskUCParams(task: task),
+      await useCases.updateTask(
+        UpdateTaskUCParams(task: task),
       );
+
+      actionSink.add(UpdateTaskAction());
     } catch (error) {
       yield Error(error: error);
     }
   }
 
-  Stream<TaskListViewState> _removeData({
+  Stream<VerticalTaskListViewState> _removeData({
     @required Task task,
-    @required Sink<TaskScreenAction> actionSink,
+    @required Sink<VerticalTaskListAction> actionSink,
   }) async* {
     yield Loading();
 
@@ -119,29 +122,32 @@ class TaskListViewBloc with SubscriptionHolder {
     _onTryAgainSubject.close();
     _onNewStateSubject.close();
     _onNewActionSubject.close();
-    _onUpsertTaskItemSubject.close();
+    _onUpdateTaskItemSubject.close();
     _onRemoveTaskItemSubject.close();
     disposeSubscriptions();
   }
 }
 
-class TaskListViewUseCases {
-  TaskListViewUseCases({
+class VerticalTaskListViewUseCases {
+  VerticalTaskListViewUseCases({
     @required this.getTaskListUC,
     @required this.removeTaskUC,
-    @required this.upsertTaskUC,
+    @required this.updateTaskUC,
   })  : assert(getTaskListUC != null),
         assert(removeTaskUC != null),
-        assert(upsertTaskUC != null);
+        assert(updateTaskUC != null);
 
   final GetTaskListUC getTaskListUC;
   final RemoveTaskUC removeTaskUC;
-  final UpsertTaskUC upsertTaskUC;
+  final UpdateTaskUC updateTaskUC;
 
-  Future<List<Task>> getTasksList() => getTaskListUC.getFuture();
+  Future<List<Task>> getTasksList() => getTaskListUC.getFuture(
+          params: GetTaskListUCParams(
+        orientation: TaskListOrientation.vertical,
+      ));
 
-  Future<void> upsertTask(UpsertTaskUCParams params) =>
-      upsertTaskUC.getFuture(params: params);
+  Future<void> updateTask(UpdateTaskUCParams params) =>
+      updateTaskUC.getFuture(params: params);
 
   Future<void> removeTask(RemoveTaskUCParams params) =>
       removeTaskUC.getFuture(params: params);

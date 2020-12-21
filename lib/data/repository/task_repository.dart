@@ -13,11 +13,13 @@ class TaskRepository extends TaskDataRepository {
   final TaskCDS cacheDS;
 
   @override
-  Future<List<Task>> getTaskList({TaskListOrientation orientation}) =>
+  Future<List<Task>> getTaskList({@required TaskListOrientation orientation}) =>
       cacheDS.getTaskList().then(
-            (list) => list.map((task) => task.toDM()).toList(),
+            (list) => list
+                .map((task) => task.toDM())
+                .where((task) => task.orientation == orientation)
+                .toList(),
           );
-
   @override
   Future<void> upsertTask(Task task) => cacheDS.upsertTask(
         task.toCM(),

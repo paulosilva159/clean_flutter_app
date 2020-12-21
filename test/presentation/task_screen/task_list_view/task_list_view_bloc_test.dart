@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:clean_flutter_app/presentation/task_screen/task_list_view/task_list_view_model.dart';
+import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view_model.dart';
 import 'package:domain/data_repository/task_repository.dart';
 import 'package:test/test.dart';
 import 'package:mockito/mockito.dart';
 
-import 'package:clean_flutter_app/presentation/task_screen/task_list_view/task_list_view_bloc.dart';
+import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view_bloc.dart';
 
 import 'package:domain/data_observables.dart';
 import 'package:domain/exceptions.dart';
@@ -14,7 +14,8 @@ import 'package:domain/model/task.dart';
 class ActiveTaskStorageUpdateStreamWrapperSpy extends Mock
     implements ActiveTaskStorageUpdateStreamWrapper {}
 
-class TaskListViewUseCasesSpy extends Mock implements TaskListViewUseCases {}
+class TaskListViewUseCasesSpy extends Mock
+    implements VerticalTaskListViewUseCases {}
 
 void main() {
   const task =
@@ -22,7 +23,7 @@ void main() {
 
   ActiveTaskStorageUpdateStreamWrapperSpy activeTaskStorageUpdateStreamWrapper;
   TaskListViewUseCasesSpy useCases;
-  TaskListViewBloc bloc;
+  VerticalTaskListViewBloc bloc;
 
   PostExpectation mockRequestGetCall() => when(useCases.getTasksList());
 
@@ -42,7 +43,7 @@ void main() {
 
     mockStreamWrapper();
 
-    bloc = TaskListViewBloc(
+    bloc = VerticalTaskListViewBloc(
       useCases: useCases,
       activeTaskStorageUpdateStreamWrapper:
           activeTaskStorageUpdateStreamWrapper,
@@ -110,7 +111,7 @@ void main() {
 
   group('Should call correct state on upsert task', () {
     PostExpectation mockRequestAddCall() => when(
-          useCases.upsertTask(any),
+          useCases.updateTask(any),
         );
 
     void mockSuccess() => mockRequestAddCall().thenAnswer((_) {
@@ -129,7 +130,7 @@ void main() {
 
       expect(bloc.onNewState, emits(isA<Empty>()));
 
-      bloc.onUpsertTaskItem.add(task);
+      bloc.onUpdateTaskItem.add(task);
       await Future.delayed(const Duration(seconds: 0));
 
       expect(bloc.onNewState, emits(isA<Listing>()));
@@ -140,7 +141,7 @@ void main() {
 
       expect(bloc.onNewState, emits(isA<Empty>()));
 
-      bloc.onUpsertTaskItem.add(task);
+      bloc.onUpdateTaskItem.add(task);
       await Future.delayed(const Duration(seconds: 0));
 
       expect(bloc.onNewState, emits(isA<Error>()));

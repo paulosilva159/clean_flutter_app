@@ -28,6 +28,8 @@ void showUpsertTaskFormDialog(
           orientation: TaskListOrientation.vertical,
         ),
       );
+
+      _titleFieldTextEditingController.clear();
     },
     formFields: [
       TextFormField(

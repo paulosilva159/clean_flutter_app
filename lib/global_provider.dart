@@ -1,4 +1,4 @@
-import 'package:clean_flutter_app/presentation/task_screen/task_list_view/task_list_view_bloc.dart';
+import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -11,7 +11,8 @@ import 'package:clean_flutter_app/presentation/task_screen/task_screen_bloc.dart
 
 import 'package:domain/data_observables.dart';
 import 'package:domain/data_repository/task_repository.dart';
-import 'package:domain/use_case/upsert_task_uc.dart';
+import 'package:domain/use_case/add_task_uc.dart';
+import 'package:domain/use_case/update_task_uc.dart';
 import 'package:domain/use_case/get_vertical_task_list_uc.dart';
 import 'package:domain/use_case/remove_task_uc.dart';
 
@@ -67,10 +68,21 @@ class _GlobalProviderState extends State<GlobalProvider> {
           ),
         ),
         ProxyProvider3<Log, TaskDataRepository,
-            ActiveTaskStorageUpdateSinkWrapper, UpsertTaskUC>(
+            ActiveTaskStorageUpdateSinkWrapper, AddTaskUC>(
           update: (context, log, taskRepository,
                   activeTaskStorageUpdateSinkWrapper, _) =>
-              UpsertTaskUC(
+              AddTaskUC(
+            logger: log.errorLogger,
+            repository: taskRepository,
+            activeTaskStorageUpdateSinkWrapper:
+                activeTaskStorageUpdateSinkWrapper,
+          ),
+        ),
+        ProxyProvider3<Log, TaskDataRepository,
+            ActiveTaskStorageUpdateSinkWrapper, UpdateTaskUC>(
+          update: (context, log, taskRepository,
+                  activeTaskStorageUpdateSinkWrapper, _) =>
+              UpdateTaskUC(
             logger: log.errorLogger,
             repository: taskRepository,
             activeTaskStorageUpdateSinkWrapper:
@@ -91,18 +103,18 @@ class _GlobalProviderState extends State<GlobalProvider> {
       ];
 
   List<SingleChildWidget> _buildScreensUseCasesProvider() => [
-        ProxyProvider<UpsertTaskUC, TaskScreenUseCases>(
-          update: (context, upsertTaskUC, _) => TaskScreenUseCases(
-            upsertTaskUC: upsertTaskUC,
+        ProxyProvider<AddTaskUC, TaskScreenUseCases>(
+          update: (context, addTaskUC, _) => TaskScreenUseCases(
+            addTaskUC: addTaskUC,
           ),
         ),
-        ProxyProvider3<GetTaskListUC, UpsertTaskUC, RemoveTaskUC,
-            TaskListViewUseCases>(
-          update: (context, getTaskListUC, upsertTaskUC, removeTaskUC, _) =>
-              TaskListViewUseCases(
+        ProxyProvider3<GetTaskListUC, UpdateTaskUC, RemoveTaskUC,
+            VerticalTaskListViewUseCases>(
+          update: (context, getTaskListUC, updateTaskUC, removeTaskUC, _) =>
+              VerticalTaskListViewUseCases(
             getTaskListUC: getTaskListUC,
             removeTaskUC: removeTaskUC,
-            upsertTaskUC: upsertTaskUC,
+            updateTaskUC: updateTaskUC,
           ),
         )
       ];

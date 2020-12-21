@@ -1,26 +1,27 @@
-import 'package:clean_flutter_app/presentation/common/task_list_status.dart';
-import 'package:clean_flutter_app/presentation/task_screen/task_list_view/widgets/task_list.dart';
-import 'package:domain/data_repository/task_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-import 'package:domain/data_observables.dart';
 import 'package:domain/exceptions.dart';
 import 'package:domain/model/task.dart';
+import 'package:domain/data_observables.dart';
+import 'package:domain/data_repository/task_repository.dart';
 
 import 'package:clean_flutter_app/generated/l10n.dart';
 import 'package:clean_flutter_app/presentation/common/indicator/empty_list_indicator.dart';
 import 'package:clean_flutter_app/presentation/common/indicator/loading_indicator.dart';
 import 'package:clean_flutter_app/presentation/common/try_again_button.dart';
-import 'package:clean_flutter_app/presentation/task_screen/task_list_view/task_list_view.dart';
-import 'package:clean_flutter_app/presentation/task_screen/task_list_view/task_list_view_bloc.dart';
+import 'package:clean_flutter_app/presentation/common/task_list_status.dart';
+import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view.dart';
+import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view_bloc.dart';
+import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/widgets/task_list.dart';
 
 class ActiveTaskStorageUpdateStreamWrapperSpy extends Mock
     implements ActiveTaskStorageUpdateStreamWrapper {}
 
-class TaskListViewUseCasesSpy extends Mock implements TaskListViewUseCases {}
+class TaskListViewUseCasesSpy extends Mock
+    implements VerticalTaskListViewUseCases {}
 
 void main() {
   const task =
@@ -30,7 +31,7 @@ void main() {
 
   ActiveTaskStorageUpdateStreamWrapper activeTaskStorageUpdateStreamWrapper;
   TaskListViewUseCasesSpy useCases;
-  TaskListViewBloc bloc;
+  VerticalTaskListViewBloc bloc;
   Widget screen;
 
   PostExpectation mockRequestCall() => when(useCases.getTasksList());
@@ -52,7 +53,7 @@ void main() {
 
     mockStreamWrapper();
 
-    bloc = TaskListViewBloc(
+    bloc = VerticalTaskListViewBloc(
       useCases: useCases,
       activeTaskStorageUpdateStreamWrapper:
           activeTaskStorageUpdateStreamWrapper,
@@ -67,7 +68,7 @@ void main() {
       ],
       supportedLocales: S.delegate.supportedLocales,
       locale: _mockLocale,
-      home: TaskListView(
+      home: VerticalTaskListView(
         onNewTaskListStatus: mockNewTaskListStatus,
         bloc: bloc,
       ),

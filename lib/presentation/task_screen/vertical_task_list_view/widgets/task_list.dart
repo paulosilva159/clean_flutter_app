@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:clean_flutter_app/presentation/common/dialogs/simple_dialogs/upsert_task_form_dialog.dart';
+import 'package:clean_flutter_app/presentation/common/dialogs/simple_dialogs/task_action_form_dialog.dart';
 
 import 'package:domain/model/task.dart';
 
