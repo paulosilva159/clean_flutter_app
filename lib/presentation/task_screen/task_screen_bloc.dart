@@ -65,7 +65,7 @@ class TaskScreenBloc with SubscriptionHolder {
 
       actionSink.add(AddTaskAction());
     } catch (error) {
-      // TODO(paulosilva): #1 implementar Action de erro
+      actionSink.add(FailAction());
     }
   }
 

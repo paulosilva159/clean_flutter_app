@@ -28,8 +28,29 @@ class Listing extends Success {
         super(tasks: tasks);
 }
 
-abstract class VerticalTaskListAction {}
+abstract class VerticalTaskListAction {
+  String get message;
+}
 
-class UpdateTaskAction implements VerticalTaskListAction {}
+class UpdateTaskAction implements VerticalTaskListAction {
+  @override
+  String get message => 'Tarefa atualizada com sucesso';
+}
 
-class RemoveTaskAction implements VerticalTaskListAction {}
+class RemoveTaskAction implements VerticalTaskListAction {
+  @override
+  String get message => 'Tarefa removida com sucesso';
+}
+
+class FailAction implements VerticalTaskListAction {
+  FailAction({
+    @required this.action,
+  }) : assert(action != null);
+
+  final VerticalTaskListAction action;
+
+  @override
+  String get message => action is UpdateTaskAction
+      ? 'Falha ao atualizar tarefa'
+      : 'Falha ao remover tarefa';
+}

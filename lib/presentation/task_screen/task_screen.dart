@@ -48,7 +48,11 @@ class TaskScreen extends StatelessWidget {
               builder: (context) => ActionStreamListener<TaskScreenAction>(
                 actionStream: bloc.onNewAction,
                 onReceived: (action) {
-                  showSnackBar(context);
+                  showActionMessageSnackBar(
+                    context,
+                    message: action.message,
+                    hasFailed: action is FailAction,
+                  );
                 },
                 child: Column(
                   children: [

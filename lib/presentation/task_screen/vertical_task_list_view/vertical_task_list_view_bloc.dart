@@ -1,9 +1,9 @@
-import 'package:domain/data_repository/task_repository.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'package:domain/data_observables.dart';
 import 'package:domain/model/task.dart';
+import 'package:domain/data_repository/task_repository.dart';
 import 'package:domain/use_case/get_vertical_task_list_uc.dart';
 import 'package:domain/use_case/update_task_uc.dart';
 import 'package:domain/use_case/remove_task_uc.dart';
@@ -90,6 +90,9 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
     @required Task task,
     @required Sink<VerticalTaskListAction> actionSink,
   }) async* {
+    final _lastListingState = _onNewStateSubject.value;
+    final _action = UpdateTaskAction();
+
     yield Loading();
 
     try {
@@ -97,9 +100,13 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
         UpdateTaskUCParams(task: task),
       );
 
-      actionSink.add(UpdateTaskAction());
+      actionSink.add(_action);
     } catch (error) {
-      yield Error(error: error);
+      yield _lastListingState;
+
+      actionSink.add(
+        FailAction(action: _action),
+      );
     }
   }
 
@@ -107,14 +114,23 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
     @required Task task,
     @required Sink<VerticalTaskListAction> actionSink,
   }) async* {
+    final _lastListingState = _onNewStateSubject.value;
+    final _action = RemoveTaskAction();
+
     yield Loading();
 
     try {
       await useCases.removeTask(
         RemoveTaskUCParams(task: task),
       );
+
+      actionSink.add(_action);
     } catch (error) {
-      yield Error(error: error);
+      actionSink.add(
+        FailAction(action: _action),
+      );
+
+      yield _lastListingState;
     }
   }
 
