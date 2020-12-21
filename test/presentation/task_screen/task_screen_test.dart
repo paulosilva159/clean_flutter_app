@@ -94,8 +94,12 @@ void main() {
     await tester.tap(button);
     await tester.pump(Duration.zero);
 
-    // Dont know how to summon Dialog
+    // Dont know how to test Dialog
 
     expect(find.byType(UpsertTaskDialogButton), findsOneWidget);
+  }, skip: true);
+
+  testWidgets('Should present SnackBar', (tester) async {
+    // Dont know how to test SnackBar
   }, skip: true);
 }
