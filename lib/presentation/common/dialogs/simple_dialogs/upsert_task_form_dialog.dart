@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:domain/data_repository/task_repository.dart';
 import 'package:flutter/material.dart';
 
 import 'package:domain/model/task.dart';
@@ -24,6 +25,7 @@ void showUpsertTaskFormDialog(
         Task(
           title: _titleFieldTextEditingController.value.text,
           id: upsertingTask?.id ?? Random().nextInt(99999),
+          orientation: TaskListOrientation.vertical,
         ),
       );
     },

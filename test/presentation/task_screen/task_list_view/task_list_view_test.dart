@@ -1,5 +1,6 @@
 import 'package:clean_flutter_app/presentation/common/task_list_status.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_list_view/widgets/task_list.dart';
+import 'package:domain/data_repository/task_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -22,6 +23,9 @@ class ActiveTaskStorageUpdateStreamWrapperSpy extends Mock
 class TaskListViewUseCasesSpy extends Mock implements TaskListViewUseCases {}
 
 void main() {
+  const task =
+      Task(id: 0, title: 'title', orientation: TaskListOrientation.vertical);
+
   const _mockLocale = Locale('en_US');
 
   ActiveTaskStorageUpdateStreamWrapper activeTaskStorageUpdateStreamWrapper;
@@ -93,7 +97,7 @@ void main() {
 
     testWidgets('Should emit TaskList if found list is not empty',
         (tester) async {
-      mockSuccess(tasks: <Task>[const Task(id: 0, title: 'title')]);
+      mockSuccess(tasks: <Task>[task]);
 
       await tester.pumpWidget(screen);
       await tester.pump();

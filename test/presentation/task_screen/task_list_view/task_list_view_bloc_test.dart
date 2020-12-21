@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:clean_flutter_app/presentation/task_screen/task_list_view/task_list_view_model.dart';
+import 'package:domain/data_repository/task_repository.dart';
 import 'package:test/test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -16,7 +17,9 @@ class ActiveTaskStorageUpdateStreamWrapperSpy extends Mock
 class TaskListViewUseCasesSpy extends Mock implements TaskListViewUseCases {}
 
 void main() {
-  Task task;
+  const task =
+      Task(id: 0, title: 'title', orientation: TaskListOrientation.vertical);
+
   ActiveTaskStorageUpdateStreamWrapperSpy activeTaskStorageUpdateStreamWrapper;
   TaskListViewUseCasesSpy useCases;
   TaskListViewBloc bloc;
@@ -32,8 +35,6 @@ void main() {
       .thenAnswer((_) => Stream.value(null));
 
   setUp(() {
-    task = const Task(id: 0, title: 'title');
-
     activeTaskStorageUpdateStreamWrapper =
         ActiveTaskStorageUpdateStreamWrapperSpy();
 

@@ -60,8 +60,8 @@ class _GlobalProviderState extends State<GlobalProvider> {
       );
 
   List<SingleChildWidget> _buildUseCasesProvider() => [
-        ProxyProvider2<Log, TaskDataRepository, GetTaskVerticalListUC>(
-          update: (context, log, taskRepository, _) => GetTaskVerticalListUC(
+        ProxyProvider2<Log, TaskDataRepository, GetTaskListUC>(
+          update: (context, log, taskRepository, _) => GetTaskListUC(
             logger: log.errorLogger,
             repository: taskRepository,
           ),
@@ -96,7 +96,7 @@ class _GlobalProviderState extends State<GlobalProvider> {
             upsertTaskUC: upsertTaskUC,
           ),
         ),
-        ProxyProvider3<GetTaskVerticalListUC, UpsertTaskUC, RemoveTaskUC,
+        ProxyProvider3<GetTaskListUC, UpsertTaskUC, RemoveTaskUC,
             TaskListViewUseCases>(
           update: (context, getTaskListUC, upsertTaskUC, removeTaskUC, _) =>
               TaskListViewUseCases(

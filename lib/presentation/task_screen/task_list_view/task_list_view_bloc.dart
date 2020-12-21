@@ -134,7 +134,7 @@ class TaskListViewUseCases {
         assert(removeTaskUC != null),
         assert(upsertTaskUC != null);
 
-  final GetTaskVerticalListUC getTaskListUC;
+  final GetTaskListUC getTaskListUC;
   final RemoveTaskUC removeTaskUC;
   final UpsertTaskUC upsertTaskUC;
 

@@ -5,8 +5,8 @@ import 'package:domain/data_repository/task_repository.dart';
 import 'package:domain/model/task.dart';
 import 'package:domain/use_case/use_case.dart';
 
-class GetTaskVerticalListUC extends UseCase<List<Task>, void> {
-  GetTaskVerticalListUC({
+class GetTaskListUC extends UseCase<List<Task>, void> {
+  GetTaskListUC({
     @required this.repository,
     @required ErrorLogger logger,
   })  : assert(repository != null),
