@@ -1,12 +1,12 @@
-import 'package:clean_flutter_app/presentation/common/action_stream_listener.dart';
-import 'package:clean_flutter_app/presentation/common/snackbar/task_action_snackbar.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
-import 'package:clean_flutter_app/presentation/common/dialogs/simple_dialogs/task_action_form_dialog.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_screen_bloc.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_screen_model.dart';
 import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view.dart';
+import 'package:clean_flutter_app/presentation/common/action_stream_listener.dart';
+import 'package:clean_flutter_app/presentation/common/snackbar/task_action_snackbar.dart';
+import 'package:clean_flutter_app/presentation/common/dialogs/simple_dialogs/task_action_form_dialog.dart';
 
 class TaskScreen extends StatelessWidget {
   const TaskScreen({@required this.bloc}) : assert(bloc != null);

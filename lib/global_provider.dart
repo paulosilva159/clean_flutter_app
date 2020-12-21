@@ -1,13 +1,7 @@
-import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:rxdart/rxdart.dart';
-
-import 'package:clean_flutter_app/common/utils.dart';
-import 'package:clean_flutter_app/data/cache/source/task_cds.dart';
-import 'package:clean_flutter_app/data/repository/task_repository.dart';
-import 'package:clean_flutter_app/presentation/task_screen/task_screen_bloc.dart';
 
 import 'package:domain/data_observables.dart';
 import 'package:domain/data_repository/task_repository.dart';
@@ -15,6 +9,12 @@ import 'package:domain/use_case/add_task_uc.dart';
 import 'package:domain/use_case/update_task_uc.dart';
 import 'package:domain/use_case/get_vertical_task_list_uc.dart';
 import 'package:domain/use_case/remove_task_uc.dart';
+
+import 'package:clean_flutter_app/common/utils.dart';
+import 'package:clean_flutter_app/data/cache/source/task_cds.dart';
+import 'package:clean_flutter_app/data/repository/task_repository.dart';
+import 'package:clean_flutter_app/presentation/task_screen/task_screen_bloc.dart';
+import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view_bloc.dart';
 
 class GlobalProvider extends StatefulWidget {
   const GlobalProvider({@required this.child}) : assert(child != null);

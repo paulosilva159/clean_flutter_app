@@ -129,6 +129,7 @@ void main() {
       mockSuccess();
 
       expect(bloc.onNewState, emits(isA<Empty>()));
+      expect(bloc.onNewAction, emits(isA<UpdateTaskAction>()));
 
       bloc.onUpdateTaskItem.add(task);
       await Future.delayed(const Duration(seconds: 0));
@@ -136,15 +137,14 @@ void main() {
       expect(bloc.onNewState, emits(isA<Listing>()));
     });
 
-    test('Should present Error state on failed save task', () async {
+    test('Should emit FailAction on failed save task', () async {
       mockFailure();
 
       expect(bloc.onNewState, emits(isA<Empty>()));
+      expect(bloc.onNewAction, emits(isA<FailAction>()));
 
       bloc.onUpdateTaskItem.add(task);
       await Future.delayed(const Duration(seconds: 0));
-
-      expect(bloc.onNewState, emits(isA<Error>()));
     });
   });
 
@@ -153,8 +153,10 @@ void main() {
           useCases.removeTask(any),
         );
 
-    void mockRemoveSuccess() => mockRequestRemoveCall()
-        .thenAnswer((_) => bloc.getTaskItemListSubject(Stream.value(null)));
+    void mockRemoveSuccess() => mockRequestRemoveCall().thenAnswer((_) {
+          mockGetSuccess(tasks: [task]);
+          bloc.getTaskItemListSubject(Stream.value(null));
+        });
 
     void mockRemoveFailure() =>
         mockRequestRemoveCall().thenThrow(UseCaseException());
@@ -170,6 +172,7 @@ void main() {
       mockRemoveSuccess();
 
       expect(bloc.onNewState, emits(isA<Listing>()));
+      expect(bloc.onNewAction, emits(isA<RemoveTaskAction>()));
 
       bloc.onRemoveTaskItem.add(task);
       await Future.delayed(const Duration(seconds: 0));
@@ -177,15 +180,14 @@ void main() {
       expect(bloc.onNewState, emits(isA<Success>()));
     });
 
-    test('Should present Error state on failed remove task', () async {
+    test('Should emit FailAction on failed remove task', () async {
       mockRemoveFailure();
 
       expect(bloc.onNewState, emits(isA<Listing>()));
+      expect(bloc.onNewAction, emits(isA<FailAction>()));
 
       bloc.onRemoveTaskItem.add(task);
       await Future.delayed(const Duration(seconds: 0));
-
-      expect(bloc.onNewState, emits(isA<Error>()));
     });
   });
 }

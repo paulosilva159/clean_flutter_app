@@ -126,11 +126,11 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
 
       actionSink.add(_action);
     } catch (error) {
+      yield _lastListingState;
+
       actionSink.add(
         FailAction(action: _action),
       );
-
-      yield _lastListingState;
     }
   }
 

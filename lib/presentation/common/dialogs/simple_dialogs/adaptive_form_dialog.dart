@@ -1,8 +1,9 @@
 import 'dart:io';
 
-import 'package:clean_flutter_app/presentation/common/upsert_task_dialog_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'package:clean_flutter_app/presentation/common/upsert_task_dialog_button.dart';
 
 class AdaptiveFormDialog extends StatelessWidget {
   AdaptiveFormDialog({

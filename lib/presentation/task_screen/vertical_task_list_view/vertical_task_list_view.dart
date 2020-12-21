@@ -1,6 +1,3 @@
-import 'package:clean_flutter_app/presentation/common/action_stream_listener.dart';
-import 'package:clean_flutter_app/presentation/common/snackbar/task_action_snackbar.dart';
-import 'package:clean_flutter_app/presentation/common/task_list_status.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,6 +8,9 @@ import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_vi
 import 'package:clean_flutter_app/presentation/common/async_snapshot_response_view.dart';
 import 'package:clean_flutter_app/presentation/common/indicator/empty_list_indicator.dart';
 import 'package:clean_flutter_app/presentation/common/indicator/error_indicator.dart';
+import 'package:clean_flutter_app/presentation/common/action_stream_listener.dart';
+import 'package:clean_flutter_app/presentation/common/snackbar/task_action_snackbar.dart';
+import 'package:clean_flutter_app/presentation/common/task_list_status.dart';
 
 import 'package:domain/data_observables.dart';
 import 'package:domain/exceptions.dart';
