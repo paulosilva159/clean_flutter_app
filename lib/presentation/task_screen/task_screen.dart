@@ -1,3 +1,4 @@
+import 'package:clean_flutter_app/generated/l10n.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -37,7 +38,7 @@ class TaskScreen extends StatelessWidget {
                     onPressed: () {
                       showUpsertTaskFormDialog(
                         context,
-                        formDialogTitle: 'add',
+                        formDialogTitle: S.of(context).addTaskDialogTitle,
                         onUpsertTask: bloc.onAddTaskItem.add,
                       );
                     },

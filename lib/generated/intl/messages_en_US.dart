@@ -22,8 +22,15 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "addTaskDialogTitle" : MessageLookupByLibrary.simpleMessage("Add task"),
+    "addTaskSuccessSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Successfully added task"),
     "emptyListIndicatorMessage" : MessageLookupByLibrary.simpleMessage("Empty list. Add new task"),
     "errorIndicatorMessage" : MessageLookupByLibrary.simpleMessage("Error"),
-    "tryAgainButtonLabel" : MessageLookupByLibrary.simpleMessage("Try Again")
+    "genericFailTaskSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Something went wrong"),
+    "removeTaskFailSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Failed to remove task"),
+    "removeTaskSuccessSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Successfully removed task"),
+    "tryAgainButtonLabel" : MessageLookupByLibrary.simpleMessage("Try Again"),
+    "updateTaskDialogTitle" : MessageLookupByLibrary.simpleMessage("Update task"),
+    "updateTaskFailSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Failed to update task"),
+    "updateTaskSuccessSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Successfully updated task")
   };
 }

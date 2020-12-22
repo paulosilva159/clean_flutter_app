@@ -8,6 +8,7 @@ import 'package:domain/use_case/get_vertical_task_list_uc.dart';
 import 'package:domain/use_case/update_task_uc.dart';
 import 'package:domain/use_case/remove_task_uc.dart';
 
+import 'package:clean_flutter_app/generated/l10n.dart';
 import 'package:clean_flutter_app/common/subscription_holder.dart';
 import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view_model.dart';
 
@@ -91,7 +92,9 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
     @required Sink<VerticalTaskListAction> actionSink,
   }) async* {
     final _lastListingState = _onNewStateSubject.value;
-    final _action = UpdateTaskAction();
+    final _action = UpdateTaskAction(
+      message: S.current.updateTaskSuccessSnackBarMessage,
+    );
 
     yield Loading();
 
@@ -105,7 +108,11 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
       yield _lastListingState;
 
       actionSink.add(
-        FailAction(action: _action),
+        FailAction(
+          message: _action is UpdateTaskAction
+              ? S.current.updateTaskFailSnackBarMessage
+              : S.current.removeTaskFailSnackBarMessage,
+        ),
       );
     }
   }
@@ -115,7 +122,9 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
     @required Sink<VerticalTaskListAction> actionSink,
   }) async* {
     final _lastListingState = _onNewStateSubject.value;
-    final _action = RemoveTaskAction();
+    final _action = RemoveTaskAction(
+      message: S.current.removeTaskSuccessSnackBarMessage,
+    );
 
     yield Loading();
 
@@ -129,7 +138,11 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
       yield _lastListingState;
 
       actionSink.add(
-        FailAction(action: _action),
+        FailAction(
+          message: _action is UpdateTaskAction
+              ? S.current.updateTaskFailSnackBarMessage
+              : S.current.removeTaskFailSnackBarMessage,
+        ),
       );
     }
   }

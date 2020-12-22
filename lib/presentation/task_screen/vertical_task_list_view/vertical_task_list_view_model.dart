@@ -29,28 +29,28 @@ class Listing extends Success {
 }
 
 abstract class VerticalTaskListAction {
-  String get message;
+  VerticalTaskListAction({@required this.message}) : assert(message != null);
+
+  final String message;
 }
 
-class UpdateTaskAction implements VerticalTaskListAction {
-  @override
-  String get message => 'Tarefa atualizada com sucesso';
+class UpdateTaskAction extends VerticalTaskListAction {
+  UpdateTaskAction({
+    @required String message,
+  })  : assert(message != null),
+        super(message: message);
 }
 
-class RemoveTaskAction implements VerticalTaskListAction {
-  @override
-  String get message => 'Tarefa removida com sucesso';
+class RemoveTaskAction extends VerticalTaskListAction {
+  RemoveTaskAction({
+    @required String message,
+  })  : assert(message != null),
+        super(message: message);
 }
 
-class FailAction implements VerticalTaskListAction {
+class FailAction extends VerticalTaskListAction {
   FailAction({
-    @required this.action,
-  }) : assert(action != null);
-
-  final VerticalTaskListAction action;
-
-  @override
-  String get message => action is UpdateTaskAction
-      ? 'Falha ao atualizar tarefa'
-      : 'Falha ao remover tarefa';
+    @required String message,
+  })  : assert(message != null),
+        super(message: message);
 }

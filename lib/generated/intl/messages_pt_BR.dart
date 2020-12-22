@@ -22,8 +22,15 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "addTaskDialogTitle" : MessageLookupByLibrary.simpleMessage("Adicionar tarefa"),
+    "addTaskSuccessSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Tarefa adicionada com sucesso"),
     "emptyListIndicatorMessage" : MessageLookupByLibrary.simpleMessage("Lista vazia. Adicione novas tarefas"),
     "errorIndicatorMessage" : MessageLookupByLibrary.simpleMessage("Deu erro"),
-    "tryAgainButtonLabel" : MessageLookupByLibrary.simpleMessage("Tente Novamente")
+    "genericFailTaskSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Alguma coisa deu errado"),
+    "removeTaskFailSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Falha ao remover tarefa"),
+    "removeTaskSuccessSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Tarefa removida com sucesso"),
+    "tryAgainButtonLabel" : MessageLookupByLibrary.simpleMessage("Tente Novamente"),
+    "updateTaskDialogTitle" : MessageLookupByLibrary.simpleMessage("Atualizar tarefa"),
+    "updateTaskFailSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Falha ao atualizar tarefa"),
+    "updateTaskSuccessSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Tarefa atualizada com sucesso")
   };
 }

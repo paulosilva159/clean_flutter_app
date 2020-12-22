@@ -1,3 +1,4 @@
+import 'package:clean_flutter_app/generated/l10n.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -63,9 +64,13 @@ class TaskScreenBloc with SubscriptionHolder {
         AddTaskUCParams(task: task),
       );
 
-      actionSink.add(AddTaskAction());
+      actionSink.add(
+        AddTaskAction(message: S.current.addTaskSuccessSnackBarMessage),
+      );
     } catch (error) {
-      actionSink.add(FailAction());
+      actionSink.add(
+        FailAction(message: S.current.genericFailTaskSnackBarMessage),
+      );
     }
   }
 

@@ -74,6 +74,76 @@ class S {
       args: [],
     );
   }
+
+  /// `Atualizar tarefa`
+  String get updateTaskDialogTitle {
+    return Intl.message(
+      'Atualizar tarefa',
+      name: 'updateTaskDialogTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tarefa adicionada com sucesso`
+  String get addTaskSuccessSnackBarMessage {
+    return Intl.message(
+      'Tarefa adicionada com sucesso',
+      name: 'addTaskSuccessSnackBarMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tarefa atualizada com sucesso`
+  String get updateTaskSuccessSnackBarMessage {
+    return Intl.message(
+      'Tarefa atualizada com sucesso',
+      name: 'updateTaskSuccessSnackBarMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tarefa removida com sucesso`
+  String get removeTaskSuccessSnackBarMessage {
+    return Intl.message(
+      'Tarefa removida com sucesso',
+      name: 'removeTaskSuccessSnackBarMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Alguma coisa deu errado`
+  String get genericFailTaskSnackBarMessage {
+    return Intl.message(
+      'Alguma coisa deu errado',
+      name: 'genericFailTaskSnackBarMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Falha ao atualizar tarefa`
+  String get updateTaskFailSnackBarMessage {
+    return Intl.message(
+      'Falha ao atualizar tarefa',
+      name: 'updateTaskFailSnackBarMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Falha ao remover tarefa`
+  String get removeTaskFailSnackBarMessage {
+    return Intl.message(
+      'Falha ao remover tarefa',
+      name: 'removeTaskFailSnackBarMessage',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

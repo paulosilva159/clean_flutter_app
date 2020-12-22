@@ -3,5 +3,12 @@
   "tryAgainButtonLabel": "Try Again",
   "emptyListIndicatorMessage": "Empty list. Add new task",
   "errorIndicatorMessage": "Error",
-  "addTaskDialogTitle": "Add task"
+  "addTaskDialogTitle": "Add task",
+  "updateTaskDialogTitle": "Update task",
+  "addTaskSuccessSnackBarMessage": "Successfully added task",
+  "updateTaskSuccessSnackBarMessage": "Successfully updated task",
+  "removeTaskSuccessSnackBarMessage": "Successfully removed task",
+  "genericFailTaskSnackBarMessage": "Something went wrong",
+  "updateTaskFailSnackBarMessage": "Failed to update task",
+  "removeTaskFailSnackBarMessage": "Failed to remove task"
 }

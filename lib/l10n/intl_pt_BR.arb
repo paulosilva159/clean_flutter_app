@@ -3,5 +3,12 @@
   "tryAgainButtonLabel": "Tente Novamente",
   "emptyListIndicatorMessage": "Lista vazia. Adicione novas tarefas",
   "errorIndicatorMessage": "Deu erro",
-  "addTaskDialogTitle": "Adicionar tarefa"
+  "addTaskDialogTitle": "Adicionar tarefa",
+  "updateTaskDialogTitle": "Atualizar tarefa",
+  "addTaskSuccessSnackBarMessage": "Tarefa adicionada com sucesso",
+  "updateTaskSuccessSnackBarMessage": "Tarefa atualizada com sucesso",
+  "removeTaskSuccessSnackBarMessage": "Tarefa removida com sucesso",
+  "genericFailTaskSnackBarMessage": "Alguma coisa deu errado",
+  "updateTaskFailSnackBarMessage": "Falha ao atualizar tarefa",
+  "removeTaskFailSnackBarMessage": "Falha ao remover tarefa"
 }
