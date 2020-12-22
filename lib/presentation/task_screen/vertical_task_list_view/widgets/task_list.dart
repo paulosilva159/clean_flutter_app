@@ -1,3 +1,4 @@
+import 'package:clean_flutter_app/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 import 'package:domain/model/task.dart';
@@ -59,7 +60,7 @@ class _TaskListItem extends StatelessWidget {
                   onPressed: () {
                     showUpsertTaskFormDialog(
                       context,
-                      formDialogTitle: 'update',
+                      formDialogTitle: S.of(context).updateTaskDialogTitle,
                       onUpsertTask: onUpdateTask,
                       upsertingTask: task,
                     );
