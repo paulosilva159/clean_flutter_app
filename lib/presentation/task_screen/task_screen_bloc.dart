@@ -1,4 +1,3 @@
-import 'package:clean_flutter_app/generated/l10n.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 

@@ -1,5 +1,6 @@
-import 'package:clean_flutter_app/generated/l10n.dart';
 import 'package:flutter/material.dart';
+
+import 'package:clean_flutter_app/generated/l10n.dart';
 
 void showActionMessageSnackBar(
   BuildContext context, {
