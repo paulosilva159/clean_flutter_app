@@ -73,12 +73,17 @@ class VerticalTaskListView extends StatelessWidget {
               onTryAgainTap: () => bloc.onTryAgain.add(null),
             ),
             successWidgetBuilder: (context, success) {
-              onNewTaskListStatus(TaskListStatus.loaded);
+              onNewTaskListStatus(
+                TaskListLoaded(
+                  listSize: success.listSize,
+                ),
+              );
 
               if (success is Listing) {
                 return TaskList(
                   onRemoveTask: bloc.onRemoveTaskItem.add,
                   onUpdateTask: bloc.onUpdateTaskItem.add,
+                  onReorderTask: (id, ids) {},
                   tasks: success.tasks,
                 );
               } else if (success is Empty) {

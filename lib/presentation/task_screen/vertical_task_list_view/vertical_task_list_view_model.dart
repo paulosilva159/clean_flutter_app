@@ -16,6 +16,8 @@ abstract class Success implements VerticalTaskListViewState {
   Success({@required this.tasks}) : assert(tasks != null);
 
   final List<Task> tasks;
+
+  int get listSize => tasks.length;
 }
 
 class Empty extends Success {

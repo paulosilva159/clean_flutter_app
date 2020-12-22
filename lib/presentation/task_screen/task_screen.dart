@@ -34,13 +34,14 @@ class TaskScreen extends StatelessWidget {
             resizeToAvoidBottomPadding: false,
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
-            floatingActionButton: screenState is DataLoaded
+            floatingActionButton: screenState is Done
                 ? FloatingActionButton(
                     onPressed: () {
                       showUpsertTaskFormDialog(
                         context,
                         formDialogTitle: S.of(context).addTaskDialogTitle,
                         onUpsertTask: bloc.onAddTaskItem.add,
+                        upsertingTaskId: screenState.listSize + 1,
                       );
                     },
                     child: const Icon(Icons.add),

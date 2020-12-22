@@ -1,33 +1,43 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import 'package:domain/model/task.dart';
 
 import 'package:clean_flutter_app/generated/l10n.dart';
 import 'package:clean_flutter_app/presentation/common/dialogs/simple_dialogs/task_action_form_dialog.dart';
+import 'package:flutter/rendering.dart';
 
 class TaskList extends StatelessWidget {
   const TaskList({
     @required this.onRemoveTask,
     @required this.onUpdateTask,
+    @required this.onReorderTask,
     @required this.tasks,
   })  : assert(tasks != null),
         assert(onUpdateTask != null),
-        assert(onRemoveTask != null);
+        assert(onRemoveTask != null),
+        assert(onReorderTask != null);
 
   final void Function(Task) onRemoveTask;
   final void Function(Task) onUpdateTask;
+  final void Function(int, int) onReorderTask;
   final List<Task> tasks;
 
   @override
   Widget build(BuildContext context) => Material(
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemBuilder: (context, index) => _TaskListItem(
-            onRemoveTask: onRemoveTask,
-            onUpdateTask: onUpdateTask,
-            task: tasks[index],
-          ),
-          itemCount: tasks.length,
+        child: ReorderableListView(
+          onReorder: (oldI, newI) {
+            print('$oldI $newI');
+          },
+          children: tasks
+              .map((task) => _TaskListItem(
+                    key: ValueKey<Task>(task),
+                    onRemoveTask: onRemoveTask,
+                    onUpdateTask: onUpdateTask,
+                    task: task,
+                  ))
+              .toList(),
         ),
       );
 }
@@ -37,9 +47,11 @@ class _TaskListItem extends StatelessWidget {
     @required this.task,
     @required this.onRemoveTask,
     @required this.onUpdateTask,
+    Key key,
   })  : assert(task != null),
         assert(onRemoveTask != null),
-        assert(onUpdateTask != null);
+        assert(onUpdateTask != null),
+        super(key: key);
 
   final Task task;
   final void Function(Task) onRemoveTask;
@@ -53,6 +65,7 @@ class _TaskListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Card(
+        elevation: 5,
         margin: const EdgeInsets.symmetric(
           horizontal: 10,
           vertical: 5,

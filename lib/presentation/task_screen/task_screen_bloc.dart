@@ -27,12 +27,9 @@ class TaskScreenBloc with SubscriptionHolder {
 
   void updateTaskListStatusSubject(Stream<TaskListStatus> inputStream) =>
       inputStream.listen((taskListStatus) {
-        final _lastListingState = _onNewStateSubject.value;
-
-        if (taskListStatus == TaskListStatus.loaded &&
-            _lastListingState is WaitingData) {
+        if (taskListStatus is TaskListLoaded) {
           _onNewStateSubject.add(
-            DataLoaded(),
+            Done(listSize: taskListStatus.listSize),
           );
         }
       }).addTo(subscriptions);
@@ -42,10 +39,10 @@ class TaskScreenBloc with SubscriptionHolder {
   final _onNewActionSubject = PublishSubject<TaskScreenAction>();
   final _onAddTaskItemSubject = PublishSubject<Task>();
   final _onNewStateSubject = BehaviorSubject<TaskScreenState>.seeded(
-    WaitingData(),
+    Waiting(),
   );
   final _onNewTaskListStatusSubject = BehaviorSubject<TaskListStatus>.seeded(
-    TaskListStatus.loading,
+    TaskListLoading(),
   );
 
   Sink<Task> get onAddTaskItem => _onAddTaskItemSubject.sink;

@@ -29,14 +29,14 @@ void main() {
   });
 
   test('Should start with LoadingList', () {
-    expect(bloc.onNewState, emits(isA<WaitingData>()));
+    expect(bloc.onNewState, emits(isA<Waiting>()));
   });
 
   test('Should emit LoadedList when TaskList successfully loads', () async {
-    bloc.onNewTaskListStatus.add(TaskListStatus.loaded);
+    bloc.onNewTaskListStatus.add(TaskListLoaded(listSize: 1));
     await Future.delayed(Duration.zero);
 
-    expect(bloc.onNewState, emits(isA<DataLoaded>()));
+    expect(bloc.onNewState, emits(isA<Done>()));
   });
 
   test('Should emit add task action when function is successfully called',

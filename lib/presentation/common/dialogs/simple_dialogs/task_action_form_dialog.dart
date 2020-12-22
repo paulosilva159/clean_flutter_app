@@ -11,8 +11,11 @@ void showUpsertTaskFormDialog(
   BuildContext context, {
   @required void Function(Task) onUpsertTask,
   @required String formDialogTitle,
+  int upsertingTaskId,
   Task upsertingTask,
 }) {
+  assert(upsertingTaskId != null || upsertingTask != null);
+
   final _titleFieldTextEditingController = TextEditingController();
 
   AdaptiveFormDialog(
@@ -24,7 +27,7 @@ void showUpsertTaskFormDialog(
       onUpsertTask(
         Task(
           title: _titleFieldTextEditingController.value.text,
-          id: upsertingTask?.id ?? Random().nextInt(99999),
+          id: upsertingTask?.id ?? upsertingTaskId,
           orientation: TaskListOrientation.vertical,
         ),
       );

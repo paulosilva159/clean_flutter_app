@@ -72,7 +72,7 @@ void main() {
     await tester.pumpWidget(screen);
     await tester.pump();
 
-    bloc.updateTaskListStatusSubject(Stream.value(TaskListStatus.loaded));
+    bloc.updateTaskListStatusSubject(Stream.value(TaskListLoaded(listSize: 0)));
     await tester.pump();
 
     expect(find.byType(FloatingActionButton), findsOneWidget);
@@ -85,7 +85,7 @@ void main() {
     await tester.pumpWidget(screen);
     await tester.pump();
 
-    bloc.updateTaskListStatusSubject(Stream.value(TaskListStatus.loaded));
+    bloc.updateTaskListStatusSubject(Stream.value(TaskListLoaded(listSize: 0)));
     await tester.pump();
 
     expect(button, findsOneWidget);

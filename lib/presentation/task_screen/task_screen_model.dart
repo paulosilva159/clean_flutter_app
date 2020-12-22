@@ -2,9 +2,15 @@ import 'package:meta/meta.dart';
 
 abstract class TaskScreenState {}
 
-class WaitingData implements TaskScreenState {}
+class Waiting implements TaskScreenState {}
 
-class DataLoaded implements TaskScreenState {}
+class Done implements TaskScreenState {
+  Done({
+    @required this.listSize,
+  }) : assert(listSize != null);
+
+  final int listSize;
+}
 
 abstract class TaskScreenAction {
   TaskScreenAction({@required this.message}) : assert(message != null);
