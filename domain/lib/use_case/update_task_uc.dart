@@ -1,0 +1,31 @@
+import 'package:meta/meta.dart';
+
+import 'package:domain/data_observables.dart';
+import 'package:domain/data_repository/task_repository.dart';
+import 'package:domain/logger.dart';
+import 'package:domain/model/task.dart';
+import 'package:domain/use_case/use_case.dart';
+
+class UpdateTaskUC extends UseCase<void, UpdateTaskUCParams> {
+  UpdateTaskUC({
+    @required this.repository,
+    @required ErrorLogger logger,
+    @required this.activeTaskStorageUpdateSinkWrapper,
+  })  : assert(repository != null),
+        assert(activeTaskStorageUpdateSinkWrapper != null),
+        super(logger: logger);
+
+  final TaskDataRepository repository;
+  final ActiveTaskStorageUpdateSinkWrapper activeTaskStorageUpdateSinkWrapper;
+
+  @override
+  Future<void> getRawFuture({UpdateTaskUCParams params}) => repository
+      .upsertTask(params.task)
+      .then((_) => activeTaskStorageUpdateSinkWrapper.value.add(null));
+}
+
+class UpdateTaskUCParams {
+  UpdateTaskUCParams({@required this.task}) : assert(task != null);
+
+  final Task task;
+}

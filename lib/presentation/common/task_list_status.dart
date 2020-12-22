@@ -1,0 +1,4 @@
+enum TaskListStatus {
+  loading,
+  loaded,
+}
