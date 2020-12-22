@@ -1,6 +1,3 @@
-import 'package:clean_flutter_app/global_provider.dart';
-import 'package:clean_flutter_app/hive_initializer.dart';
-import 'package:clean_flutter_app/presentation/common/upsert_task_dialog_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,10 +6,13 @@ import 'package:mockito/mockito.dart';
 // import 'package:domain/exceptions.dart';
 import 'package:domain/model/task.dart';
 
+import 'package:clean_flutter_app/global_provider.dart';
+import 'package:clean_flutter_app/hive_initializer.dart';
 import 'package:clean_flutter_app/generated/l10n.dart';
 import 'package:clean_flutter_app/presentation/common/task_list_status.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_screen.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_screen_bloc.dart';
+import 'package:clean_flutter_app/presentation/common/upsert_task_dialog_button.dart';
 
 class TaskScreenUseCasesSpy extends Mock implements TaskScreenUseCases {}
 

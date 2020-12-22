@@ -1,7 +1,8 @@
 import 'dart:async';
 
-import 'package:domain/model/task.dart';
 import 'package:meta/meta.dart';
+
+import 'package:domain/model/task.dart';
 
 abstract class TaskDataRepository {
   const TaskDataRepository();

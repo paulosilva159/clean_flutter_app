@@ -1,5 +1,6 @@
-import 'package:domain/data_repository/task_repository.dart';
 import 'package:meta/meta.dart';
+
+import 'package:domain/data_repository/task_repository.dart';
 
 class Task {
   const Task(

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 void showActionMessageSnackBar(
   BuildContext context, {
   @required String message,
-  bool hasFailed,
+  bool isFailMessage,
 }) {
   Scaffold.of(context).removeCurrentSnackBar();
 
@@ -11,7 +11,7 @@ void showActionMessageSnackBar(
     SnackBar(
       content: Text(
         message,
-        style: TextStyle(color: hasFailed ? Colors.red : Colors.green),
+        style: TextStyle(color: isFailMessage ? Colors.red : Colors.green),
       ),
     ),
   );

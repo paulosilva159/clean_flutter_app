@@ -51,7 +51,7 @@ class TaskScreen extends StatelessWidget {
                   showActionMessageSnackBar(
                     context,
                     message: action.message,
-                    hasFailed: action is FailAction,
+                    isFailMessage: action is FailAction,
                   );
                 },
                 child: Column(

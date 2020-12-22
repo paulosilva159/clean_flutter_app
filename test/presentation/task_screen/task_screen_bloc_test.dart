@@ -1,10 +1,12 @@
+import 'package:mockito/mockito.dart';
+import 'package:test/test.dart';
+
+import 'package:domain/data_repository/task_repository.dart';
+import 'package:domain/model/task.dart';
+
 import 'package:clean_flutter_app/presentation/common/task_list_status.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_screen_bloc.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_screen_model.dart';
-import 'package:domain/data_repository/task_repository.dart';
-import 'package:domain/model/task.dart';
-import 'package:mockito/mockito.dart';
-import 'package:test/test.dart';
 
 class TaskScreenUseCasesSpy extends Mock implements TaskScreenUseCases {}
 
