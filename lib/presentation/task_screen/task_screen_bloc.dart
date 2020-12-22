@@ -62,11 +62,11 @@ class TaskScreenBloc with SubscriptionHolder {
       );
 
       actionSink.add(
-        AddTaskAction(message: S.current.addTaskSuccessSnackBarMessage),
+        ShowAddTaskAction(),
       );
     } catch (error) {
       actionSink.add(
-        FailAction(message: S.current.genericFailTaskSnackBarMessage),
+        ShowFailTaskAction(),
       );
     }
   }

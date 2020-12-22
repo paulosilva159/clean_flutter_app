@@ -30,29 +30,10 @@ class Listing extends Success {
         super(tasks: tasks);
 }
 
-abstract class VerticalTaskListAction {
-  VerticalTaskListAction({@required this.message}) : assert(message != null);
+abstract class VerticalTaskListAction {}
 
-  final String message;
-}
+class ShowUpdateTaskAction extends VerticalTaskListAction {}
 
-class UpdateTaskAction extends VerticalTaskListAction {
-  UpdateTaskAction({
-    @required String message,
-  })  : assert(message != null),
-        super(message: message);
-}
+class ShowRemoveTaskAction extends VerticalTaskListAction {}
 
-class RemoveTaskAction extends VerticalTaskListAction {
-  RemoveTaskAction({
-    @required String message,
-  })  : assert(message != null),
-        super(message: message);
-}
-
-class FailAction extends VerticalTaskListAction {
-  FailAction({
-    @required String message,
-  })  : assert(message != null),
-        super(message: message);
-}
+class ShowFailTaskAction extends VerticalTaskListAction {}

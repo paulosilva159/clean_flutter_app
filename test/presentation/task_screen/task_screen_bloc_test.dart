@@ -41,7 +41,7 @@ void main() {
 
   test('Should emit add task action when function is successfully called',
       () async {
-    expect(bloc.onNewAction, emits(isA<AddTaskAction>()));
+    expect(bloc.onNewAction, emits(isA<ShowAddTaskAction>()));
 
     bloc.addTaskItemSubject(
       Stream.value(
@@ -59,7 +59,7 @@ void main() {
       () async {
     mockFailureCall();
 
-    expect(bloc.onNewAction, emits(isA<FailAction>()));
+    expect(bloc.onNewAction, emits(isA<ShowFailTaskAction>()));
 
     bloc.addTaskItemSubject(
       Stream.value(

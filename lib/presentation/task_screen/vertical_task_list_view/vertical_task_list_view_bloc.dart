@@ -92,9 +92,7 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
     @required Sink<VerticalTaskListAction> actionSink,
   }) async* {
     final _lastListingState = _onNewStateSubject.value;
-    final _action = UpdateTaskAction(
-      message: S.current.updateTaskSuccessSnackBarMessage,
-    );
+    final _action = ShowUpdateTaskAction();
 
     yield Loading();
 
@@ -108,11 +106,7 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
       yield _lastListingState;
 
       actionSink.add(
-        FailAction(
-          message: _action is UpdateTaskAction
-              ? S.current.updateTaskFailSnackBarMessage
-              : S.current.removeTaskFailSnackBarMessage,
-        ),
+        ShowFailTaskAction(),
       );
     }
   }
@@ -122,9 +116,7 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
     @required Sink<VerticalTaskListAction> actionSink,
   }) async* {
     final _lastListingState = _onNewStateSubject.value;
-    final _action = RemoveTaskAction(
-      message: S.current.removeTaskSuccessSnackBarMessage,
-    );
+    final _action = ShowRemoveTaskAction();
 
     yield Loading();
 
@@ -138,11 +130,7 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
       yield _lastListingState;
 
       actionSink.add(
-        FailAction(
-          message: _action is UpdateTaskAction
-              ? S.current.updateTaskFailSnackBarMessage
-              : S.current.removeTaskFailSnackBarMessage,
-        ),
+        ShowFailTaskAction(),
       );
     }
   }

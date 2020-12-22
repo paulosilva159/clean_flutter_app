@@ -1,3 +1,4 @@
+import 'package:clean_flutter_app/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -57,11 +58,18 @@ class VerticalTaskListView extends StatelessWidget {
       ActionStreamListener<VerticalTaskListAction>(
         actionStream: bloc.onNewAction,
         onReceived: (action) {
-          showActionMessageSnackBar(
-            context,
-            message: action.message,
-            isFailMessage: action is FailAction,
-          );
+          if (action is ShowUpdateTaskAction) {
+            showUpdateTaskSuccess(context);
+          } else if (action is ShowRemoveTaskAction) {
+            showRemoveTaskSuccess(context);
+          } else {
+            showFailTask(
+              context,
+              message: action is ShowUpdateTaskAction
+                  ? S.current.updateTaskFailSnackBarMessage
+                  : S.current.removeTaskFailSnackBarMessage,
+            );
+          }
         },
         child: StreamBuilder<Object>(
           stream: bloc.onNewState,
