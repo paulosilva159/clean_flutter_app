@@ -12,22 +12,8 @@ class Done implements TaskScreenState {
   final int listSize;
 }
 
-abstract class TaskScreenAction {
-  TaskScreenAction({@required this.message}) : assert(message != null);
+abstract class TaskScreenAction {}
 
-  final String message;
-}
+class ShowAddTaskAction implements TaskScreenAction {}
 
-class AddTaskAction extends TaskScreenAction {
-  AddTaskAction({
-    @required String message,
-  })  : assert(message != null),
-        super(message: message);
-}
-
-class FailAction extends TaskScreenAction {
-  FailAction({
-    @required String message,
-  })  : assert(message != null),
-        super(message: message);
-}
+class ShowFailTaskAction implements TaskScreenAction {}
