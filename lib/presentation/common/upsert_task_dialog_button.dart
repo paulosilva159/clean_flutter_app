@@ -1,3 +1,4 @@
+import 'package:clean_flutter_app/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 class UpsertTaskDialogButton extends StatelessWidget {
@@ -10,6 +11,8 @@ class UpsertTaskDialogButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => RaisedButton(
         onPressed: onSaveTap,
-        child: const Text('save'),
+        child: Text(
+          S.of(context).genericUpsertTaskButtonLabel,
+        ),
       );
 }

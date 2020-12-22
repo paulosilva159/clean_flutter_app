@@ -1,4 +1,5 @@
 import 'package:clean_flutter_app/generated/l10n.dart';
+import 'package:clean_flutter_app/presentation/common/indicator/loading_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -55,15 +56,17 @@ class TaskScreen extends StatelessWidget {
                     isFailMessage: action is FailAction,
                   );
                 },
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: VerticalTaskListView.create(
-                        onNewTaskListStatus: bloc.onNewTaskListStatus.add,
-                      ),
-                    ),
-                  ],
-                ),
+                child: snapshot.hasData
+                    ? Column(
+                        children: [
+                          Expanded(
+                            child: VerticalTaskListView.create(
+                              onNewTaskListStatus: bloc.onNewTaskListStatus.add,
+                            ),
+                          ),
+                        ],
+                      )
+                    : LoadingIndicator(),
               ),
             ),
           );

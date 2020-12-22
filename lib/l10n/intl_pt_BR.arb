@@ -1,6 +1,7 @@
 {
   "@@locale": "pt_BR",
   "tryAgainButtonLabel": "Tente Novamente",
+  "genericUpsertTaskButtonLabel": "Salvar",
   "emptyListIndicatorMessage": "Lista vazia. Adicione novas tarefas",
   "errorIndicatorMessage": "Deu erro",
   "addTaskDialogTitle": "Adicionar tarefa",

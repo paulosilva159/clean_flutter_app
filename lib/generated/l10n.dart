@@ -45,6 +45,16 @@ class S {
     );
   }
 
+  /// `Salvar`
+  String get genericUpsertTaskButtonLabel {
+    return Intl.message(
+      'Salvar',
+      name: 'genericUpsertTaskButtonLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Lista vazia. Adicione novas tarefas`
   String get emptyListIndicatorMessage {
     return Intl.message(

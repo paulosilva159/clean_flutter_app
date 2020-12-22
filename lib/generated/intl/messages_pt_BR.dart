@@ -26,6 +26,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "emptyListIndicatorMessage" : MessageLookupByLibrary.simpleMessage("Lista vazia. Adicione novas tarefas"),
     "errorIndicatorMessage" : MessageLookupByLibrary.simpleMessage("Deu erro"),
     "genericFailTaskSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Alguma coisa deu errado"),
+    "genericUpsertTaskButtonLabel" : MessageLookupByLibrary.simpleMessage("Salvar"),
     "removeTaskFailSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Falha ao remover tarefa"),
     "removeTaskSuccessSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Tarefa removida com sucesso"),
     "tryAgainButtonLabel" : MessageLookupByLibrary.simpleMessage("Tente Novamente"),
