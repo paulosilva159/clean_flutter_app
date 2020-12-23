@@ -12,8 +12,26 @@ class Done implements TaskScreenState {
   final int listSize;
 }
 
-abstract class TaskScreenAction {}
+abstract class TaskScreenActionType {}
 
-class ShowAddTaskAction implements TaskScreenAction {}
+class AddTaskAction implements TaskScreenActionType {}
 
-class ShowFailTaskAction implements TaskScreenAction {}
+abstract class TaskScreenAction {
+  TaskScreenAction({
+    @required this.actionType,
+  }) : assert(actionType != null);
+
+  final TaskScreenActionType actionType;
+}
+
+class ShowFailTaskAction extends TaskScreenAction {
+  ShowFailTaskAction({@required TaskScreenActionType actionType})
+      : assert(actionType != null),
+        super(actionType: actionType);
+}
+
+class ShowSuccessTaskAction extends TaskScreenAction {
+  ShowSuccessTaskAction({@required TaskScreenActionType actionType})
+      : assert(actionType != null),
+        super(actionType: actionType);
+}

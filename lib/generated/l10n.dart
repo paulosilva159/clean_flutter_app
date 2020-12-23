@@ -95,6 +95,16 @@ class S {
     );
   }
 
+  /// `Ação realizada com sucess`
+  String get genericSuccessTaskSnackBarMessage {
+    return Intl.message(
+      'Ação realizada com sucess',
+      name: 'genericSuccessTaskSnackBarMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Tarefa adicionada com sucesso`
   String get addTaskSuccessSnackBarMessage {
     return Intl.message(
@@ -140,6 +150,16 @@ class S {
     return Intl.message(
       'Alguma coisa deu errado',
       name: 'genericFailTaskSnackBarMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Falha ao adicionar tarefa`
+  String get addTaskFailSnackBarMessage {
+    return Intl.message(
+      'Falha ao adicionar tarefa',
+      name: 'addTaskFailSnackBarMessage',
       desc: '',
       args: [],
     );

@@ -127,7 +127,7 @@ void main() {
       mockSuccess();
 
       expect(bloc.onNewState, emits(isA<Empty>()));
-      expect(bloc.onNewAction, emits(isA<ShowUpdateTaskAction>()));
+      expect(bloc.onNewAction, emits(isA<ShowSuccessTaskAction>()));
 
       bloc.onUpdateTask.add(task);
       await Future.delayed(const Duration(seconds: 0));
@@ -170,7 +170,7 @@ void main() {
       mockRemoveSuccess();
 
       expect(bloc.onNewState, emits(isA<Listing>()));
-      expect(bloc.onNewAction, emits(isA<ShowRemoveTaskAction>()));
+      expect(bloc.onNewAction, emits(isA<ShowSuccessTaskAction>()));
 
       bloc.onRemoveTask.add(task);
       await Future.delayed(const Duration(seconds: 0));

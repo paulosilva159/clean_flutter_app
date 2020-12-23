@@ -108,6 +108,7 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
     @required Sink<VerticalTaskListAction> actionSink,
   }) async* {
     final _lastListingState = _onNewStateSubject.value;
+    final _actionType = UpdateTaskAction();
 
     yield Loading();
 
@@ -116,12 +117,18 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
         UpdateTaskUCParams(task: task),
       );
 
-      actionSink.add(ShowUpdateTaskAction());
+      actionSink.add(
+        ShowSuccessTaskAction(
+          actionType: _actionType,
+        ),
+      );
     } catch (error) {
       yield _lastListingState;
 
       actionSink.add(
-        ShowFailTaskAction(),
+        ShowFailTaskAction(
+          actionType: _actionType,
+        ),
       );
     }
   }
@@ -131,6 +138,7 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
     @required Sink<VerticalTaskListAction> actionSink,
   }) async* {
     final _lastListingState = _onNewStateSubject.value;
+    final _actionType = RemoveTaskAction();
 
     yield Loading();
 
@@ -139,12 +147,18 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
         RemoveTaskUCParams(task: task),
       );
 
-      actionSink.add(ShowRemoveTaskAction());
+      actionSink.add(
+        ShowSuccessTaskAction(
+          actionType: _actionType,
+        ),
+      );
     } catch (error) {
       yield _lastListingState;
 
       actionSink.add(
-        ShowFailTaskAction(),
+        ShowFailTaskAction(
+          actionType: _actionType,
+        ),
       );
     }
   }
@@ -154,6 +168,7 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
     @required Sink<VerticalTaskListAction> actionSink,
   }) async* {
     final _lastListingState = _onNewStateSubject.value;
+    final _actionType = ReorderTaskAction();
 
     yield Loading();
 
@@ -165,12 +180,18 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
         ),
       );
 
-      actionSink.add(ShowReorderTaskAction());
+      actionSink.add(
+        ShowSuccessTaskAction(
+          actionType: _actionType,
+        ),
+      );
     } catch (error) {
       yield _lastListingState;
 
       actionSink.add(
-        ShowFailTaskAction(),
+        ShowFailTaskAction(
+          actionType: _actionType,
+        ),
       );
     }
   }

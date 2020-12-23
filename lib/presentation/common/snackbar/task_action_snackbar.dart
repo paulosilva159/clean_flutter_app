@@ -24,30 +24,37 @@ void showFailTask(BuildContext context, {String message}) {
       isFailMessage: true);
 }
 
-void showAddTaskSuccess(BuildContext context) {
+void showSuccessTask(BuildContext context, {String message}) {
   showActionMessageSnackBar(
     context,
-    message: S.of(context).addTaskSuccessSnackBarMessage,
+    message: message ?? S.of(context).genericSuccessTaskSnackBarMessage,
   );
 }
 
-void showUpdateTaskSuccess(BuildContext context) {
-  showActionMessageSnackBar(
-    context,
-    message: S.of(context).updateTaskSuccessSnackBarMessage,
-  );
-}
-
-void showRemoveTaskSuccess(BuildContext context) {
-  showActionMessageSnackBar(
-    context,
-    message: S.of(context).removeTaskSuccessSnackBarMessage,
-  );
-}
-
-void showReorderTaskSuccess(BuildContext context) {
-  showActionMessageSnackBar(
-    context,
-    message: S.of(context).reorderTasksSuccessSnackBarMessage,
-  );
-}
+// void showAddTaskSuccess(BuildContext context) {
+//   showActionMessageSnackBar(
+//     context,
+//     message: S.of(context).addTaskSuccessSnackBarMessage,
+//   );
+// }
+//
+// void showUpdateTaskSuccess(BuildContext context) {
+//   showActionMessageSnackBar(
+//     context,
+//     message: S.of(context).updateTaskSuccessSnackBarMessage,
+//   );
+// }
+//
+// void showRemoveTaskSuccess(BuildContext context) {
+//   showActionMessageSnackBar(
+//     context,
+//     message: S.of(context).removeTaskSuccessSnackBarMessage,
+//   );
+// }
+//
+// void showReorderTaskSuccess(BuildContext context) {
+//   showActionMessageSnackBar(
+//     context,
+//     message: S.of(context).reorderTasksSuccessSnackBarMessage,
+//   );
+// }

@@ -1,12 +1,10 @@
-import 'package:meta/meta.dart';
-import 'package:rxdart/rxdart.dart';
-
+import 'package:clean_flutter_app/common/subscription_holder.dart';
+import 'package:clean_flutter_app/presentation/common/task_list_status.dart';
+import 'package:clean_flutter_app/presentation/task_screen/task_screen_model.dart';
 import 'package:domain/model/task.dart';
 import 'package:domain/use_case/add_task_uc.dart';
-
-import 'package:clean_flutter_app/common/subscription_holder.dart';
-import 'package:clean_flutter_app/presentation/task_screen/task_screen_model.dart';
-import 'package:clean_flutter_app/presentation/common/task_list_status.dart';
+import 'package:meta/meta.dart';
+import 'package:rxdart/rxdart.dart';
 
 class TaskScreenBloc with SubscriptionHolder {
   TaskScreenBloc({
@@ -55,17 +53,19 @@ class TaskScreenBloc with SubscriptionHolder {
     @required Task task,
     @required Sink<TaskScreenAction> actionSink,
   }) async* {
+    final _actionType = AddTaskAction();
+
     try {
       await useCases.addTask(
         AddTaskUCParams(task: task),
       );
 
       actionSink.add(
-        ShowAddTaskAction(),
+        ShowSuccessTaskAction(actionType: _actionType),
       );
     } catch (error) {
       actionSink.add(
-        ShowFailTaskAction(),
+        ShowFailTaskAction(actionType: _actionType),
       );
     }
   }

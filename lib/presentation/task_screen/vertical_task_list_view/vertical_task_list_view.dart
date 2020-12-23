@@ -53,14 +53,29 @@ class VerticalTaskListView extends StatelessWidget {
 
   String _snackBarFailMessage(
     BuildContext context,
-    VerticalTaskListAction action,
+    VerticalTaskListActionType actionType,
   ) {
-    if (action is ShowUpdateTaskAction) {
+    if (actionType is UpdateTaskAction) {
       return S.of(context).updateTaskFailSnackBarMessage;
-    } else if (action is ShowRemoveTaskAction) {
+    } else if (actionType is RemoveTaskAction) {
       return S.of(context).removeTaskFailSnackBarMessage;
-    } else if (action is ShowReorderTaskAction) {
+    } else if (actionType is ReorderTaskAction) {
       return S.of(context).reorderTasksFailSnackBarMessage;
+    }
+
+    return null;
+  }
+
+  String _snackBarSuccessMessage(
+    BuildContext context,
+    VerticalTaskListActionType actionType,
+  ) {
+    if (actionType is UpdateTaskAction) {
+      return S.of(context).updateTaskSuccessSnackBarMessage;
+    } else if (actionType is RemoveTaskAction) {
+      return S.of(context).removeTaskSuccessSnackBarMessage;
+    } else if (actionType is ReorderTaskAction) {
+      return S.of(context).reorderTasksSuccessSnackBarMessage;
     }
 
     return null;
@@ -71,16 +86,21 @@ class VerticalTaskListView extends StatelessWidget {
       ActionStreamListener<VerticalTaskListAction>(
         actionStream: bloc.onNewAction,
         onReceived: (action) {
-          if (action is ShowUpdateTaskAction) {
-            showUpdateTaskSuccess(context);
-          } else if (action is ShowRemoveTaskAction) {
-            showRemoveTaskSuccess(context);
-          } else if (action is ShowReorderTaskAction) {
-            showReorderTaskSuccess(context);
-          } else {
+          if (action is ShowFailTaskAction) {
             showFailTask(
               context,
-              message: _snackBarFailMessage(context, action),
+              message: _snackBarFailMessage(
+                context,
+                action.actionType,
+              ),
+            );
+          } else {
+            showSuccessTask(
+              context,
+              message: _snackBarSuccessMessage(
+                context,
+                action.actionType,
+              ),
             );
           }
         },

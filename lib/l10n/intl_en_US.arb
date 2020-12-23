@@ -6,6 +6,7 @@
   "errorIndicatorMessage": "Error",
   "addTaskDialogTitle": "Add task",
   "updateTaskDialogTitle": "Update task",
+  "genericSuccessTaskSnackBarMessage": "Action was successful",
   "addTaskSuccessSnackBarMessage": "Successfully added task",
   "updateTaskSuccessSnackBarMessage": "Successfully updated task",
   "removeTaskSuccessSnackBarMessage": "Successfully removed task",

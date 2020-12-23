@@ -40,12 +40,30 @@ class Listing extends Success {
         super(tasks: tasks);
 }
 
-abstract class VerticalTaskListAction {}
+abstract class VerticalTaskListActionType {}
 
-class ShowReorderTaskAction extends VerticalTaskListAction {}
+class ReorderTaskAction extends VerticalTaskListActionType {}
 
-class ShowUpdateTaskAction extends VerticalTaskListAction {}
+class UpdateTaskAction extends VerticalTaskListActionType {}
 
-class ShowRemoveTaskAction extends VerticalTaskListAction {}
+class RemoveTaskAction extends VerticalTaskListActionType {}
 
-class ShowFailTaskAction extends VerticalTaskListAction {}
+abstract class VerticalTaskListAction {
+  VerticalTaskListAction({
+    @required this.actionType,
+  }) : assert(actionType != null);
+
+  final VerticalTaskListActionType actionType;
+}
+
+class ShowFailTaskAction extends VerticalTaskListAction {
+  ShowFailTaskAction({@required VerticalTaskListActionType actionType})
+      : assert(actionType != null),
+        super(actionType: actionType);
+}
+
+class ShowSuccessTaskAction extends VerticalTaskListAction {
+  ShowSuccessTaskAction({@required VerticalTaskListActionType actionType})
+      : assert(actionType != null),
+        super(actionType: actionType);
+}
