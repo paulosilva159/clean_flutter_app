@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
-
 import 'package:clean_flutter_app/generated/l10n.dart';
+import 'package:flutter/material.dart';
 
 void showActionMessageSnackBar(
   BuildContext context, {
@@ -21,27 +20,34 @@ void showActionMessageSnackBar(
 
 void showFailTask(BuildContext context, {String message}) {
   showActionMessageSnackBar(context,
-      message: message ?? S.current.genericFailTaskSnackBarMessage,
+      message: message ?? S.of(context).genericFailTaskSnackBarMessage,
       isFailMessage: true);
 }
 
 void showAddTaskSuccess(BuildContext context) {
   showActionMessageSnackBar(
     context,
-    message: S.current.addTaskSuccessSnackBarMessage,
+    message: S.of(context).addTaskSuccessSnackBarMessage,
   );
 }
 
 void showUpdateTaskSuccess(BuildContext context) {
   showActionMessageSnackBar(
     context,
-    message: S.current.updateTaskSuccessSnackBarMessage,
+    message: S.of(context).updateTaskSuccessSnackBarMessage,
   );
 }
 
 void showRemoveTaskSuccess(BuildContext context) {
   showActionMessageSnackBar(
     context,
-    message: S.current.removeTaskSuccessSnackBarMessage,
+    message: S.of(context).removeTaskSuccessSnackBarMessage,
+  );
+}
+
+void showReorderTaskSuccess(BuildContext context) {
+  showActionMessageSnackBar(
+    context,
+    message: S.of(context).reorderTasksSuccessSnackBarMessage,
   );
 }

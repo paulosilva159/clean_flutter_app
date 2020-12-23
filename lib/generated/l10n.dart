@@ -125,6 +125,16 @@ class S {
     );
   }
 
+  /// `Tarefas reordenadas com sucesso`
+  String get reorderTasksSuccessSnackBarMessage {
+    return Intl.message(
+      'Tarefas reordenadas com sucesso',
+      name: 'reorderTasksSuccessSnackBarMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Alguma coisa deu errado`
   String get genericFailTaskSnackBarMessage {
     return Intl.message(
@@ -150,6 +160,16 @@ class S {
     return Intl.message(
       'Falha ao remover tarefa',
       name: 'removeTaskFailSnackBarMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Falha ao reordenar tarefas`
+  String get reorderTasksFailSnackBarMessage {
+    return Intl.message(
+      'Falha ao reordenar tarefas',
+      name: 'reorderTasksFailSnackBarMessage',
       desc: '',
       args: [],
     );

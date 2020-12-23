@@ -9,7 +9,10 @@
   "addTaskSuccessSnackBarMessage": "Successfully added task",
   "updateTaskSuccessSnackBarMessage": "Successfully updated task",
   "removeTaskSuccessSnackBarMessage": "Successfully removed task",
+  "reorderTasksSuccessSnackBarMessage": "Successfully reordered tasks",
   "genericFailTaskSnackBarMessage": "Something went wrong",
   "updateTaskFailSnackBarMessage": "Failed to update task",
-  "removeTaskFailSnackBarMessage": "Failed to remove task"
+  "removeTaskFailSnackBarMessage": "Failed to remove task",
+  "reorderTasksFailSnackBarMessage": "Failed to reorder task"
+
 }

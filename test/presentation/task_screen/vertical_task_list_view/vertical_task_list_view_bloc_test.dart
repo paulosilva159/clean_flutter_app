@@ -1,15 +1,13 @@
 import 'dart:async';
 
-import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view_model.dart';
-import 'package:domain/data_repository/task_repository.dart';
-import 'package:test/test.dart';
-import 'package:mockito/mockito.dart';
-
 import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view_bloc.dart';
-
+import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view_model.dart';
 import 'package:domain/data_observables.dart';
+import 'package:domain/data_repository/task_repository.dart';
 import 'package:domain/exceptions.dart';
 import 'package:domain/model/task.dart';
+import 'package:mockito/mockito.dart';
+import 'package:test/test.dart';
 
 class ActiveTaskStorageUpdateStreamWrapperSpy extends Mock
     implements ActiveTaskStorageUpdateStreamWrapper {}
@@ -131,7 +129,7 @@ void main() {
       expect(bloc.onNewState, emits(isA<Empty>()));
       expect(bloc.onNewAction, emits(isA<ShowUpdateTaskAction>()));
 
-      bloc.onUpdateTaskItem.add(task);
+      bloc.onUpdateTask.add(task);
       await Future.delayed(const Duration(seconds: 0));
 
       expect(bloc.onNewState, emits(isA<Listing>()));
@@ -143,7 +141,7 @@ void main() {
       expect(bloc.onNewState, emits(isA<Empty>()));
       expect(bloc.onNewAction, emits(isA<ShowFailTaskAction>()));
 
-      bloc.onUpdateTaskItem.add(task);
+      bloc.onUpdateTask.add(task);
       await Future.delayed(const Duration(seconds: 0));
     });
   });
@@ -174,7 +172,7 @@ void main() {
       expect(bloc.onNewState, emits(isA<Listing>()));
       expect(bloc.onNewAction, emits(isA<ShowRemoveTaskAction>()));
 
-      bloc.onRemoveTaskItem.add(task);
+      bloc.onRemoveTask.add(task);
       await Future.delayed(const Duration(seconds: 0));
 
       expect(bloc.onNewState, emits(isA<Success>()));
@@ -186,7 +184,7 @@ void main() {
       expect(bloc.onNewState, emits(isA<Listing>()));
       expect(bloc.onNewAction, emits(isA<ShowFailTaskAction>()));
 
-      bloc.onRemoveTaskItem.add(task);
+      bloc.onRemoveTask.add(task);
       await Future.delayed(const Duration(seconds: 0));
     });
   });

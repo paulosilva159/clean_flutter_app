@@ -1,34 +1,34 @@
-import 'dart:math';
-
-import 'package:flutter/material.dart';
-
-import 'package:domain/model/task.dart';
-
 import 'package:clean_flutter_app/generated/l10n.dart';
 import 'package:clean_flutter_app/presentation/common/dialogs/simple_dialogs/task_action_form_dialog.dart';
+import 'package:domain/model/task.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 class TaskList extends StatelessWidget {
   const TaskList({
     @required this.onRemoveTask,
     @required this.onUpdateTask,
-    @required this.onReorderTask,
+    @required this.onReorderTasks,
     @required this.tasks,
   })  : assert(tasks != null),
         assert(onUpdateTask != null),
         assert(onRemoveTask != null),
-        assert(onReorderTask != null);
+        assert(onReorderTasks != null);
 
   final void Function(Task) onRemoveTask;
   final void Function(Task) onUpdateTask;
-  final void Function(int, int) onReorderTask;
+  final void Function(int, int) onReorderTasks;
   final List<Task> tasks;
 
   @override
   Widget build(BuildContext context) => Material(
         child: ReorderableListView(
-          onReorder: (oldI, newI) {
-            print('$oldI $newI');
+          onReorder: (o, n) {
+            if (n > o) {
+              onReorderTasks(o + 1, n);
+            } else {
+              onReorderTasks(o + 1, n + 1);
+            }
           },
           children: tasks
               .map((task) => _TaskListItem(

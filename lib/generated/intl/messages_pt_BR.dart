@@ -29,6 +29,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "genericUpsertTaskButtonLabel" : MessageLookupByLibrary.simpleMessage("Salvar"),
     "removeTaskFailSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Falha ao remover tarefa"),
     "removeTaskSuccessSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Tarefa removida com sucesso"),
+    "reorderTasksFailSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Falha ao reordenar tarefas"),
+    "reorderTasksSuccessSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Tarefas reordenadas com sucesso"),
     "tryAgainButtonLabel" : MessageLookupByLibrary.simpleMessage("Tente Novamente"),
     "updateTaskDialogTitle" : MessageLookupByLibrary.simpleMessage("Atualizar tarefa"),
     "updateTaskFailSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Falha ao atualizar tarefa"),

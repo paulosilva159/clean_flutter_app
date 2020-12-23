@@ -1,8 +1,7 @@
 import 'dart:async';
 
-import 'package:hive/hive.dart';
-
 import 'package:clean_flutter_app/data/cache/model/task_cm.dart';
+import 'package:hive/hive.dart';
 
 class TaskCDS {
   static const String _taskListBoxName = '_taskListBoxName';
@@ -20,6 +19,53 @@ class TaskCDS {
               : box.put(task.id, task);
         },
       );
+
+  Future<void> reorderTasks(int oldId, int newId) =>
+      Hive.openBox<TaskCM>(_taskListBoxName).then<void>((box) async {
+        List<TaskCM> _reorderingTask;
+
+        if (oldId < newId) {
+          _reorderingTask = box.values
+              .where((boxTask) => boxTask.id > oldId && boxTask.id <= newId)
+              .toList();
+        } else {
+          _reorderingTask = box.values
+              .where((boxTask) => boxTask.id < oldId && boxTask.id >= newId)
+              .toList();
+        }
+
+        final _movingTask =
+            box.values.where((boxTask) => boxTask.id == oldId).toList().first;
+
+        await box
+            .put(
+          newId,
+          TaskCM(
+              id: newId,
+              title: _movingTask.title,
+              orientation: _movingTask.orientation),
+        )
+            .then((_) {
+          _reorderingTask.forEach((boxTask) {
+            int _newIndex;
+
+            if (oldId < newId) {
+              _newIndex = boxTask.id - 1;
+            } else {
+              _newIndex = boxTask.id + 1;
+            }
+
+            box.put(
+              _newIndex,
+              TaskCM(
+                id: _newIndex,
+                title: boxTask.title,
+                orientation: boxTask.orientation,
+              ),
+            );
+          });
+        });
+      });
 
   Future<void> removeTask(TaskCM task) =>
       Hive.openBox<TaskCM>(_taskListBoxName).then<void>((box) {

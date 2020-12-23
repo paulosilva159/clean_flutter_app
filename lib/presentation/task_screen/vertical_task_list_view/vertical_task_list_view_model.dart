@@ -1,6 +1,16 @@
+import 'package:domain/model/task.dart';
 import 'package:meta/meta.dart';
 
-import 'package:domain/model/task.dart';
+class ReorderingTaskIds {
+  ReorderingTaskIds({
+    @required this.oldId,
+    @required this.newId,
+  })  : assert(oldId != null),
+        assert(newId != null);
+
+  final int oldId;
+  final int newId;
+}
 
 abstract class VerticalTaskListViewState {}
 
@@ -31,6 +41,8 @@ class Listing extends Success {
 }
 
 abstract class VerticalTaskListAction {}
+
+class ShowReorderTaskAction extends VerticalTaskListAction {}
 
 class ShowUpdateTaskAction extends VerticalTaskListAction {}
 

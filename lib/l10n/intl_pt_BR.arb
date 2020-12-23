@@ -9,7 +9,9 @@
   "addTaskSuccessSnackBarMessage": "Tarefa adicionada com sucesso",
   "updateTaskSuccessSnackBarMessage": "Tarefa atualizada com sucesso",
   "removeTaskSuccessSnackBarMessage": "Tarefa removida com sucesso",
+  "reorderTasksSuccessSnackBarMessage": "Tarefas reordenadas com sucesso",
   "genericFailTaskSnackBarMessage": "Alguma coisa deu errado",
   "updateTaskFailSnackBarMessage": "Falha ao atualizar tarefa",
-  "removeTaskFailSnackBarMessage": "Falha ao remover tarefa"
+  "removeTaskFailSnackBarMessage": "Falha ao remover tarefa",
+  "reorderTasksFailSnackBarMessage": "Falha ao reordenar tarefas"
 }
