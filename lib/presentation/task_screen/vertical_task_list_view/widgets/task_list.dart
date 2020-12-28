@@ -4,6 +4,8 @@ import 'package:domain/model/task.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+// TODO(paulosilva159): Refazer ReorderableListView
+
 class TaskList extends StatelessWidget {
   const TaskList({
     @required this.onRemoveTask,
@@ -24,11 +26,10 @@ class TaskList extends StatelessWidget {
   Widget build(BuildContext context) => Material(
         child: ReorderableListView(
           onReorder: (oldId, newId) {
-            if (newId > oldId) {
-              onReorderTasks(oldId + 1, newId);
-            } else {
-              onReorderTasks(oldId + 1, newId + 1);
-            }
+            onReorderTasks(
+              oldId + 1,
+              newId > oldId ? newId : newId + 1,
+            );
           },
           children: tasks
               .map((task) => _TaskListItem(
