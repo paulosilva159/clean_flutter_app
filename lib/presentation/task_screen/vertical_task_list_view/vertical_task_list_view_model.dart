@@ -1,8 +1,8 @@
 import 'package:domain/model/task.dart';
 import 'package:meta/meta.dart';
 
-class ReorderingTaskIds {
-  ReorderingTaskIds({
+class ReorderableTaskIds {
+  ReorderableTaskIds({
     @required this.oldId,
     @required this.newId,
   })  : assert(oldId != null),
@@ -40,30 +40,28 @@ class Listing extends Success {
         super(tasks: tasks);
 }
 
-abstract class VerticalTaskListActionType {}
-
-class ReorderTaskAction extends VerticalTaskListActionType {}
-
-class UpdateTaskAction extends VerticalTaskListActionType {}
-
-class RemoveTaskAction extends VerticalTaskListActionType {}
+enum VerticalTaskListActionType {
+  reorderTask,
+  updateTask,
+  removeTask,
+}
 
 abstract class VerticalTaskListAction {
   VerticalTaskListAction({
-    @required this.actionType,
-  }) : assert(actionType != null);
+    @required this.type,
+  }) : assert(type != null);
 
-  final VerticalTaskListActionType actionType;
+  final VerticalTaskListActionType type;
 }
 
 class ShowFailTaskAction extends VerticalTaskListAction {
-  ShowFailTaskAction({@required VerticalTaskListActionType actionType})
-      : assert(actionType != null),
-        super(actionType: actionType);
+  ShowFailTaskAction({@required VerticalTaskListActionType type})
+      : assert(type != null),
+        super(type: type);
 }
 
 class ShowSuccessTaskAction extends VerticalTaskListAction {
-  ShowSuccessTaskAction({@required VerticalTaskListActionType actionType})
-      : assert(actionType != null),
-        super(actionType: actionType);
+  ShowSuccessTaskAction({@required VerticalTaskListActionType type})
+      : assert(type != null),
+        super(type: type);
 }

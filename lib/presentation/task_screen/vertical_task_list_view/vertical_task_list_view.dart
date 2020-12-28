@@ -51,31 +51,28 @@ class VerticalTaskListView extends StatelessWidget {
         ),
       );
 
-  String _snackBarFailMessage(
-    BuildContext context,
-    VerticalTaskListActionType actionType,
-  ) {
-    if (actionType is UpdateTaskAction) {
-      return S.of(context).updateTaskFailSnackBarMessage;
-    } else if (actionType is RemoveTaskAction) {
-      return S.of(context).removeTaskFailSnackBarMessage;
-    } else if (actionType is ReorderTaskAction) {
-      return S.of(context).reorderTasksFailSnackBarMessage;
-    }
-
-    return null;
-  }
-
-  String _snackBarSuccessMessage(
-    BuildContext context,
-    VerticalTaskListActionType actionType,
-  ) {
-    if (actionType is UpdateTaskAction) {
-      return S.of(context).updateTaskSuccessSnackBarMessage;
-    } else if (actionType is RemoveTaskAction) {
-      return S.of(context).removeTaskSuccessSnackBarMessage;
-    } else if (actionType is ReorderTaskAction) {
-      return S.of(context).reorderTasksSuccessSnackBarMessage;
+  String _snackBarMessage(
+    BuildContext context, {
+    @required VerticalTaskListAction action,
+  }) {
+    if (action is ShowFailTaskAction) {
+      switch (action.type) {
+        case VerticalTaskListActionType.updateTask:
+          return S.of(context).updateTaskFailSnackBarMessage;
+        case VerticalTaskListActionType.removeTask:
+          return S.of(context).removeTaskFailSnackBarMessage;
+        case VerticalTaskListActionType.reorderTask:
+          return S.of(context).reorderTasksFailSnackBarMessage;
+      }
+    } else {
+      switch (action.type) {
+        case VerticalTaskListActionType.updateTask:
+          return S.of(context).updateTaskSuccessSnackBarMessage;
+        case VerticalTaskListActionType.removeTask:
+          return S.of(context).removeTaskSuccessSnackBarMessage;
+        case VerticalTaskListActionType.reorderTask:
+          return S.of(context).reorderTaskSuccessSnackBarMessage;
+      }
     }
 
     return null;
@@ -86,22 +83,15 @@ class VerticalTaskListView extends StatelessWidget {
       ActionStreamListener<VerticalTaskListAction>(
         actionStream: bloc.onNewAction,
         onReceived: (action) {
+          final _message = _snackBarMessage(
+            context,
+            action: action,
+          );
+
           if (action is ShowFailTaskAction) {
-            showFailTask(
-              context,
-              message: _snackBarFailMessage(
-                context,
-                action.actionType,
-              ),
-            );
+            showFailTask(context, message: _message);
           } else {
-            showSuccessTask(
-              context,
-              message: _snackBarSuccessMessage(
-                context,
-                action.actionType,
-              ),
-            );
+            showSuccessTask(context, message: _message);
           }
         },
         child: StreamBuilder<Object>(
@@ -125,8 +115,8 @@ class VerticalTaskListView extends StatelessWidget {
                   onRemoveTask: bloc.onRemoveTask.add,
                   onUpdateTask: bloc.onUpdateTask.add,
                   onReorderTasks: (oldId, newId) {
-                    bloc.onReorderTasks.add(
-                      ReorderingTaskIds(oldId: oldId, newId: newId),
+                    bloc.onReorderTask.add(
+                      ReorderableTaskIds(oldId: oldId, newId: newId),
                     );
                   },
                   tasks: success.tasks,

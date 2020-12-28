@@ -5,7 +5,7 @@ import 'package:domain/data_repository/task_repository.dart';
 import 'package:domain/model/task.dart';
 import 'package:domain/use_case/get_vertical_task_list_uc.dart';
 import 'package:domain/use_case/remove_task_uc.dart';
-import 'package:domain/use_case/reorder_tasks_uc.dart';
+import 'package:domain/use_case/reorder_task_uc.dart';
 import 'package:domain/use_case/update_task_uc.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
@@ -32,8 +32,8 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
       _onRemoveTaskSubject.stream,
     );
 
-    reorderTasksSubject(
-      _onReorderTasksSubject.stream,
+    reorderTaskSubject(
+      _onReorderTaskSubject.stream,
     );
   }
 
@@ -58,7 +58,7 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
       .listen(_onNewStateSubject.add)
       .addTo(subscriptions);
 
-  void reorderTasksSubject(Stream<ReorderingTaskIds> inputStream) => inputStream
+  void reorderTaskSubject(Stream<ReorderableTaskIds> inputStream) => inputStream
       .flatMap<VerticalTaskListViewState>(
         (reorderingTaskIds) => _reorderData(
           reorderingTaskIds: reorderingTaskIds,
@@ -76,7 +76,7 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
   final _onNewActionSubject = PublishSubject<VerticalTaskListAction>();
   final _onUpdateTaskSubject = PublishSubject<Task>();
   final _onRemoveTaskSubject = PublishSubject<Task>();
-  final _onReorderTasksSubject = PublishSubject<ReorderingTaskIds>();
+  final _onReorderTaskSubject = PublishSubject<ReorderableTaskIds>();
   final _onNewStateSubject = BehaviorSubject<VerticalTaskListViewState>.seeded(
     Loading(),
   );
@@ -84,7 +84,7 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
   Sink<void> get onTryAgain => _onTryAgainSubject.sink;
   Sink<Task> get onUpdateTask => _onUpdateTaskSubject.sink;
   Sink<Task> get onRemoveTask => _onRemoveTaskSubject.sink;
-  Sink<ReorderingTaskIds> get onReorderTasks => _onReorderTasksSubject.sink;
+  Sink<ReorderableTaskIds> get onReorderTask => _onReorderTaskSubject.sink;
 
   Stream<VerticalTaskListViewState> get onNewState => _onNewStateSubject.stream;
   Stream<VerticalTaskListAction> get onNewAction => _onNewActionSubject.stream;
@@ -108,7 +108,7 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
     @required Sink<VerticalTaskListAction> actionSink,
   }) async* {
     final _lastListingState = _onNewStateSubject.value;
-    final _actionType = UpdateTaskAction();
+    const _actionType = VerticalTaskListActionType.updateTask;
 
     yield Loading();
 
@@ -119,7 +119,7 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
 
       actionSink.add(
         ShowSuccessTaskAction(
-          actionType: _actionType,
+          type: _actionType,
         ),
       );
     } catch (error) {
@@ -127,7 +127,7 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
 
       actionSink.add(
         ShowFailTaskAction(
-          actionType: _actionType,
+          type: _actionType,
         ),
       );
     }
@@ -138,7 +138,7 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
     @required Sink<VerticalTaskListAction> actionSink,
   }) async* {
     final _lastListingState = _onNewStateSubject.value;
-    final _actionType = RemoveTaskAction();
+    const _actionType = VerticalTaskListActionType.removeTask;
 
     yield Loading();
 
@@ -149,7 +149,7 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
 
       actionSink.add(
         ShowSuccessTaskAction(
-          actionType: _actionType,
+          type: _actionType,
         ),
       );
     } catch (error) {
@@ -157,24 +157,24 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
 
       actionSink.add(
         ShowFailTaskAction(
-          actionType: _actionType,
+          type: _actionType,
         ),
       );
     }
   }
 
   Stream<VerticalTaskListViewState> _reorderData({
-    @required ReorderingTaskIds reorderingTaskIds,
+    @required ReorderableTaskIds reorderingTaskIds,
     @required Sink<VerticalTaskListAction> actionSink,
   }) async* {
     final _lastListingState = _onNewStateSubject.value;
-    final _actionType = ReorderTaskAction();
+    const _actionType = VerticalTaskListActionType.reorderTask;
 
     yield Loading();
 
     try {
       await useCases.reorderTasks(
-        ReorderTasksUCParams(
+        ReorderTaskUCParams(
           oldId: reorderingTaskIds.oldId,
           newId: reorderingTaskIds.newId,
         ),
@@ -182,7 +182,7 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
 
       actionSink.add(
         ShowSuccessTaskAction(
-          actionType: _actionType,
+          type: _actionType,
         ),
       );
     } catch (error) {
@@ -190,7 +190,7 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
 
       actionSink.add(
         ShowFailTaskAction(
-          actionType: _actionType,
+          type: _actionType,
         ),
       );
     }
@@ -202,7 +202,7 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
     _onNewActionSubject.close();
     _onUpdateTaskSubject.close();
     _onRemoveTaskSubject.close();
-    _onReorderTasksSubject.close();
+    _onReorderTaskSubject.close();
     disposeSubscriptions();
   }
 }
@@ -221,7 +221,7 @@ class VerticalTaskListViewUseCases {
   final GetTaskListUC getTaskListUC;
   final RemoveTaskUC removeTaskUC;
   final UpdateTaskUC updateTaskUC;
-  final ReorderTasksUC reorderTasksUC;
+  final ReorderTaskUC reorderTasksUC;
 
   Future<List<Task>> getTasksList() => getTaskListUC.getFuture(
           params: GetTaskListUCParams(
@@ -234,6 +234,6 @@ class VerticalTaskListViewUseCases {
   Future<void> removeTask(RemoveTaskUCParams params) =>
       removeTaskUC.getFuture(params: params);
 
-  Future<void> reorderTasks(ReorderTasksUCParams params) =>
+  Future<void> reorderTasks(ReorderTaskUCParams params) =>
       reorderTasksUC.getFuture(params: params);
 }

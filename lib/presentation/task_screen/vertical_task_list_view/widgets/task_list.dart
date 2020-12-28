@@ -23,16 +23,16 @@ class TaskList extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Material(
         child: ReorderableListView(
-          onReorder: (o, n) {
-            if (n > o) {
-              onReorderTasks(o + 1, n);
+          onReorder: (oldId, newId) {
+            if (newId > oldId) {
+              onReorderTasks(oldId + 1, newId);
             } else {
-              onReorderTasks(o + 1, n + 1);
+              onReorderTasks(oldId + 1, newId + 1);
             }
           },
           children: tasks
               .map((task) => _TaskListItem(
-                    key: ValueKey<Task>(task),
+                    key: ValueKey<int>(task.id),
                     onRemoveTask: onRemoveTask,
                     onUpdateTask: onUpdateTask,
                     task: task,

@@ -22,6 +22,16 @@ class TaskScreen extends StatelessWidget {
           builder: (context, bloc, child) => TaskScreen(bloc: bloc),
         ),
       );
+  String _snackBarMessage(
+    BuildContext context, {
+    @required TaskScreenAction action,
+  }) {
+    if (action is ShowFailTaskAction) {
+      return S.of(context).addTaskFailSnackBarMessage;
+    } else {
+      return S.of(context).addTaskSuccessSnackBarMessage;
+    }
+  }
 
   @override
   Widget build(BuildContext context) => StreamBuilder<TaskScreenState>(
@@ -50,15 +60,20 @@ class TaskScreen extends StatelessWidget {
               builder: (context) => ActionStreamListener<TaskScreenAction>(
                 actionStream: bloc.onNewAction,
                 onReceived: (action) {
+                  final _message = _snackBarMessage(
+                    context,
+                    action: action,
+                  );
+
                   if (action is ShowFailTaskAction) {
                     showFailTask(
                       context,
-                      message: S.of(context).addTaskFailSnackBarMessage,
+                      message: _message,
                     );
                   } else {
                     showSuccessTask(
                       context,
-                      message: S.of(context).addTaskSuccessSnackBarMessage,
+                      message: _message,
                     );
                   }
                 },

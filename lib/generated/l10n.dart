@@ -136,10 +136,10 @@ class S {
   }
 
   /// `Tarefas reordenadas com sucesso`
-  String get reorderTasksSuccessSnackBarMessage {
+  String get reorderTaskSuccessSnackBarMessage {
     return Intl.message(
       'Tarefas reordenadas com sucesso',
-      name: 'reorderTasksSuccessSnackBarMessage',
+      name: 'reorderTaskSuccessSnackBarMessage',
       desc: '',
       args: [],
     );

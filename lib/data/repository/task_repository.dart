@@ -29,6 +29,6 @@ class TaskRepository extends TaskDataRepository {
       );
 
   @override
-  Future<void> reorderTasks({int oldId, int newId}) =>
-      cacheDS.reorderTasks(oldId, newId);
+  Future<void> reorderTask({int oldId, int newId}) =>
+      cacheDS.reorderTask(oldId, newId);
 }

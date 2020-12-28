@@ -8,7 +8,7 @@ import 'package:domain/data_repository/task_repository.dart';
 import 'package:domain/use_case/add_task_uc.dart';
 import 'package:domain/use_case/get_vertical_task_list_uc.dart';
 import 'package:domain/use_case/remove_task_uc.dart';
-import 'package:domain/use_case/reorder_tasks_uc.dart';
+import 'package:domain/use_case/reorder_task_uc.dart';
 import 'package:domain/use_case/update_task_uc.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -100,10 +100,10 @@ class _GlobalProviderState extends State<GlobalProvider> {
           ),
         ),
         ProxyProvider3<Log, TaskDataRepository,
-            ActiveTaskStorageUpdateSinkWrapper, ReorderTasksUC>(
+            ActiveTaskStorageUpdateSinkWrapper, ReorderTaskUC>(
           update: (context, log, taskRepository,
                   activeTaskStorageUpdateSinkWrapper, _) =>
-              ReorderTasksUC(
+              ReorderTaskUC(
             logger: log.errorLogger,
             repository: taskRepository,
             activeTaskStorageUpdateSinkWrapper:
@@ -118,8 +118,8 @@ class _GlobalProviderState extends State<GlobalProvider> {
             addTaskUC: addTaskUC,
           ),
         ),
-        ProxyProvider4<GetTaskListUC, UpdateTaskUC, RemoveTaskUC,
-            ReorderTasksUC, VerticalTaskListViewUseCases>(
+        ProxyProvider4<GetTaskListUC, UpdateTaskUC, RemoveTaskUC, ReorderTaskUC,
+            VerticalTaskListViewUseCases>(
           update: (context, getTaskListUC, updateTaskUC, removeTaskUC,
                   reorderTasksUC, _) =>
               VerticalTaskListViewUseCases(

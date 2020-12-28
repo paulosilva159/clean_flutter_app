@@ -12,7 +12,7 @@ abstract class TaskDataRepository {
 
   Future<void> removeTask(Task task);
 
-  Future<void> reorderTasks({int oldId, int newId});
+  Future<void> reorderTask({int oldId, int newId});
 }
 
 enum TaskListOrientation {

@@ -20,7 +20,7 @@ class TaskCDS {
         },
       );
 
-  Future<void> reorderTasks(int oldId, int newId) =>
+  Future<void> reorderTask(int oldId, int newId) =>
       Hive.openBox<TaskCM>(_taskListBoxName).then<void>((box) async {
         List<TaskCM> _reorderingTask;
 
@@ -41,9 +41,10 @@ class TaskCDS {
             .put(
           newId,
           TaskCM(
-              id: newId,
-              title: _movingTask.title,
-              orientation: _movingTask.orientation),
+            id: newId,
+            title: _movingTask.title,
+            orientation: _movingTask.orientation,
+          ),
         )
             .then((_) {
           _reorderingTask.forEach((boxTask) {

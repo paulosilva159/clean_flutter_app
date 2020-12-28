@@ -4,8 +4,8 @@ import 'package:domain/logger.dart';
 import 'package:domain/use_case/use_case.dart';
 import 'package:meta/meta.dart';
 
-class ReorderTasksUC extends UseCase<void, ReorderTasksUCParams> {
-  ReorderTasksUC({
+class ReorderTaskUC extends UseCase<void, ReorderTaskUCParams> {
+  ReorderTaskUC({
     @required this.repository,
     @required this.activeTaskStorageUpdateSinkWrapper,
     @required ErrorLogger logger,
@@ -17,13 +17,13 @@ class ReorderTasksUC extends UseCase<void, ReorderTasksUCParams> {
   final ActiveTaskStorageUpdateSinkWrapper activeTaskStorageUpdateSinkWrapper;
 
   @override
-  Future<void> getRawFuture({ReorderTasksUCParams params}) => repository
-      .reorderTasks(oldId: params.oldId, newId: params.newId)
+  Future<void> getRawFuture({ReorderTaskUCParams params}) => repository
+      .reorderTask(oldId: params.oldId, newId: params.newId)
       .then((_) => activeTaskStorageUpdateSinkWrapper.value.add(null));
 }
 
-class ReorderTasksUCParams {
-  ReorderTasksUCParams({@required this.oldId, @required this.newId})
+class ReorderTaskUCParams {
+  ReorderTaskUCParams({@required this.oldId, @required this.newId})
       : assert(oldId != null),
         assert(
           newId != null,

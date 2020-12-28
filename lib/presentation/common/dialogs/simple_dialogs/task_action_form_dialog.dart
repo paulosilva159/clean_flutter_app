@@ -1,11 +1,7 @@
-import 'dart:math';
-
-import 'package:flutter/material.dart';
-
-import 'package:domain/model/task.dart';
-import 'package:domain/data_repository/task_repository.dart';
-
 import 'package:clean_flutter_app/presentation/common/dialogs/simple_dialogs/adaptive_form_dialog.dart';
+import 'package:domain/data_repository/task_repository.dart';
+import 'package:domain/model/task.dart';
+import 'package:flutter/material.dart';
 
 void showUpsertTaskFormDialog(
   BuildContext context, {

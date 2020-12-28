@@ -53,7 +53,7 @@ class TaskScreenBloc with SubscriptionHolder {
     @required Task task,
     @required Sink<TaskScreenAction> actionSink,
   }) async* {
-    final _actionType = AddTaskAction();
+    const _actionType = TaskScreenActionType.addTask;
 
     try {
       await useCases.addTask(
@@ -61,11 +61,11 @@ class TaskScreenBloc with SubscriptionHolder {
       );
 
       actionSink.add(
-        ShowSuccessTaskAction(actionType: _actionType),
+        ShowSuccessTaskAction(type: _actionType),
       );
     } catch (error) {
       actionSink.add(
-        ShowFailTaskAction(actionType: _actionType),
+        ShowFailTaskAction(type: _actionType),
       );
     }
   }
