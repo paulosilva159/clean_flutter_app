@@ -10,26 +10,29 @@ class TaskScreenBloc with SubscriptionHolder {
   TaskScreenBloc({
     @required this.useCases,
   }) : assert(useCases != null) {
-    addTaskItemSubject(_onAddTaskItemSubject.stream);
+    addTaskItemSubject(
+      _onAddTaskItemSubject.stream,
+    ).listen(_onNewStateSubject.add).addTo(subscriptions);
 
-    updateTaskListStatusSubject(_onNewTaskListStatusSubject.stream);
+    updateTaskListStatusSubject(
+      _onNewTaskListStatusSubject.stream,
+    ).listen((taskListStatus) {
+      if (taskListStatus is TaskListLoaded) {
+        _onNewStateSubject.add(
+          Done(listSize: taskListStatus.listSize),
+        );
+      }
+    }).addTo(subscriptions);
   }
 
-  void addTaskItemSubject(Stream<Task> inputStream) => inputStream
-      .flatMap<TaskScreenState>(
+  Stream<TaskScreenState> addTaskItemSubject(Stream<Task> inputStream) =>
+      inputStream.flatMap<TaskScreenState>(
         (task) => _addData(task: task, actionSink: _onNewActionSubject.sink),
-      )
-      .listen(_onNewStateSubject.add)
-      .addTo(subscriptions);
+      );
 
-  void updateTaskListStatusSubject(Stream<TaskListStatus> inputStream) =>
-      inputStream.listen((taskListStatus) {
-        if (taskListStatus is TaskListLoaded) {
-          _onNewStateSubject.add(
-            Done(listSize: taskListStatus.listSize),
-          );
-        }
-      }).addTo(subscriptions);
+  Stream<TaskListStatus> updateTaskListStatusSubject(
+          Stream<TaskListStatus> inputStream) =>
+      inputStream;
 
   final TaskScreenUseCases useCases;
 
