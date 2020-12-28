@@ -1,19 +1,18 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import 'package:domain/data_observables.dart';
-import 'package:domain/exceptions.dart';
-
-import 'package:clean_flutter_app/presentation/common/indicator/loading_indicator.dart';
-import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view_bloc.dart';
-import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view_model.dart';
-import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/widgets/task_list.dart';
+import 'package:clean_flutter_app/generated/l10n.dart';
+import 'package:clean_flutter_app/presentation/common/action_stream_listener.dart';
 import 'package:clean_flutter_app/presentation/common/async_snapshot_response_view.dart';
 import 'package:clean_flutter_app/presentation/common/indicator/empty_list_indicator.dart';
 import 'package:clean_flutter_app/presentation/common/indicator/error_indicator.dart';
-import 'package:clean_flutter_app/presentation/common/action_stream_listener.dart';
+import 'package:clean_flutter_app/presentation/common/indicator/loading_indicator.dart';
 import 'package:clean_flutter_app/presentation/common/snackbar/task_action_snackbar.dart';
 import 'package:clean_flutter_app/presentation/common/task_list_status.dart';
+import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view_bloc.dart';
+import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view_model.dart';
+import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/widgets/task_list.dart';
+import 'package:domain/data_observables.dart';
+import 'package:domain/exceptions.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 typedef TaskListStatusUpdateCallback = void Function(TaskListStatus);
 
@@ -52,16 +51,48 @@ class VerticalTaskListView extends StatelessWidget {
         ),
       );
 
+  String _snackBarMessage(
+    BuildContext context, {
+    @required VerticalTaskListAction action,
+  }) {
+    if (action is ShowFailTaskAction) {
+      switch (action.type) {
+        case VerticalTaskListActionType.updateTask:
+          return S.of(context).updateTaskFailSnackBarMessage;
+        case VerticalTaskListActionType.removeTask:
+          return S.of(context).removeTaskFailSnackBarMessage;
+        case VerticalTaskListActionType.reorderTask:
+          return S.of(context).reorderTasksFailSnackBarMessage;
+      }
+    } else {
+      switch (action.type) {
+        case VerticalTaskListActionType.updateTask:
+          return S.of(context).updateTaskSuccessSnackBarMessage;
+        case VerticalTaskListActionType.removeTask:
+          return S.of(context).removeTaskSuccessSnackBarMessage;
+        case VerticalTaskListActionType.reorderTask:
+          return S.of(context).reorderTaskSuccessSnackBarMessage;
+      }
+    }
+
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) =>
       ActionStreamListener<VerticalTaskListAction>(
         actionStream: bloc.onNewAction,
         onReceived: (action) {
-          showActionMessageSnackBar(
+          final _message = _snackBarMessage(
             context,
-            message: action.message,
-            isFailMessage: action is FailAction,
+            action: action,
           );
+
+          if (action is ShowFailTaskAction) {
+            showFailTask(context, message: _message);
+          } else {
+            showSuccessTask(context, message: _message);
+          }
         },
         child: StreamBuilder<Object>(
           stream: bloc.onNewState,
@@ -73,12 +104,21 @@ class VerticalTaskListView extends StatelessWidget {
               onTryAgainTap: () => bloc.onTryAgain.add(null),
             ),
             successWidgetBuilder: (context, success) {
-              onNewTaskListStatus(TaskListStatus.loaded);
+              onNewTaskListStatus(
+                TaskListLoaded(
+                  listSize: success.listSize,
+                ),
+              );
 
               if (success is Listing) {
                 return TaskList(
-                  onRemoveTask: bloc.onRemoveTaskItem.add,
-                  onUpdateTask: bloc.onUpdateTaskItem.add,
+                  onRemoveTask: bloc.onRemoveTask.add,
+                  onUpdateTask: bloc.onUpdateTask.add,
+                  onReorderTasks: (oldId, newId) {
+                    bloc.onReorderTask.add(
+                      ReorderableTaskIds(oldId: oldId, newId: newId),
+                    );
+                  },
                   tasks: success.tasks,
                 );
               } else if (success is Empty) {

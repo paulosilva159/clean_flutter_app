@@ -1,11 +1,9 @@
-import 'package:meta/meta.dart';
-
-import 'package:domain/data_repository/task_repository.dart';
-import 'package:domain/model/task.dart';
-
 import 'package:clean_flutter_app/data/cache/source/task_cds.dart';
 import 'package:clean_flutter_app/data/mapper/cache_to_domain.dart';
 import 'package:clean_flutter_app/data/mapper/domain_to_cache.dart';
+import 'package:domain/data_repository/task_repository.dart';
+import 'package:domain/model/task.dart';
+import 'package:meta/meta.dart';
 
 class TaskRepository extends TaskDataRepository {
   TaskRepository({@required this.cacheDS}) : assert(cacheDS != null);
@@ -29,4 +27,8 @@ class TaskRepository extends TaskDataRepository {
   Future<void> removeTask(Task task) => cacheDS.removeTask(
         task.toCM(),
       );
+
+  @override
+  Future<void> reorderTask({int oldId, int newId}) =>
+      cacheDS.reorderTask(oldId, newId);
 }

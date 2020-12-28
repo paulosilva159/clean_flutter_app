@@ -2,26 +2,36 @@ import 'package:meta/meta.dart';
 
 abstract class TaskScreenState {}
 
-class WaitingData implements TaskScreenState {}
+class Waiting implements TaskScreenState {}
 
-class DataLoaded implements TaskScreenState {}
+class Done implements TaskScreenState {
+  Done({
+    @required this.listSize,
+  }) : assert(listSize != null);
+
+  final int listSize;
+}
+
+enum TaskScreenActionType {
+  addTask,
+}
 
 abstract class TaskScreenAction {
-  TaskScreenAction({@required this.message}) : assert(message != null);
+  TaskScreenAction({
+    @required this.type,
+  }) : assert(type != null);
 
-  final String message;
+  final TaskScreenActionType type;
 }
 
-class AddTaskAction extends TaskScreenAction {
-  AddTaskAction({
-    @required String message,
-  })  : assert(message != null),
-        super(message: message);
+class ShowFailTaskAction extends TaskScreenAction {
+  ShowFailTaskAction({@required TaskScreenActionType type})
+      : assert(type != null),
+        super(type: type);
 }
 
-class FailAction extends TaskScreenAction {
-  FailAction({
-    @required String message,
-  })  : assert(message != null),
-        super(message: message);
+class ShowSuccessTaskAction extends TaskScreenAction {
+  ShowSuccessTaskAction({@required TaskScreenActionType type})
+      : assert(type != null),
+        super(type: type);
 }

@@ -1,18 +1,17 @@
-import 'dart:math';
-
-import 'package:flutter/material.dart';
-
-import 'package:domain/model/task.dart';
-import 'package:domain/data_repository/task_repository.dart';
-
 import 'package:clean_flutter_app/presentation/common/dialogs/simple_dialogs/adaptive_form_dialog.dart';
+import 'package:domain/data_repository/task_repository.dart';
+import 'package:domain/model/task.dart';
+import 'package:flutter/material.dart';
 
 void showUpsertTaskFormDialog(
   BuildContext context, {
   @required void Function(Task) onUpsertTask,
   @required String formDialogTitle,
+  int upsertingTaskId,
   Task upsertingTask,
 }) {
+  assert(upsertingTaskId != null || upsertingTask != null);
+
   final _titleFieldTextEditingController = TextEditingController();
 
   AdaptiveFormDialog(
@@ -24,7 +23,7 @@ void showUpsertTaskFormDialog(
       onUpsertTask(
         Task(
           title: _titleFieldTextEditingController.value.text,
-          id: upsertingTask?.id ?? Random().nextInt(99999),
+          id: upsertingTask?.id ?? upsertingTaskId,
           orientation: TaskListOrientation.vertical,
         ),
       );

@@ -6,10 +6,14 @@
   "errorIndicatorMessage": "Error",
   "addTaskDialogTitle": "Add task",
   "updateTaskDialogTitle": "Update task",
+  "genericSuccessTaskSnackBarMessage": "Action was successful",
   "addTaskSuccessSnackBarMessage": "Successfully added task",
   "updateTaskSuccessSnackBarMessage": "Successfully updated task",
   "removeTaskSuccessSnackBarMessage": "Successfully removed task",
+  "reorderTaskSuccessSnackBarMessage": "Successfully reordered tasks",
   "genericFailTaskSnackBarMessage": "Something went wrong",
   "updateTaskFailSnackBarMessage": "Failed to update task",
-  "removeTaskFailSnackBarMessage": "Failed to remove task"
+  "removeTaskFailSnackBarMessage": "Failed to remove task",
+  "reorderTasksFailSnackBarMessage": "Failed to reorder task"
+
 }

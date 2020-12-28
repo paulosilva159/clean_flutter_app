@@ -95,6 +95,16 @@ class S {
     );
   }
 
+  /// `Ação realizada com sucess`
+  String get genericSuccessTaskSnackBarMessage {
+    return Intl.message(
+      'Ação realizada com sucess',
+      name: 'genericSuccessTaskSnackBarMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Tarefa adicionada com sucesso`
   String get addTaskSuccessSnackBarMessage {
     return Intl.message(
@@ -125,11 +135,31 @@ class S {
     );
   }
 
+  /// `Tarefas reordenadas com sucesso`
+  String get reorderTaskSuccessSnackBarMessage {
+    return Intl.message(
+      'Tarefas reordenadas com sucesso',
+      name: 'reorderTaskSuccessSnackBarMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Alguma coisa deu errado`
   String get genericFailTaskSnackBarMessage {
     return Intl.message(
       'Alguma coisa deu errado',
       name: 'genericFailTaskSnackBarMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Falha ao adicionar tarefa`
+  String get addTaskFailSnackBarMessage {
+    return Intl.message(
+      'Falha ao adicionar tarefa',
+      name: 'addTaskFailSnackBarMessage',
       desc: '',
       args: [],
     );
@@ -150,6 +180,16 @@ class S {
     return Intl.message(
       'Falha ao remover tarefa',
       name: 'removeTaskFailSnackBarMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Falha ao reordenar tarefas`
+  String get reorderTasksFailSnackBarMessage {
+    return Intl.message(
+      'Falha ao reordenar tarefas',
+      name: 'reorderTasksFailSnackBarMessage',
       desc: '',
       args: [],
     );

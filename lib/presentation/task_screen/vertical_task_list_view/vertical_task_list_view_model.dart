@@ -1,6 +1,16 @@
+import 'package:domain/model/task.dart';
 import 'package:meta/meta.dart';
 
-import 'package:domain/model/task.dart';
+class ReorderableTaskIds {
+  ReorderableTaskIds({
+    @required this.oldId,
+    @required this.newId,
+  })  : assert(oldId != null),
+        assert(newId != null);
+
+  final int oldId;
+  final int newId;
+}
 
 abstract class VerticalTaskListViewState {}
 
@@ -16,6 +26,8 @@ abstract class Success implements VerticalTaskListViewState {
   Success({@required this.tasks}) : assert(tasks != null);
 
   final List<Task> tasks;
+
+  int get listSize => tasks.length;
 }
 
 class Empty extends Success {
@@ -28,29 +40,28 @@ class Listing extends Success {
         super(tasks: tasks);
 }
 
+enum VerticalTaskListActionType {
+  reorderTask,
+  updateTask,
+  removeTask,
+}
+
 abstract class VerticalTaskListAction {
-  VerticalTaskListAction({@required this.message}) : assert(message != null);
+  VerticalTaskListAction({
+    @required this.type,
+  }) : assert(type != null);
 
-  final String message;
+  final VerticalTaskListActionType type;
 }
 
-class UpdateTaskAction extends VerticalTaskListAction {
-  UpdateTaskAction({
-    @required String message,
-  })  : assert(message != null),
-        super(message: message);
+class ShowFailTaskAction extends VerticalTaskListAction {
+  ShowFailTaskAction({@required VerticalTaskListActionType type})
+      : assert(type != null),
+        super(type: type);
 }
 
-class RemoveTaskAction extends VerticalTaskListAction {
-  RemoveTaskAction({
-    @required String message,
-  })  : assert(message != null),
-        super(message: message);
-}
-
-class FailAction extends VerticalTaskListAction {
-  FailAction({
-    @required String message,
-  })  : assert(message != null),
-        super(message: message);
+class ShowSuccessTaskAction extends VerticalTaskListAction {
+  ShowSuccessTaskAction({@required VerticalTaskListActionType type})
+      : assert(type != null),
+        super(type: type);
 }
