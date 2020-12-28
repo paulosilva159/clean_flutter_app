@@ -16,57 +16,58 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
     @required this.activeTaskStorageUpdateStreamWrapper,
   })  : assert(useCases != null),
         assert(activeTaskStorageUpdateStreamWrapper != null) {
-    getTaskItemListSubject(
-      Rx.merge<void>([
-        Stream<void>.value(null),
-        _onTryAgainSubject.stream,
-        activeTaskStorageUpdateStreamWrapper.value,
-      ]),
-    );
-
-    updateTaskSubject(
-      _onUpdateTaskSubject.stream,
-    );
-
-    removeTaskSubject(
-      _onRemoveTaskSubject.stream,
-    );
-
-    reorderTaskSubject(
-      _onReorderTaskSubject.stream,
-    );
+    Rx.merge<VerticalTaskListViewState>([
+      getTaskListSubject(
+        Rx.merge<void>([
+          Stream<void>.value(null),
+          _onTryAgainSubject.stream,
+          activeTaskStorageUpdateStreamWrapper.value,
+        ]),
+      ),
+      updateTaskSubject(
+        _onUpdateTaskSubject.stream,
+      ),
+      removeTaskSubject(
+        _onRemoveTaskSubject.stream,
+      ),
+      reorderTaskSubject(
+        _onReorderTaskSubject.stream,
+      ),
+    ]).listen(_onNewStateSubject.add).addTo(subscriptions);
   }
 
-  void getTaskItemListSubject(Stream<void> inputStream) => inputStream
-      .switchMap<VerticalTaskListViewState>(
+  Stream<VerticalTaskListViewState> getTaskListSubject(
+          Stream<void> inputStream) =>
+      inputStream.switchMap<VerticalTaskListViewState>(
         (_) => _fetchData(),
-      )
-      .listen(_onNewStateSubject.add)
-      .addTo(subscriptions);
+      );
 
-  void updateTaskSubject(Stream<Task> inputStream) => inputStream
-      .flatMap<VerticalTaskListViewState>(
-        (task) => _updateData(task: task, actionSink: _onNewActionSubject.sink),
-      )
-      .listen(_onNewStateSubject.add)
-      .addTo(subscriptions);
+  Stream<VerticalTaskListViewState> updateTaskSubject(
+          Stream<Task> inputStream) =>
+      inputStream.flatMap<VerticalTaskListViewState>(
+        (task) => _updateData(
+          task: task,
+          actionSink: _onNewActionSubject.sink,
+        ),
+      );
 
-  void removeTaskSubject(Stream<Task> inputStream) => inputStream
-      .flatMap<VerticalTaskListViewState>(
-        (task) => _removeData(task: task, actionSink: _onNewActionSubject.sink),
-      )
-      .listen(_onNewStateSubject.add)
-      .addTo(subscriptions);
+  Stream<VerticalTaskListViewState> removeTaskSubject(
+          Stream<Task> inputStream) =>
+      inputStream.flatMap<VerticalTaskListViewState>(
+        (task) => _removeData(
+          task: task,
+          actionSink: _onNewActionSubject.sink,
+        ),
+      );
 
-  void reorderTaskSubject(Stream<ReorderableTaskIds> inputStream) => inputStream
-      .flatMap<VerticalTaskListViewState>(
+  Stream<VerticalTaskListViewState> reorderTaskSubject(
+          Stream<ReorderableTaskIds> inputStream) =>
+      inputStream.flatMap<VerticalTaskListViewState>(
         (reorderingTaskIds) => _reorderData(
           reorderingTaskIds: reorderingTaskIds,
           actionSink: _onNewActionSubject.sink,
         ),
-      )
-      .listen(_onNewStateSubject.add)
-      .addTo(subscriptions);
+      );
 
   final VerticalTaskListViewUseCases useCases;
   final ActiveTaskStorageUpdateStreamWrapper
