@@ -30,31 +30,3 @@ void showSuccessTask(BuildContext context, {String message}) {
     message: message ?? S.of(context).genericSuccessTaskSnackBarMessage,
   );
 }
-
-// void showAddTaskSuccess(BuildContext context) {
-//   showActionMessageSnackBar(
-//     context,
-//     message: S.of(context).addTaskSuccessSnackBarMessage,
-//   );
-// }
-//
-// void showUpdateTaskSuccess(BuildContext context) {
-//   showActionMessageSnackBar(
-//     context,
-//     message: S.of(context).updateTaskSuccessSnackBarMessage,
-//   );
-// }
-//
-// void showRemoveTaskSuccess(BuildContext context) {
-//   showActionMessageSnackBar(
-//     context,
-//     message: S.of(context).removeTaskSuccessSnackBarMessage,
-//   );
-// }
-//
-// void showReorderTaskSuccess(BuildContext context) {
-//   showActionMessageSnackBar(
-//     context,
-//     message: S.of(context).reorderTasksSuccessSnackBarMessage,
-//   );
-// }

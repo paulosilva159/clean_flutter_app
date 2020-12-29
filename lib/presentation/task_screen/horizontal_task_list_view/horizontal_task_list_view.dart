@@ -7,10 +7,9 @@ import 'package:clean_flutter_app/presentation/common/indicator/error_indicator.
 import 'package:clean_flutter_app/presentation/common/indicator/loading_indicator.dart';
 import 'package:clean_flutter_app/presentation/common/snackbar/task_action_message_snackbar.dart';
 import 'package:clean_flutter_app/presentation/common/task_list_status.dart';
-import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view_bloc.dart';
-import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view_model.dart';
+import 'package:clean_flutter_app/presentation/task_screen/horizontal_task_list_view/horizontal_task_list_view_bloc.dart';
+import 'package:clean_flutter_app/presentation/task_screen/horizontal_task_list_view/horizontal_task_list_view_model.dart';
 import 'package:domain/data_observables.dart';
-import 'package:domain/data_repository/task_repository.dart';
 import 'package:domain/exceptions.dart';
 import 'package:domain/model/task.dart';
 import 'package:flutter/material.dart';
@@ -18,20 +17,20 @@ import 'package:provider/provider.dart';
 
 typedef TaskListStatusUpdateCallback = void Function(TaskListStatus);
 
-class VerticalTaskListView extends StatelessWidget {
-  const VerticalTaskListView({
+class HorizontalTaskListView extends StatelessWidget {
+  const HorizontalTaskListView({
     @required this.bloc,
     @required this.onNewTaskListStatus,
   })  : assert(bloc != null),
         assert(onNewTaskListStatus != null);
 
-  final VerticalTaskListViewBloc bloc;
+  final HorizontalTaskListViewBloc bloc;
   final TaskListStatusUpdateCallback onNewTaskListStatus;
 
   static Widget create(
           {@required TaskListStatusUpdateCallback onNewTaskListStatus}) =>
       ProxyProvider2<ActiveTaskStorageUpdateStreamWrapper,
-          VerticalTaskListViewUseCases, VerticalTaskListViewBloc>(
+          HorizontalTaskListViewUseCases, HorizontalTaskListViewBloc>(
         update: (
           context,
           activeTaskStorageUpdateStreamWrapper,
@@ -39,14 +38,14 @@ class VerticalTaskListView extends StatelessWidget {
           taskListViewBloc,
         ) =>
             taskListViewBloc ??
-            VerticalTaskListViewBloc(
+            HorizontalTaskListViewBloc(
               activeTaskStorageUpdateStreamWrapper:
                   activeTaskStorageUpdateStreamWrapper,
               useCases: taskListViewUseCases,
             ),
         dispose: (context, bloc) => bloc.dispose(),
-        child: Consumer<VerticalTaskListViewBloc>(
-          builder: (context, bloc, child) => VerticalTaskListView(
+        child: Consumer<HorizontalTaskListViewBloc>(
+          builder: (context, bloc, child) => HorizontalTaskListView(
             bloc: bloc,
             onNewTaskListStatus: onNewTaskListStatus,
           ),
@@ -55,24 +54,24 @@ class VerticalTaskListView extends StatelessWidget {
 
   String _snackBarMessage(
     BuildContext context, {
-    @required VerticalTaskListAction action,
+    @required HorizontalTaskListAction action,
   }) {
     if (action is ShowFailTaskAction) {
       switch (action.type) {
-        case VerticalTaskListActionType.updateTask:
+        case HorizontalTaskListActionType.updateTask:
           return S.of(context).updateTaskFailSnackBarMessage;
-        case VerticalTaskListActionType.removeTask:
+        case HorizontalTaskListActionType.removeTask:
           return S.of(context).removeTaskFailSnackBarMessage;
-        case VerticalTaskListActionType.reorderTask:
+        case HorizontalTaskListActionType.reorderTask:
           return S.of(context).reorderTasksFailSnackBarMessage;
       }
     } else {
       switch (action.type) {
-        case VerticalTaskListActionType.updateTask:
+        case HorizontalTaskListActionType.updateTask:
           return S.of(context).updateTaskSuccessSnackBarMessage;
-        case VerticalTaskListActionType.removeTask:
+        case HorizontalTaskListActionType.removeTask:
           return S.of(context).removeTaskSuccessSnackBarMessage;
-        case VerticalTaskListActionType.reorderTask:
+        case HorizontalTaskListActionType.reorderTask:
           return S.of(context).reorderTaskSuccessSnackBarMessage;
       }
     }
@@ -82,7 +81,7 @@ class VerticalTaskListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      ActionStreamListener<VerticalTaskListAction>(
+      ActionStreamListener<HorizontalTaskListAction>(
         actionStream: bloc.onNewAction,
         onReceived: (action) {
           final _message = _snackBarMessage(
@@ -113,7 +112,7 @@ class VerticalTaskListView extends StatelessWidget {
               );
 
               if (success is Listing) {
-                return _VerticalTaskList(
+                return _HorizontalTaskList(
                   onRemoveTask: bloc.onRemoveTask.add,
                   onUpdateTask: bloc.onUpdateTask.add,
                   onReorderTasks: (oldId, newId) {
@@ -137,8 +136,8 @@ class VerticalTaskListView extends StatelessWidget {
 
 // TODO(paulosilva159): Refazer ReorderableListView
 
-class _VerticalTaskList extends StatelessWidget {
-  const _VerticalTaskList({
+class _HorizontalTaskList extends StatefulWidget {
+  const _HorizontalTaskList({
     @required this.onRemoveTask,
     @required this.onUpdateTask,
     @required this.onReorderTasks,
@@ -154,32 +153,69 @@ class _VerticalTaskList extends StatelessWidget {
   final List<Task> tasks;
 
   @override
-  Widget build(BuildContext context) => Material(
-        child: ReorderableListView(
-          key: const ValueKey<TaskListOrientation>(
-            TaskListOrientation.vertical,
-          ),
-          scrollDirection: Axis.vertical,
-          onReorder: (oldId, newId) {
-            onReorderTasks(
-              oldId + 1,
-              newId > oldId ? newId : newId + 1,
-            );
-          },
-          children: tasks
-              .map((task) => _VerticalTaskListItem(
-                    key: ValueKey<int>(task.id),
-                    onRemoveTask: onRemoveTask,
-                    onUpdateTask: onUpdateTask,
-                    task: task,
-                  ))
-              .toList(),
+  __HorizontalTaskListState createState() => __HorizontalTaskListState();
+}
+
+class __HorizontalTaskListState extends State<_HorizontalTaskList> {
+  bool _isShowingHorizontalTaskDetails = false;
+
+  @override
+  Widget build(BuildContext context) => Container(
+        color: Colors.pink,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              height: 120,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) => _HorizontalTaskListItem(
+                  task: widget.tasks[index],
+                  onRemoveTask: widget.onRemoveTask,
+                  onUpdateTask: widget.onUpdateTask,
+                ),
+                itemCount: widget.tasks.length,
+              ),
+            ),
+            Visibility(
+              visible: _isShowingHorizontalTaskDetails,
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  final _task = widget.tasks[index];
+
+                  return _EditableListTile(
+                    task: _task,
+                    onUpdateTask: widget.onUpdateTask,
+                    onRemoveTask: widget.onRemoveTask,
+                  );
+                },
+                itemCount: widget.tasks.length,
+              ),
+            ),
+            FlatButton.icon(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              onPressed: () {
+                setState(() {
+                  _isShowingHorizontalTaskDetails =
+                      !_isShowingHorizontalTaskDetails;
+                });
+              },
+              icon: Icon(
+                _isShowingHorizontalTaskDetails
+                    ? Icons.keyboard_arrow_up_rounded
+                    : Icons.keyboard_arrow_down_rounded,
+              ),
+              label: Container(),
+            ),
+          ],
         ),
       );
 }
 
-class _VerticalTaskListItem extends StatelessWidget {
-  const _VerticalTaskListItem({
+class _HorizontalTaskListItem extends StatelessWidget {
+  const _HorizontalTaskListItem({
     @required this.task,
     @required this.onRemoveTask,
     @required this.onUpdateTask,
@@ -193,53 +229,73 @@ class _VerticalTaskListItem extends StatelessWidget {
   final void Function(Task) onRemoveTask;
   final void Function(Task) onUpdateTask;
 
-  RoundedRectangleBorder _listTileCardShape() => const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(20),
+  @override
+  Widget build(BuildContext context) => Container(
+        margin: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+          color: Colors.amber,
+        ),
+        height: 100,
+        width: 100,
+        child: Center(
+          child: Text('${task.id}'),
         ),
       );
+}
+
+class _EditableListTile extends StatelessWidget {
+  const _EditableListTile({
+    @required this.task,
+    @required this.onRemoveTask,
+    @required this.onUpdateTask,
+  })  : assert(task != null),
+        assert(onRemoveTask != null),
+        assert(onUpdateTask != null);
+
+  final void Function(Task) onRemoveTask;
+  final void Function(Task) onUpdateTask;
+  final Task task;
+
+  static const _denseIconSize = 20.0;
 
   @override
-  Widget build(BuildContext context) => Card(
-        elevation: 5,
-        margin: const EdgeInsets.symmetric(
-          horizontal: 10,
-          vertical: 5,
+  Widget build(BuildContext context) => ListTile(
+        dense: true,
+        leading: Text('#${task.id}'),
+        title: Text(
+          task.title,
+          style: const TextStyle(fontSize: 16.5),
         ),
-        shape: _listTileCardShape(),
-        color: Colors.amber,
-        child: ListTile(
-          onTap: () {
-            print('t');
-          },
-          shape: _listTileCardShape(),
-          title: Text(task.title),
-          trailing: Container(
-            width: 75,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Expanded(
-                  child: IconButton(
-                    icon: const Icon(Icons.edit_rounded),
-                    onPressed: () {
-                      showUpsertTaskFormDialog(
-                        context,
-                        formDialogTitle: S.of(context).updateTaskDialogTitle,
-                        onUpsertTask: onUpdateTask,
-                        upsertingTask: task,
-                      );
-                    },
+        trailing: Container(
+          width: 75,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(
+                child: IconButton(
+                  iconSize: _denseIconSize,
+                  icon: const Icon(Icons.edit_rounded),
+                  onPressed: () {
+                    showUpsertTaskFormDialog(
+                      context,
+                      formDialogTitle: S.of(context).updateTaskDialogTitle,
+                      onUpsertTask: onUpdateTask,
+                      upsertingTask: task,
+                    );
+                  },
+                ),
+              ),
+              Expanded(
+                child: IconButton(
+                  iconSize: _denseIconSize,
+                  icon: const Icon(Icons.delete),
+                  onPressed: () => onRemoveTask(
+                    task,
                   ),
                 ),
-                Expanded(
-                  child: IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () => onRemoveTask(task),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       );

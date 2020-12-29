@@ -18,17 +18,20 @@ class ReorderTaskUC extends UseCase<void, ReorderTaskUCParams> {
 
   @override
   Future<void> getRawFuture({ReorderTaskUCParams params}) => repository
-      .reorderTask(oldId: params.oldId, newId: params.newId)
+      .reorderTask(params.orientation, oldId: params.oldId, newId: params.newId)
       .then((_) => activeTaskStorageUpdateSinkWrapper.value.add(null));
 }
 
 class ReorderTaskUCParams {
-  ReorderTaskUCParams({@required this.oldId, @required this.newId})
-      : assert(oldId != null),
-        assert(
-          newId != null,
-        );
+  ReorderTaskUCParams({
+    @required this.orientation,
+    @required this.oldId,
+    @required this.newId,
+  })  : assert(orientation != null),
+        assert(oldId != null),
+        assert(newId != null);
 
+  final TaskListOrientation orientation;
   final int oldId;
   final int newId;
 }

@@ -7,10 +7,12 @@ void showUpsertTaskFormDialog(
   BuildContext context, {
   @required void Function(Task) onUpsertTask,
   @required String formDialogTitle,
-  int upsertingTaskId,
   Task upsertingTask,
+  int upsertingTaskId,
+  TaskListOrientation upsertingTaskOrientation,
 }) {
-  assert(upsertingTaskId != null || upsertingTask != null);
+  assert(upsertingTask != null || upsertingTaskId != null);
+  assert(upsertingTask != null || upsertingTaskOrientation != null);
 
   final _titleFieldTextEditingController = TextEditingController();
 
@@ -24,7 +26,7 @@ void showUpsertTaskFormDialog(
         Task(
           title: _titleFieldTextEditingController.value.text,
           id: upsertingTask?.id ?? upsertingTaskId,
-          orientation: TaskListOrientation.vertical,
+          orientation: upsertingTask?.orientation ?? upsertingTaskOrientation,
         ),
       );
 

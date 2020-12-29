@@ -15,7 +15,7 @@
 // import 'package:clean_flutter_app/presentation/common/task_list_status.dart';
 // import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view.dart';
 // import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view_bloc.dart';
-// import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/widgets/task_list.dart';
+// import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/widgets/vertical_task_list.dart';
 //
 // class ActiveTaskStorageUpdateStreamWrapperSpy extends Mock
 //     implements ActiveTaskStorageUpdateStreamWrapper {}
