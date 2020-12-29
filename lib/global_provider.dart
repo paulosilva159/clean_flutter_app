@@ -1,12 +1,13 @@
 import 'package:clean_flutter_app/common/utils.dart';
 import 'package:clean_flutter_app/data/cache/source/task_cds.dart';
 import 'package:clean_flutter_app/data/repository/task_repository.dart';
+import 'package:clean_flutter_app/presentation/task_screen/horizontal_task_list_view/horizontal_task_list_view_bloc.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_screen_bloc.dart';
 import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view_bloc.dart';
 import 'package:domain/data_observables.dart';
 import 'package:domain/data_repository/task_repository.dart';
 import 'package:domain/use_case/add_task_uc.dart';
-import 'package:domain/use_case/get_vertical_task_list_uc.dart';
+import 'package:domain/use_case/get_task_list_uc.dart';
 import 'package:domain/use_case/remove_task_uc.dart';
 import 'package:domain/use_case/reorder_task_uc.dart';
 import 'package:domain/use_case/update_task_uc.dart';
@@ -123,6 +124,17 @@ class _GlobalProviderState extends State<GlobalProvider> {
           update: (context, getTaskListUC, updateTaskUC, removeTaskUC,
                   reorderTasksUC, _) =>
               VerticalTaskListViewUseCases(
+            getTaskListUC: getTaskListUC,
+            removeTaskUC: removeTaskUC,
+            updateTaskUC: updateTaskUC,
+            reorderTasksUC: reorderTasksUC,
+          ),
+        ),
+        ProxyProvider4<GetTaskListUC, UpdateTaskUC, RemoveTaskUC, ReorderTaskUC,
+            HorizontalTaskListViewUseCases>(
+          update: (context, getTaskListUC, updateTaskUC, removeTaskUC,
+                  reorderTasksUC, _) =>
+              HorizontalTaskListViewUseCases(
             getTaskListUC: getTaskListUC,
             removeTaskUC: removeTaskUC,
             updateTaskUC: updateTaskUC,

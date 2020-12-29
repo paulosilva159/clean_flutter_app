@@ -11,24 +11,32 @@ class TaskRepository extends TaskDataRepository {
   final TaskCDS cacheDS;
 
   @override
-  Future<List<Task>> getTaskList({@required TaskListOrientation orientation}) =>
-      cacheDS.getTaskList().then(
-            (list) => list
-                .map((task) => task.toDM())
-                .where((task) => task.orientation == orientation)
-                .toList(),
-          );
-  @override
-  Future<void> upsertTask(Task task) => cacheDS.upsertTask(
-        task.toCM(),
+  Future<List<Task>> getTaskList(TaskListOrientation orientation) =>
+      (orientation == TaskListOrientation.vertical
+              ? cacheDS.getVerticalTaskList()
+              : cacheDS.getHorizontalTaskList())
+          .then(
+        (list) => list.map((task) => task.toDM()).toList(),
       );
+  @override
+  Future<void> upsertTask(Task task) =>
+      task.orientation == TaskListOrientation.vertical
+          ? cacheDS.upsertVerticalTask(task.toCM())
+          : cacheDS.upsertHorizontalTask(task.toCM());
 
   @override
-  Future<void> removeTask(Task task) => cacheDS.removeTask(
-        task.toCM(),
-      );
+  Future<void> removeTask(Task task) =>
+      task.orientation == TaskListOrientation.vertical
+          ? cacheDS.removeVerticalTask(task.toCM())
+          : cacheDS.removeHorizontalTask(task.toCM());
 
   @override
-  Future<void> reorderTask({int oldId, int newId}) =>
-      cacheDS.reorderTask(oldId, newId);
+  Future<void> reorderTask(
+    TaskListOrientation orientation, {
+    @required int oldId,
+    @required int newId,
+  }) =>
+      orientation == TaskListOrientation.vertical
+          ? cacheDS.reorderVerticalTask(oldId, newId)
+          : cacheDS.reorderHorizontalTask(oldId, newId);
 }

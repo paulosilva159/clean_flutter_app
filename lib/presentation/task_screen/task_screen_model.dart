@@ -1,4 +1,16 @@
+import 'package:clean_flutter_app/presentation/common/task_list_status.dart';
 import 'package:meta/meta.dart';
+
+class CombinedTaskListStatus {
+  CombinedTaskListStatus({
+    @required this.verticalListStatus,
+    @required this.horizontalListStatus,
+  })  : assert(verticalListStatus != null),
+        assert(horizontalListStatus != null);
+
+  final TaskListStatus verticalListStatus;
+  final TaskListStatus horizontalListStatus;
+}
 
 abstract class TaskScreenState {}
 
@@ -6,10 +18,13 @@ class Waiting implements TaskScreenState {}
 
 class Done implements TaskScreenState {
   Done({
-    @required this.listSize,
-  }) : assert(listSize != null);
+    @required this.verticalListSize,
+    @required this.horizontalListSize,
+  })  : assert(verticalListSize != null),
+        assert(horizontalListSize != null);
 
-  final int listSize;
+  final int verticalListSize;
+  final int horizontalListSize;
 }
 
 enum TaskScreenActionType {

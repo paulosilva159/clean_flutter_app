@@ -6,13 +6,17 @@ import 'package:meta/meta.dart';
 abstract class TaskDataRepository {
   const TaskDataRepository();
 
-  Future<List<Task>> getTaskList({@required TaskListOrientation orientation});
+  Future<List<Task>> getTaskList(TaskListOrientation orientation);
 
   Future<void> upsertTask(Task task);
 
   Future<void> removeTask(Task task);
 
-  Future<void> reorderTask({int oldId, int newId});
+  Future<void> reorderTask(
+    TaskListOrientation orientation, {
+    @required int oldId,
+    @required int newId,
+  });
 }
 
 enum TaskListOrientation {
