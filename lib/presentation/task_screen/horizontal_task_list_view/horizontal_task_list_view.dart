@@ -19,7 +19,7 @@ import 'package:provider/provider.dart';
 typedef TaskListStatusUpdateCallback = void Function(TaskListStatus);
 
 class HorizontalTaskListView extends StatelessWidget {
-  HorizontalTaskListView({
+  const HorizontalTaskListView({
     @required this.bloc,
     @required this.onNewTaskListStatus,
   })  : assert(bloc != null),
