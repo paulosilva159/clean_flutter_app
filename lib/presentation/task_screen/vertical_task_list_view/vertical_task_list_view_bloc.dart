@@ -78,9 +78,7 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
   final _onUpdateTaskSubject = PublishSubject<Task>();
   final _onRemoveTaskSubject = PublishSubject<Task>();
   final _onReorderTaskSubject = PublishSubject<ReorderableTaskIds>();
-  final _onNewStateSubject = BehaviorSubject<VerticalTaskListViewState>.seeded(
-    Loading(),
-  );
+  final _onNewStateSubject = BehaviorSubject<VerticalTaskListViewState>();
 
   Sink<void> get onTryAgain => _onTryAgainSubject.sink;
   Sink<Task> get onUpdateTask => _onUpdateTaskSubject.sink;
@@ -91,6 +89,8 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
   Stream<VerticalTaskListAction> get onNewAction => _onNewActionSubject.stream;
 
   Stream<VerticalTaskListViewState> _fetchData() async* {
+    yield Loading();
+
     try {
       final taskList = await useCases.getTasksList();
 

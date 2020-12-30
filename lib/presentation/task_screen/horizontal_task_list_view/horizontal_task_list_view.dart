@@ -19,7 +19,7 @@ import 'package:provider/provider.dart';
 typedef TaskListStatusUpdateCallback = void Function(TaskListStatus);
 
 class HorizontalTaskListView extends StatelessWidget {
-  const HorizontalTaskListView({
+  HorizontalTaskListView({
     @required this.bloc,
     @required this.onNewTaskListStatus,
   })  : assert(bloc != null),
@@ -100,7 +100,13 @@ class HorizontalTaskListView extends StatelessWidget {
           stream: bloc.onNewState,
           builder: (context, snapshot) =>
               AsyncSnapshotResponseView<Loading, Error, Success>(
-            loadingWidgetBuilder: (context, loading) => LoadingIndicator(),
+            loadingWidgetBuilder: (context, loading) {
+              onNewTaskListStatus(
+                TaskListLoading(),
+              );
+
+              return LoadingIndicator();
+            },
             errorWidgetBuilder: (context, error) => ErrorIndicator(
               error: error,
               onTryAgainTap: () => bloc.onTryAgain.add(null),
@@ -134,8 +140,6 @@ class HorizontalTaskListView extends StatelessWidget {
         ),
       );
 }
-
-// TODO(paulosilva159): Refazer ReorderableListView
 
 class _HorizontalTaskList extends StatefulWidget {
   const _HorizontalTaskList({

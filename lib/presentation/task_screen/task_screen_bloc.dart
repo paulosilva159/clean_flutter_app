@@ -17,18 +17,28 @@ class TaskScreenBloc with SubscriptionHolder {
     updateTaskListStatusSubject(
       _onNewVerticalTaskListStatusSubject.stream,
       _onNewHorizontalTaskListStatusSubject.stream,
-    ).listen((combinedTaskListStatus) {
+    ).distinct().listen((combinedTaskListStatus) {
       final _verticalListStatus = combinedTaskListStatus.verticalListStatus;
       final _horizontalListStatus = combinedTaskListStatus.horizontalListStatus;
+      final _listingState = _onNewStateSubject.value;
 
       if (_verticalListStatus is TaskListLoaded &&
           _horizontalListStatus is TaskListLoaded) {
-        _onNewStateSubject.add(
-          Done(
-            verticalListSize: _verticalListStatus.listSize,
-            horizontalListSize: _horizontalListStatus.listSize,
-          ),
-        );
+        final _isInitialListingState = _listingState is! Done;
+
+        final _listsSizeHaveChanged = _listingState is Done &&
+            (_listingState.verticalListSize != _verticalListStatus.listSize ||
+                _listingState.horizontalListSize !=
+                    _horizontalListStatus.listSize);
+
+        if (_isInitialListingState || _listsSizeHaveChanged) {
+          _onNewStateSubject.add(
+            Done(
+              verticalListSize: _verticalListStatus.listSize,
+              horizontalListSize: _horizontalListStatus.listSize,
+            ),
+          );
+        }
       }
     }).addTo(subscriptions);
   }

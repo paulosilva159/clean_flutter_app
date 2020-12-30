@@ -44,9 +44,11 @@ class TaskScreen extends StatelessWidget {
 
           return Scaffold(
             resizeToAvoidBottomPadding: false,
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
             floatingActionButton: screenState is Done
-                ? Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       FloatingActionButton(
                         heroTag: null,
@@ -63,7 +65,7 @@ class TaskScreen extends StatelessWidget {
                         child: const Icon(Icons.horizontal_split_rounded),
                       ),
                       const SizedBox(
-                        height: 10,
+                        width: 10,
                       ),
                       FloatingActionButton(
                         heroTag: null,

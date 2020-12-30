@@ -101,7 +101,13 @@ class VerticalTaskListView extends StatelessWidget {
           stream: bloc.onNewState,
           builder: (context, snapshot) =>
               AsyncSnapshotResponseView<Loading, Error, Success>(
-            loadingWidgetBuilder: (context, loading) => LoadingIndicator(),
+            loadingWidgetBuilder: (context, loading) {
+              onNewTaskListStatus(
+                TaskListLoading(),
+              );
+
+              return LoadingIndicator();
+            },
             errorWidgetBuilder: (context, error) => ErrorIndicator(
               error: error,
               onTryAgainTap: () => bloc.onTryAgain.add(null),
