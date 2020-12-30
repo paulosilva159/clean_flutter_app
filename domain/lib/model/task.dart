@@ -1,11 +1,12 @@
+import 'package:domain/data_repository/task_repository.dart';
 import 'package:meta/meta.dart';
 
-import 'package:domain/data_repository/task_repository.dart';
-
 class Task {
-  const Task(
-      {@required this.id, @required this.title, @required this.orientation})
-      : assert(id != null),
+  const Task({
+    @required this.id,
+    @required this.title,
+    @required this.orientation,
+  })  : assert(id != null),
         assert(title != null),
         assert(orientation != null);
 

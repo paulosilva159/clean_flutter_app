@@ -1,55 +1,77 @@
-import 'package:meta/meta.dart';
-import 'package:rxdart/rxdart.dart';
-
+import 'package:clean_flutter_app/common/subscription_holder.dart';
+import 'package:clean_flutter_app/presentation/common/task_list_status.dart';
+import 'package:clean_flutter_app/presentation/task_screen/task_screen_model.dart';
 import 'package:domain/model/task.dart';
 import 'package:domain/use_case/add_task_uc.dart';
-
-import 'package:clean_flutter_app/common/subscription_holder.dart';
-import 'package:clean_flutter_app/presentation/task_screen/task_screen_model.dart';
-import 'package:clean_flutter_app/presentation/common/task_list_status.dart';
+import 'package:meta/meta.dart';
+import 'package:rxdart/rxdart.dart';
 
 class TaskScreenBloc with SubscriptionHolder {
   TaskScreenBloc({
     @required this.useCases,
   }) : assert(useCases != null) {
-    addTaskItemSubject(_onAddTaskItemSubject.stream);
+    addTaskItemSubject(
+      _onAddTaskItemSubject.stream,
+    ).listen(_onNewStateSubject.add).addTo(subscriptions);
 
-    updateTaskListStatusSubject(_onNewTaskListStatusSubject.stream);
+    updateTaskListStatusSubject(
+      _onNewVerticalTaskListStatusSubject.stream,
+      _onNewHorizontalTaskListStatusSubject.stream,
+    ).listen((combinedTaskListStatus) {
+      final _verticalListStatus = combinedTaskListStatus.verticalListStatus;
+      final _horizontalListStatus = combinedTaskListStatus.horizontalListStatus;
+
+      if (_verticalListStatus is TaskListLoaded &&
+          _horizontalListStatus is TaskListLoaded) {
+        _onNewStateSubject.add(
+          Done(
+            verticalListSize: _verticalListStatus.listSize,
+            horizontalListSize: _horizontalListStatus.listSize,
+          ),
+        );
+      }
+    }).addTo(subscriptions);
   }
 
-  void addTaskItemSubject(Stream<Task> inputStream) => inputStream
-      .flatMap<TaskScreenState>(
+  Stream<TaskScreenState> addTaskItemSubject(Stream<Task> inputStream) =>
+      inputStream.flatMap<TaskScreenState>(
         (task) => _addData(task: task, actionSink: _onNewActionSubject.sink),
-      )
-      .listen(_onNewStateSubject.add)
-      .addTo(subscriptions);
+      );
 
-  void updateTaskListStatusSubject(Stream<TaskListStatus> inputStream) =>
-      inputStream.listen((taskListStatus) {
-        final _lastListingState = _onNewStateSubject.value;
-
-        if (taskListStatus == TaskListStatus.loaded &&
-            _lastListingState is WaitingData) {
-          _onNewStateSubject.add(
-            DataLoaded(),
-          );
-        }
-      }).addTo(subscriptions);
+  Stream<CombinedTaskListStatus> updateTaskListStatusSubject(
+    Stream<TaskListStatus> verticalListInputStream,
+    Stream<TaskListStatus> horizontalListInputStream,
+  ) =>
+      Rx.combineLatest2<TaskListStatus, TaskListStatus, CombinedTaskListStatus>(
+        verticalListInputStream,
+        horizontalListInputStream,
+        (verticalListStatus, horizontalListStatus) => CombinedTaskListStatus(
+          verticalListStatus: verticalListStatus,
+          horizontalListStatus: horizontalListStatus,
+        ),
+      );
 
   final TaskScreenUseCases useCases;
 
   final _onNewActionSubject = PublishSubject<TaskScreenAction>();
   final _onAddTaskItemSubject = PublishSubject<Task>();
   final _onNewStateSubject = BehaviorSubject<TaskScreenState>.seeded(
-    WaitingData(),
+    Waiting(),
   );
-  final _onNewTaskListStatusSubject = BehaviorSubject<TaskListStatus>.seeded(
-    TaskListStatus.loading,
+  final _onNewVerticalTaskListStatusSubject =
+      BehaviorSubject<TaskListStatus>.seeded(
+    TaskListLoading(),
+  );
+  final _onNewHorizontalTaskListStatusSubject =
+      BehaviorSubject<TaskListStatus>.seeded(
+    TaskListLoading(),
   );
 
   Sink<Task> get onAddTaskItem => _onAddTaskItemSubject.sink;
-  Sink<TaskListStatus> get onNewTaskListStatus =>
-      _onNewTaskListStatusSubject.sink;
+  Sink<TaskListStatus> get onNewVerticalTaskListStatus =>
+      _onNewVerticalTaskListStatusSubject.sink;
+  Sink<TaskListStatus> get onNewHorizontalTaskListStatus =>
+      _onNewHorizontalTaskListStatusSubject.sink;
 
   Stream<TaskScreenState> get onNewState => _onNewStateSubject.stream;
   Stream<TaskScreenAction> get onNewAction => _onNewActionSubject.stream;
@@ -58,14 +80,20 @@ class TaskScreenBloc with SubscriptionHolder {
     @required Task task,
     @required Sink<TaskScreenAction> actionSink,
   }) async* {
+    const _actionType = TaskScreenActionType.addTask;
+
     try {
       await useCases.addTask(
         AddTaskUCParams(task: task),
       );
 
-      actionSink.add(AddTaskAction());
+      actionSink.add(
+        ShowSuccessTaskAction(type: _actionType),
+      );
     } catch (error) {
-      actionSink.add(FailAction());
+      actionSink.add(
+        ShowFailTaskAction(type: _actionType),
+      );
     }
   }
 
@@ -73,7 +101,8 @@ class TaskScreenBloc with SubscriptionHolder {
     _onNewStateSubject.close();
     _onNewActionSubject.close();
     _onAddTaskItemSubject.close();
-    _onNewTaskListStatusSubject.close();
+    _onNewVerticalTaskListStatusSubject.close();
+    _onNewHorizontalTaskListStatusSubject.close();
     disposeSubscriptions();
   }
 }

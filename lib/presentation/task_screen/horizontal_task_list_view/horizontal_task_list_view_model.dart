@@ -12,17 +12,17 @@ class ReorderableTaskIds {
   final int newId;
 }
 
-abstract class VerticalTaskListViewState {}
+abstract class HorizontalTaskListViewState {}
 
-class Loading implements VerticalTaskListViewState {}
+class Loading implements HorizontalTaskListViewState {}
 
-class Error implements VerticalTaskListViewState {
+class Error implements HorizontalTaskListViewState {
   Error({@required this.error}) : assert(error != null);
 
   final dynamic error;
 }
 
-abstract class Success implements VerticalTaskListViewState {
+abstract class Success implements HorizontalTaskListViewState {
   Success({@required this.tasks}) : assert(tasks != null);
 
   final List<Task> tasks;
@@ -40,28 +40,28 @@ class Listing extends Success {
         super(tasks: tasks);
 }
 
-enum VerticalTaskListActionType {
+enum HorizontalTaskListActionType {
   reorderTask,
   updateTask,
   removeTask,
 }
 
-abstract class VerticalTaskListAction {
-  VerticalTaskListAction({
+abstract class HorizontalTaskListAction {
+  HorizontalTaskListAction({
     @required this.type,
   }) : assert(type != null);
 
-  final VerticalTaskListActionType type;
+  final HorizontalTaskListActionType type;
 }
 
-class ShowFailTaskAction extends VerticalTaskListAction {
-  ShowFailTaskAction({@required VerticalTaskListActionType type})
+class ShowFailTaskAction extends HorizontalTaskListAction {
+  ShowFailTaskAction({@required HorizontalTaskListActionType type})
       : assert(type != null),
         super(type: type);
 }
 
-class ShowSuccessTaskAction extends VerticalTaskListAction {
-  ShowSuccessTaskAction({@required VerticalTaskListActionType type})
+class ShowSuccessTaskAction extends HorizontalTaskListAction {
+  ShowSuccessTaskAction({@required HorizontalTaskListActionType type})
       : assert(type != null),
         super(type: type);
 }

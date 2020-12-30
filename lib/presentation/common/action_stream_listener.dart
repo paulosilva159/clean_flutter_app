@@ -1,7 +1,6 @@
+import 'package:clean_flutter_app/common/subscription_holder.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
-
-import 'package:clean_flutter_app/common/subscription_holder.dart';
 
 class ActionStreamListener<T> extends StatefulWidget {
   const ActionStreamListener({
@@ -28,14 +27,13 @@ class _ActionStreamListenerState<T> extends State<ActionStreamListener<T>>
   @override
   void initState() {
     widget.actionStream.listen(widget.onReceived).addTo(subscriptions);
-
     super.initState();
   }
 
   @override
   void dispose() {
-    super.dispose();
     disposeSubscriptions();
+    super.dispose();
   }
 
   @override

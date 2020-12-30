@@ -45,6 +45,16 @@ class S {
     );
   }
 
+  /// `Salvar`
+  String get genericUpsertTaskButtonLabel {
+    return Intl.message(
+      'Salvar',
+      name: 'genericUpsertTaskButtonLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Lista vazia. Adicione novas tarefas`
   String get emptyListIndicatorMessage {
     return Intl.message(
@@ -70,6 +80,156 @@ class S {
     return Intl.message(
       'Adicionar tarefa',
       name: 'addTaskDialogTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Atualizar tarefa`
+  String get updateTaskDialogTitle {
+    return Intl.message(
+      'Atualizar tarefa',
+      name: 'updateTaskDialogTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Deletar tarefa`
+  String get deleteTaskDialogTitle {
+    return Intl.message(
+      'Deletar tarefa',
+      name: 'deleteTaskDialogTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Deseja mesmo deletar esta tarefa?`
+  String get deleteTaskDialogMessage {
+    return Intl.message(
+      'Deseja mesmo deletar esta tarefa?',
+      name: 'deleteTaskDialogMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sim`
+  String get confirmDialogActionTitle {
+    return Intl.message(
+      'Sim',
+      name: 'confirmDialogActionTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancelar`
+  String get cancelDialogActionTitle {
+    return Intl.message(
+      'Cancelar',
+      name: 'cancelDialogActionTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ação realizada com sucess`
+  String get genericSuccessTaskSnackBarMessage {
+    return Intl.message(
+      'Ação realizada com sucess',
+      name: 'genericSuccessTaskSnackBarMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tarefa adicionada com sucesso`
+  String get addTaskSuccessSnackBarMessage {
+    return Intl.message(
+      'Tarefa adicionada com sucesso',
+      name: 'addTaskSuccessSnackBarMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tarefa atualizada com sucesso`
+  String get updateTaskSuccessSnackBarMessage {
+    return Intl.message(
+      'Tarefa atualizada com sucesso',
+      name: 'updateTaskSuccessSnackBarMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tarefa removida com sucesso`
+  String get removeTaskSuccessSnackBarMessage {
+    return Intl.message(
+      'Tarefa removida com sucesso',
+      name: 'removeTaskSuccessSnackBarMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tarefas reordenadas com sucesso`
+  String get reorderTaskSuccessSnackBarMessage {
+    return Intl.message(
+      'Tarefas reordenadas com sucesso',
+      name: 'reorderTaskSuccessSnackBarMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Alguma coisa deu errado`
+  String get genericFailTaskSnackBarMessage {
+    return Intl.message(
+      'Alguma coisa deu errado',
+      name: 'genericFailTaskSnackBarMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Falha ao adicionar tarefa`
+  String get addTaskFailSnackBarMessage {
+    return Intl.message(
+      'Falha ao adicionar tarefa',
+      name: 'addTaskFailSnackBarMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Falha ao atualizar tarefa`
+  String get updateTaskFailSnackBarMessage {
+    return Intl.message(
+      'Falha ao atualizar tarefa',
+      name: 'updateTaskFailSnackBarMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Falha ao remover tarefa`
+  String get removeTaskFailSnackBarMessage {
+    return Intl.message(
+      'Falha ao remover tarefa',
+      name: 'removeTaskFailSnackBarMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Falha ao reordenar tarefas`
+  String get reorderTasksFailSnackBarMessage {
+    return Intl.message(
+      'Falha ao reordenar tarefas',
+      name: 'reorderTasksFailSnackBarMessage',
       desc: '',
       args: [],
     );

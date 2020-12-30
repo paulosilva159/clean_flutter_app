@@ -1,7 +1,23 @@
 {
   "@@locale": "en_US",
   "tryAgainButtonLabel": "Try Again",
+  "genericUpsertTaskButtonLabel": "Save",
   "emptyListIndicatorMessage": "Empty list. Add new task",
   "errorIndicatorMessage": "Error",
-  "addTaskDialogTitle": "Add task"
+  "addTaskDialogTitle": "Add task",
+  "updateTaskDialogTitle": "Update task",
+  "deleteTaskDialogTitle": "Delete task",
+  "deleteTaskDialogMessage": "Do you really want to delete this task?",
+  "confirmDialogActionTitle": "Yes",
+  "cancelDialogActionTitle": "Cancel",
+  "genericSuccessTaskSnackBarMessage": "Action was successful",
+  "addTaskSuccessSnackBarMessage": "Successfully added task",
+  "updateTaskSuccessSnackBarMessage": "Successfully updated task",
+  "removeTaskSuccessSnackBarMessage": "Successfully removed task",
+  "reorderTaskSuccessSnackBarMessage": "Successfully reordered tasks",
+  "genericFailTaskSnackBarMessage": "Something went wrong",
+  "addTaskFailSnackBarMessage": "Fail to add task",
+  "updateTaskFailSnackBarMessage": "Failed to update task",
+  "removeTaskFailSnackBarMessage": "Failed to remove task",
+  "reorderTasksFailSnackBarMessage": "Failed to reorder task"
 }

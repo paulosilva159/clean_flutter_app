@@ -22,8 +22,24 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "addTaskDialogTitle" : MessageLookupByLibrary.simpleMessage("Add task"),
+    "addTaskFailSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Fail to add task"),
+    "addTaskSuccessSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Successfully added task"),
+    "cancelDialogActionTitle" : MessageLookupByLibrary.simpleMessage("Cancel"),
+    "confirmDialogActionTitle" : MessageLookupByLibrary.simpleMessage("Yes"),
+    "deleteTaskDialogMessage" : MessageLookupByLibrary.simpleMessage("Do you really want to delete this task?"),
+    "deleteTaskDialogTitle" : MessageLookupByLibrary.simpleMessage("Delete task"),
     "emptyListIndicatorMessage" : MessageLookupByLibrary.simpleMessage("Empty list. Add new task"),
     "errorIndicatorMessage" : MessageLookupByLibrary.simpleMessage("Error"),
-    "tryAgainButtonLabel" : MessageLookupByLibrary.simpleMessage("Try Again")
+    "genericFailTaskSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Something went wrong"),
+    "genericSuccessTaskSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Action was successful"),
+    "genericUpsertTaskButtonLabel" : MessageLookupByLibrary.simpleMessage("Save"),
+    "removeTaskFailSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Failed to remove task"),
+    "removeTaskSuccessSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Successfully removed task"),
+    "reorderTaskSuccessSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Successfully reordered tasks"),
+    "reorderTasksFailSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Failed to reorder task"),
+    "tryAgainButtonLabel" : MessageLookupByLibrary.simpleMessage("Try Again"),
+    "updateTaskDialogTitle" : MessageLookupByLibrary.simpleMessage("Update task"),
+    "updateTaskFailSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Failed to update task"),
+    "updateTaskSuccessSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Successfully updated task")
   };
 }
