@@ -1,3 +1,4 @@
+import 'package:domain/exceptions.dart';
 import 'package:flutter/material.dart';
 
 class AsyncSnapshotResponseView<Loading, Error, Success>
@@ -33,9 +34,7 @@ class AsyncSnapshotResponseView<Loading, Error, Success>
     } else if (data is Loading || data == null) {
       return loadingWidgetBuilder(context, data);
     } else {
-      throw UnknowStateTypeException();
+      throw UnkownStateException();
     }
   }
 }
-
-class UnknowStateTypeException implements Exception {}

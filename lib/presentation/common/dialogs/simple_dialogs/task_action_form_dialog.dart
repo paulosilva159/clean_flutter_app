@@ -1,38 +1,45 @@
-import 'dart:math';
-
-import 'package:flutter/material.dart';
-
-import 'package:domain/model/task.dart';
-import 'package:domain/data_repository/task_repository.dart';
-
 import 'package:clean_flutter_app/presentation/common/dialogs/simple_dialogs/adaptive_form_dialog.dart';
+import 'package:domain/data_repository/task_repository.dart';
+import 'package:domain/model/task.dart';
+import 'package:flutter/material.dart';
 
 void showUpsertTaskFormDialog(
   BuildContext context, {
   @required void Function(Task) onUpsertTask,
   @required String formDialogTitle,
   Task upsertingTask,
+  int upsertingTaskId,
+  TaskListOrientation upsertingTaskOrientation,
 }) {
+  assert(upsertingTask != null || upsertingTaskId != null);
+  assert(upsertingTask != null || upsertingTaskOrientation != null);
+
+  final _titleFieldFocusNode = FocusNode();
+
   final _titleFieldTextEditingController = TextEditingController();
+
+  void _onCompleteEditingTextField() {
+    onUpsertTask(
+      Task(
+        title: _titleFieldTextEditingController.value.text,
+        id: upsertingTask?.id ?? upsertingTaskId,
+        orientation: upsertingTask?.orientation ?? upsertingTaskOrientation,
+      ),
+    );
+
+    _titleFieldTextEditingController.clear();
+  }
 
   AdaptiveFormDialog(
     formDialogTitle: formDialogTitle,
-    onTextEdittingControllerDispose: () {
+    onTextEditingControllerDispose: () {
       _titleFieldTextEditingController.dispose();
+      _titleFieldFocusNode.dispose();
     },
-    onSavedFieldFunctions: () {
-      onUpsertTask(
-        Task(
-          title: _titleFieldTextEditingController.value.text,
-          id: upsertingTask?.id ?? Random().nextInt(99999),
-          orientation: TaskListOrientation.vertical,
-        ),
-      );
-
-      _titleFieldTextEditingController.clear();
-    },
+    onSaveFieldFunction: _onCompleteEditingTextField,
     formFields: [
       TextFormField(
+        focusNode: _titleFieldFocusNode,
         initialValue: upsertingTask?.title ?? '',
         keyboardType: TextInputType.text,
         onSaved: (text) {

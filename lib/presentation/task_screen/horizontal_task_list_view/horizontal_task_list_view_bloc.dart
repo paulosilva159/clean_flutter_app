@@ -1,5 +1,5 @@
 import 'package:clean_flutter_app/common/subscription_holder.dart';
-import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view_model.dart';
+import 'package:clean_flutter_app/presentation/task_screen/horizontal_task_list_view/horizontal_task_list_view_model.dart';
 import 'package:domain/data_observables.dart';
 import 'package:domain/data_repository/task_repository.dart';
 import 'package:domain/model/task.dart';
@@ -10,13 +10,13 @@ import 'package:domain/use_case/update_task_uc.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
-class VerticalTaskListViewBloc with SubscriptionHolder {
-  VerticalTaskListViewBloc({
+class HorizontalTaskListViewBloc with SubscriptionHolder {
+  HorizontalTaskListViewBloc({
     @required this.useCases,
     @required this.activeTaskStorageUpdateStreamWrapper,
   })  : assert(useCases != null),
         assert(activeTaskStorageUpdateStreamWrapper != null) {
-    Rx.merge<VerticalTaskListViewState>([
+    Rx.merge<HorizontalTaskListViewState>([
       getTaskListSubject(
         Rx.merge<void>([
           Stream<void>.value(null),
@@ -36,49 +36,50 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
     ]).listen(_onNewStateSubject.add).addTo(subscriptions);
   }
 
-  Stream<VerticalTaskListViewState> getTaskListSubject(
+  Stream<HorizontalTaskListViewState> getTaskListSubject(
           Stream<void> inputStream) =>
-      inputStream.switchMap<VerticalTaskListViewState>(
+      inputStream.switchMap<HorizontalTaskListViewState>(
         (_) => _fetchData(),
       );
 
-  Stream<VerticalTaskListViewState> updateTaskSubject(
+  Stream<HorizontalTaskListViewState> updateTaskSubject(
           Stream<Task> inputStream) =>
-      inputStream.flatMap<VerticalTaskListViewState>(
+      inputStream.flatMap<HorizontalTaskListViewState>(
         (task) => _updateData(
           task: task,
           actionSink: _onNewActionSubject.sink,
         ),
       );
 
-  Stream<VerticalTaskListViewState> removeTaskSubject(
+  Stream<HorizontalTaskListViewState> removeTaskSubject(
           Stream<Task> inputStream) =>
-      inputStream.flatMap<VerticalTaskListViewState>(
+      inputStream.flatMap<HorizontalTaskListViewState>(
         (task) => _removeData(
           task: task,
           actionSink: _onNewActionSubject.sink,
         ),
       );
 
-  Stream<VerticalTaskListViewState> reorderTaskSubject(
+  Stream<HorizontalTaskListViewState> reorderTaskSubject(
           Stream<ReorderableTaskIds> inputStream) =>
-      inputStream.flatMap<VerticalTaskListViewState>(
+      inputStream.flatMap<HorizontalTaskListViewState>(
         (reorderingTaskIds) => _reorderData(
           reorderingTaskIds: reorderingTaskIds,
           actionSink: _onNewActionSubject.sink,
         ),
       );
 
-  final VerticalTaskListViewUseCases useCases;
+  final HorizontalTaskListViewUseCases useCases;
   final ActiveTaskStorageUpdateStreamWrapper
       activeTaskStorageUpdateStreamWrapper;
 
   final _onTryAgainSubject = PublishSubject<void>();
-  final _onNewActionSubject = PublishSubject<VerticalTaskListAction>();
+  final _onNewActionSubject = PublishSubject<HorizontalTaskListAction>();
   final _onUpdateTaskSubject = PublishSubject<Task>();
   final _onRemoveTaskSubject = PublishSubject<Task>();
   final _onReorderTaskSubject = PublishSubject<ReorderableTaskIds>();
-  final _onNewStateSubject = BehaviorSubject<VerticalTaskListViewState>.seeded(
+  final _onNewStateSubject =
+      BehaviorSubject<HorizontalTaskListViewState>.seeded(
     Loading(),
   );
 
@@ -87,10 +88,12 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
   Sink<Task> get onRemoveTask => _onRemoveTaskSubject.sink;
   Sink<ReorderableTaskIds> get onReorderTask => _onReorderTaskSubject.sink;
 
-  Stream<VerticalTaskListViewState> get onNewState => _onNewStateSubject.stream;
-  Stream<VerticalTaskListAction> get onNewAction => _onNewActionSubject.stream;
+  Stream<HorizontalTaskListViewState> get onNewState =>
+      _onNewStateSubject.stream;
+  Stream<HorizontalTaskListAction> get onNewAction =>
+      _onNewActionSubject.stream;
 
-  Stream<VerticalTaskListViewState> _fetchData() async* {
+  Stream<HorizontalTaskListViewState> _fetchData() async* {
     try {
       final taskList = await useCases.getTasksList();
 
@@ -104,12 +107,12 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
     }
   }
 
-  Stream<VerticalTaskListViewState> _updateData({
+  Stream<HorizontalTaskListViewState> _updateData({
     @required Task task,
-    @required Sink<VerticalTaskListAction> actionSink,
+    @required Sink<HorizontalTaskListAction> actionSink,
   }) async* {
     final _lastListingState = _onNewStateSubject.value;
-    const _actionType = VerticalTaskListActionType.updateTask;
+    const _actionType = HorizontalTaskListActionType.updateTask;
 
     yield Loading();
 
@@ -134,12 +137,12 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
     }
   }
 
-  Stream<VerticalTaskListViewState> _removeData({
+  Stream<HorizontalTaskListViewState> _removeData({
     @required Task task,
-    @required Sink<VerticalTaskListAction> actionSink,
+    @required Sink<HorizontalTaskListAction> actionSink,
   }) async* {
     final _lastListingState = _onNewStateSubject.value;
-    const _actionType = VerticalTaskListActionType.removeTask;
+    const _actionType = HorizontalTaskListActionType.removeTask;
 
     yield Loading();
 
@@ -164,19 +167,19 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
     }
   }
 
-  Stream<VerticalTaskListViewState> _reorderData({
+  Stream<HorizontalTaskListViewState> _reorderData({
     @required ReorderableTaskIds reorderingTaskIds,
-    @required Sink<VerticalTaskListAction> actionSink,
+    @required Sink<HorizontalTaskListAction> actionSink,
   }) async* {
     final _lastListingState = _onNewStateSubject.value;
-    const _actionType = VerticalTaskListActionType.reorderTask;
+    const _actionType = HorizontalTaskListActionType.reorderTask;
 
     yield Loading();
 
     try {
       await useCases.reorderTasks(
         ReorderTaskUCParams(
-          orientation: TaskListOrientation.vertical,
+          orientation: TaskListOrientation.horizontal,
           oldId: reorderingTaskIds.oldId,
           newId: reorderingTaskIds.newId,
         ),
@@ -209,8 +212,8 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
   }
 }
 
-class VerticalTaskListViewUseCases {
-  VerticalTaskListViewUseCases({
+class HorizontalTaskListViewUseCases {
+  HorizontalTaskListViewUseCases({
     @required this.getTaskListUC,
     @required this.removeTaskUC,
     @required this.updateTaskUC,
@@ -227,7 +230,7 @@ class VerticalTaskListViewUseCases {
 
   Future<List<Task>> getTasksList() => getTaskListUC.getFuture(
         params: GetTaskListUCParams(
-          orientation: TaskListOrientation.vertical,
+          orientation: TaskListOrientation.horizontal,
         ),
       );
 

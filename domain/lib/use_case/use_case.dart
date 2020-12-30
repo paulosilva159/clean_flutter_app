@@ -1,7 +1,6 @@
-import 'package:meta/meta.dart';
-
 import 'package:domain/exceptions.dart';
 import 'package:domain/logger.dart';
+import 'package:meta/meta.dart';
 
 abstract class UseCase<R, P> {
   UseCase({@required this.logger}) : assert(logger != null);

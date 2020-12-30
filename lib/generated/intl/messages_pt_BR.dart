@@ -22,8 +22,24 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "addTaskDialogTitle" : MessageLookupByLibrary.simpleMessage("Adicionar tarefa"),
+    "addTaskFailSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Falha ao adicionar tarefa"),
+    "addTaskSuccessSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Tarefa adicionada com sucesso"),
+    "cancelDialogActionTitle" : MessageLookupByLibrary.simpleMessage("Cancelar"),
+    "confirmDialogActionTitle" : MessageLookupByLibrary.simpleMessage("Sim"),
+    "deleteTaskDialogMessage" : MessageLookupByLibrary.simpleMessage("Deseja mesmo deletar esta tarefa?"),
+    "deleteTaskDialogTitle" : MessageLookupByLibrary.simpleMessage("Deletar tarefa"),
     "emptyListIndicatorMessage" : MessageLookupByLibrary.simpleMessage("Lista vazia. Adicione novas tarefas"),
     "errorIndicatorMessage" : MessageLookupByLibrary.simpleMessage("Deu erro"),
-    "tryAgainButtonLabel" : MessageLookupByLibrary.simpleMessage("Tente Novamente")
+    "genericFailTaskSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Alguma coisa deu errado"),
+    "genericSuccessTaskSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Ação realizada com sucess"),
+    "genericUpsertTaskButtonLabel" : MessageLookupByLibrary.simpleMessage("Salvar"),
+    "removeTaskFailSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Falha ao remover tarefa"),
+    "removeTaskSuccessSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Tarefa removida com sucesso"),
+    "reorderTaskSuccessSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Tarefas reordenadas com sucesso"),
+    "reorderTasksFailSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Falha ao reordenar tarefas"),
+    "tryAgainButtonLabel" : MessageLookupByLibrary.simpleMessage("Tente Novamente"),
+    "updateTaskDialogTitle" : MessageLookupByLibrary.simpleMessage("Atualizar tarefa"),
+    "updateTaskFailSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Falha ao atualizar tarefa"),
+    "updateTaskSuccessSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Tarefa atualizada com sucesso")
   };
 }
