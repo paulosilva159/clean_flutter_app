@@ -1,10 +1,9 @@
-import 'package:meta/meta.dart';
-
 import 'package:domain/data_observables.dart';
 import 'package:domain/data_repository/task_repository.dart';
 import 'package:domain/logger.dart';
 import 'package:domain/model/task.dart';
 import 'package:domain/use_case/use_case.dart';
+import 'package:meta/meta.dart';
 
 class RemoveTaskUC extends UseCase<void, RemoveTaskUCParams> {
   RemoveTaskUC({
@@ -19,13 +18,16 @@ class RemoveTaskUC extends UseCase<void, RemoveTaskUCParams> {
   final ActiveTaskStorageUpdateSinkWrapper activeTaskStorageUpdateSinkWrapper;
 
   @override
-  Future<void> getRawFuture({RemoveTaskUCParams params}) => repository
-      .removeTask(params.task)
-      .then((_) => activeTaskStorageUpdateSinkWrapper.value.add(null));
+  Future<void> getRawFuture({RemoveTaskUCParams params}) =>
+      repository.removeTask(params.task).then(
+            (_) => activeTaskStorageUpdateSinkWrapper.value.add(null),
+          );
 }
 
 class RemoveTaskUCParams {
-  RemoveTaskUCParams({@required this.task}) : assert(task != null);
+  RemoveTaskUCParams({
+    @required this.task,
+  }) : assert(task != null);
 
   final Task task;
 }

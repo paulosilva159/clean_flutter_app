@@ -3,14 +3,13 @@ import 'package:clean_flutter_app/presentation/common/action_stream_listener.dar
 import 'package:clean_flutter_app/presentation/common/dialogs/simple_dialogs/task_action_form_dialog.dart';
 import 'package:clean_flutter_app/presentation/common/indicator/loading_indicator.dart';
 import 'package:clean_flutter_app/presentation/common/snackbar/task_action_message_snackbar.dart';
+import 'package:clean_flutter_app/presentation/task_screen/horizontal_task_list_view/horizontal_task_list_view.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_screen_bloc.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_screen_model.dart';
 import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view.dart';
 import 'package:domain/data_repository/task_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'horizontal_task_list_view/horizontal_task_list_view.dart';
 
 class TaskScreen extends StatelessWidget {
   const TaskScreen({@required this.bloc}) : assert(bloc != null);
@@ -45,22 +44,42 @@ class TaskScreen extends StatelessWidget {
 
           return Scaffold(
             resizeToAvoidBottomPadding: false,
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerFloat,
-            // TODO(paulosilva159): Implementar dois floats (vertc/horzt)
             floatingActionButton: screenState is Done
-                ? FloatingActionButton(
-                    onPressed: () {
-                      showUpsertTaskFormDialog(
-                        context,
-                        formDialogTitle: S.of(context).addTaskDialogTitle,
-                        onUpsertTask: bloc.onAddTaskItem.add,
-                        upsertingTaskId: screenState.horizontalListSize + 1,
-                        upsertingTaskOrientation:
-                            TaskListOrientation.horizontal,
-                      );
-                    },
-                    child: const Icon(Icons.add),
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      FloatingActionButton(
+                        heroTag: null,
+                        onPressed: () {
+                          showUpsertTaskFormDialog(
+                            context,
+                            formDialogTitle: S.of(context).addTaskDialogTitle,
+                            onUpsertTask: bloc.onAddTaskItem.add,
+                            upsertingTaskId: screenState.horizontalListSize + 1,
+                            upsertingTaskOrientation:
+                                TaskListOrientation.horizontal,
+                          );
+                        },
+                        child: const Icon(Icons.horizontal_split_rounded),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      FloatingActionButton(
+                        heroTag: null,
+                        onPressed: () {
+                          showUpsertTaskFormDialog(
+                            context,
+                            formDialogTitle: S.of(context).addTaskDialogTitle,
+                            onUpsertTask: bloc.onAddTaskItem.add,
+                            upsertingTaskId: screenState.verticalListSize + 1,
+                            upsertingTaskOrientation:
+                                TaskListOrientation.vertical,
+                          );
+                        },
+                        child: const Icon(Icons.vertical_split_rounded),
+                      ),
+                    ],
                   )
                 : null,
             body: Builder(

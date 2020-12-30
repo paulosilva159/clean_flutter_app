@@ -22,7 +22,12 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "addTaskDialogTitle" : MessageLookupByLibrary.simpleMessage("Add task"),
+    "addTaskFailSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Fail to add task"),
     "addTaskSuccessSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Successfully added task"),
+    "cancelDialogActionTitle" : MessageLookupByLibrary.simpleMessage("Cancel"),
+    "confirmDialogActionTitle" : MessageLookupByLibrary.simpleMessage("Yes"),
+    "deleteTaskDialogMessage" : MessageLookupByLibrary.simpleMessage("Do you really want to delete this task?"),
+    "deleteTaskDialogTitle" : MessageLookupByLibrary.simpleMessage("Delete task"),
     "emptyListIndicatorMessage" : MessageLookupByLibrary.simpleMessage("Empty list. Add new task"),
     "errorIndicatorMessage" : MessageLookupByLibrary.simpleMessage("Error"),
     "genericFailTaskSnackBarMessage" : MessageLookupByLibrary.simpleMessage("Something went wrong"),

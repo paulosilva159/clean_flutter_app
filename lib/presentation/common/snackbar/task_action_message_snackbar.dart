@@ -6,22 +6,24 @@ void showActionMessageSnackBar(
   @required String message,
   bool isFailMessage = false,
 }) {
-  Scaffold.of(context).removeCurrentSnackBar();
-
-  Scaffold.of(context).showSnackBar(
-    SnackBar(
-      content: Text(
-        message,
-        style: TextStyle(color: isFailMessage ? Colors.red : Colors.green),
+  Scaffold.of(context)
+    ..removeCurrentSnackBar()
+    ..showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: TextStyle(color: isFailMessage ? Colors.red : Colors.green),
+        ),
       ),
-    ),
-  );
+    );
 }
 
 void showFailTask(BuildContext context, {String message}) {
-  showActionMessageSnackBar(context,
-      message: message ?? S.of(context).genericFailTaskSnackBarMessage,
-      isFailMessage: true);
+  showActionMessageSnackBar(
+    context,
+    message: message ?? S.of(context).genericFailTaskSnackBarMessage,
+    isFailMessage: true,
+  );
 }
 
 void showSuccessTask(BuildContext context, {String message}) {

@@ -11,8 +11,6 @@ class UpsertTaskDialogButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => RaisedButton(
         onPressed: onSaveTap,
-        child: Text(
-          S.of(context).genericUpsertTaskButtonLabel,
-        ),
+        child: Text(S.of(context).genericUpsertTaskButtonLabel),
       );
 }

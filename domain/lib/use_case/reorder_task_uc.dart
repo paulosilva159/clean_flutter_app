@@ -19,7 +19,9 @@ class ReorderTaskUC extends UseCase<void, ReorderTaskUCParams> {
   @override
   Future<void> getRawFuture({ReorderTaskUCParams params}) => repository
       .reorderTask(params.orientation, oldId: params.oldId, newId: params.newId)
-      .then((_) => activeTaskStorageUpdateSinkWrapper.value.add(null));
+      .then(
+        (_) => activeTaskStorageUpdateSinkWrapper.value.add(null),
+      );
 }
 
 class ReorderTaskUCParams {

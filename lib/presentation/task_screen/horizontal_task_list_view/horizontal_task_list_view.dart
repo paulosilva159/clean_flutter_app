@@ -1,7 +1,8 @@
 import 'package:clean_flutter_app/generated/l10n.dart';
 import 'package:clean_flutter_app/presentation/common/action_stream_listener.dart';
 import 'package:clean_flutter_app/presentation/common/async_snapshot_response_view.dart';
-import 'package:clean_flutter_app/presentation/common/dialogs/simple_dialogs/task_action_form_dialog.dart';
+import 'package:clean_flutter_app/presentation/common/buttons/delete_task_button.dart';
+import 'package:clean_flutter_app/presentation/common/buttons/edit_task_button.dart';
 import 'package:clean_flutter_app/presentation/common/indicator/empty_list_indicator.dart';
 import 'package:clean_flutter_app/presentation/common/indicator/error_indicator.dart';
 import 'package:clean_flutter_app/presentation/common/indicator/loading_indicator.dart';
@@ -169,7 +170,7 @@ class __HorizontalTaskListState extends State<_HorizontalTaskList> {
               height: 120,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) => _HorizontalTaskListItem(
+                itemBuilder: (context, index) => _HorizontalTaskItem(
                   task: widget.tasks[index],
                   onRemoveTask: widget.onRemoveTask,
                   onUpdateTask: widget.onUpdateTask,
@@ -184,7 +185,7 @@ class __HorizontalTaskListState extends State<_HorizontalTaskList> {
                 itemBuilder: (context, index) {
                   final _task = widget.tasks[index];
 
-                  return _EditableListTile(
+                  return _HorizontalTaskItemDetails(
                     task: _task,
                     onUpdateTask: widget.onUpdateTask,
                     onRemoveTask: widget.onRemoveTask,
@@ -214,8 +215,8 @@ class __HorizontalTaskListState extends State<_HorizontalTaskList> {
       );
 }
 
-class _HorizontalTaskListItem extends StatelessWidget {
-  const _HorizontalTaskListItem({
+class _HorizontalTaskItem extends StatelessWidget {
+  const _HorizontalTaskItem({
     @required this.task,
     @required this.onRemoveTask,
     @required this.onUpdateTask,
@@ -244,8 +245,8 @@ class _HorizontalTaskListItem extends StatelessWidget {
       );
 }
 
-class _EditableListTile extends StatelessWidget {
-  const _EditableListTile({
+class _HorizontalTaskItemDetails extends StatelessWidget {
+  const _HorizontalTaskItemDetails({
     @required this.task,
     @required this.onRemoveTask,
     @required this.onUpdateTask,
@@ -272,28 +273,15 @@ class _EditableListTile extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Expanded(
-                child: IconButton(
-                  iconSize: _denseIconSize,
-                  icon: const Icon(Icons.edit_rounded),
-                  onPressed: () {
-                    showUpsertTaskFormDialog(
-                      context,
-                      formDialogTitle: S.of(context).updateTaskDialogTitle,
-                      onUpsertTask: onUpdateTask,
-                      upsertingTask: task,
-                    );
-                  },
-                ),
+              EditTaskButton(
+                iconSize: _denseIconSize,
+                task: task,
+                onUpdateTask: onUpdateTask,
               ),
-              Expanded(
-                child: IconButton(
-                  iconSize: _denseIconSize,
-                  icon: const Icon(Icons.delete),
-                  onPressed: () => onRemoveTask(
-                    task,
-                  ),
-                ),
+              DeleteTaskButton(
+                iconSize: _denseIconSize,
+                task: task,
+                onRemoveTask: onRemoveTask,
               ),
             ],
           ),

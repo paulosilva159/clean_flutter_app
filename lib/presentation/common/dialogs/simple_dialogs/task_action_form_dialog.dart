@@ -14,26 +14,32 @@ void showUpsertTaskFormDialog(
   assert(upsertingTask != null || upsertingTaskId != null);
   assert(upsertingTask != null || upsertingTaskOrientation != null);
 
+  final _titleFieldFocusNode = FocusNode();
+
   final _titleFieldTextEditingController = TextEditingController();
+
+  void _onCompleteEditingTextField() {
+    onUpsertTask(
+      Task(
+        title: _titleFieldTextEditingController.value.text,
+        id: upsertingTask?.id ?? upsertingTaskId,
+        orientation: upsertingTask?.orientation ?? upsertingTaskOrientation,
+      ),
+    );
+
+    _titleFieldTextEditingController.clear();
+  }
 
   AdaptiveFormDialog(
     formDialogTitle: formDialogTitle,
-    onTextEdittingControllerDispose: () {
+    onTextEditingControllerDispose: () {
       _titleFieldTextEditingController.dispose();
+      _titleFieldFocusNode.dispose();
     },
-    onSavedFieldFunctions: () {
-      onUpsertTask(
-        Task(
-          title: _titleFieldTextEditingController.value.text,
-          id: upsertingTask?.id ?? upsertingTaskId,
-          orientation: upsertingTask?.orientation ?? upsertingTaskOrientation,
-        ),
-      );
-
-      _titleFieldTextEditingController.clear();
-    },
+    onSaveFieldFunction: _onCompleteEditingTextField,
     formFields: [
       TextFormField(
+        focusNode: _titleFieldFocusNode,
         initialValue: upsertingTask?.title ?? '',
         keyboardType: TextInputType.text,
         onSaved: (text) {

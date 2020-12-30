@@ -95,6 +95,46 @@ class S {
     );
   }
 
+  /// `Deletar tarefa`
+  String get deleteTaskDialogTitle {
+    return Intl.message(
+      'Deletar tarefa',
+      name: 'deleteTaskDialogTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Deseja mesmo deletar esta tarefa?`
+  String get deleteTaskDialogMessage {
+    return Intl.message(
+      'Deseja mesmo deletar esta tarefa?',
+      name: 'deleteTaskDialogMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sim`
+  String get confirmDialogActionTitle {
+    return Intl.message(
+      'Sim',
+      name: 'confirmDialogActionTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancelar`
+  String get cancelDialogActionTitle {
+    return Intl.message(
+      'Cancelar',
+      name: 'cancelDialogActionTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Ação realizada com sucess`
   String get genericSuccessTaskSnackBarMessage {
     return Intl.message(

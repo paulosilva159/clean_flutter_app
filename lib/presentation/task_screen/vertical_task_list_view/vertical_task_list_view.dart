@@ -1,7 +1,8 @@
 import 'package:clean_flutter_app/generated/l10n.dart';
 import 'package:clean_flutter_app/presentation/common/action_stream_listener.dart';
 import 'package:clean_flutter_app/presentation/common/async_snapshot_response_view.dart';
-import 'package:clean_flutter_app/presentation/common/dialogs/simple_dialogs/task_action_form_dialog.dart';
+import 'package:clean_flutter_app/presentation/common/buttons/delete_task_button.dart';
+import 'package:clean_flutter_app/presentation/common/buttons/edit_task_button.dart';
 import 'package:clean_flutter_app/presentation/common/indicator/empty_list_indicator.dart';
 import 'package:clean_flutter_app/presentation/common/indicator/error_indicator.dart';
 import 'package:clean_flutter_app/presentation/common/indicator/loading_indicator.dart';
@@ -219,24 +220,13 @@ class _VerticalTaskListItem extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Expanded(
-                  child: IconButton(
-                    icon: const Icon(Icons.edit_rounded),
-                    onPressed: () {
-                      showUpsertTaskFormDialog(
-                        context,
-                        formDialogTitle: S.of(context).updateTaskDialogTitle,
-                        onUpsertTask: onUpdateTask,
-                        upsertingTask: task,
-                      );
-                    },
-                  ),
+                EditTaskButton(
+                  task: task,
+                  onUpdateTask: onUpdateTask,
                 ),
-                Expanded(
-                  child: IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () => onRemoveTask(task),
-                  ),
+                DeleteTaskButton(
+                  task: task,
+                  onRemoveTask: onRemoveTask,
                 ),
               ],
             ),

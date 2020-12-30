@@ -14,7 +14,9 @@ class GetTaskListUC extends UseCase<List<Task>, GetTaskListUCParams> {
   final TaskDataRepository repository;
 
   @override
-  Future<List<Task>> getRawFuture({GetTaskListUCParams params}) =>
+  Future<List<Task>> getRawFuture({
+    GetTaskListUCParams params,
+  }) =>
       repository.getTaskList(params.orientation);
 }
 
