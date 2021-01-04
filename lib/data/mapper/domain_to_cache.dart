@@ -7,5 +7,6 @@ extension DomainToCache on Task {
         id: id,
         title: title,
         orientation: EnumToString.convertToString(orientation),
+        status: EnumToString.convertToString(status),
       );
 }

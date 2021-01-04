@@ -18,20 +18,37 @@ class TaskCMAdapter extends TypeAdapter<TaskCM> {
     };
     return TaskCM(
       id: fields[0] as int,
-      title: fields[1] as String,
-      orientation: fields[2] as String,
+      title: fields[5] as String,
+      status: fields[6] as String,
+      orientation: fields[7] as String,
+      days: fields[1] as int,
+      steps: (fields[2] as List)
+          ?.map((dynamic e) => (e as Map)?.cast<String, dynamic>())
+          ?.toList(),
+      periodicity: fields[3] as int,
+      progress: fields[4] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, TaskCM obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.title)
+      ..write(obj.days)
       ..writeByte(2)
+      ..write(obj.steps)
+      ..writeByte(3)
+      ..write(obj.periodicity)
+      ..writeByte(4)
+      ..write(obj.progress)
+      ..writeByte(5)
+      ..write(obj.title)
+      ..writeByte(6)
+      ..write(obj.status)
+      ..writeByte(7)
       ..write(obj.orientation);
   }
 

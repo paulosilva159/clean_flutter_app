@@ -3,6 +3,7 @@ import 'package:clean_flutter_app/data/mapper/cache_to_domain.dart';
 import 'package:clean_flutter_app/data/mapper/domain_to_cache.dart';
 import 'package:domain/data_repository/task_repository.dart';
 import 'package:domain/model/task.dart';
+import 'package:domain/model/task_list_orientation.dart';
 import 'package:meta/meta.dart';
 
 class TaskRepository extends TaskDataRepository {

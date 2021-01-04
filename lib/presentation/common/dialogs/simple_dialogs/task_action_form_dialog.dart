@@ -1,6 +1,7 @@
 import 'package:clean_flutter_app/presentation/common/dialogs/simple_dialogs/adaptive_form_dialog.dart';
-import 'package:domain/data_repository/task_repository.dart';
 import 'package:domain/model/task.dart';
+import 'package:domain/model/task_list_orientation.dart';
+import 'package:domain/model/task_status.dart';
 import 'package:flutter/material.dart';
 
 void showUpsertTaskFormDialog(
@@ -18,12 +19,15 @@ void showUpsertTaskFormDialog(
 
   final _titleFieldTextEditingController = TextEditingController();
 
+  const _initialTaskStatus = TaskStatus.undone;
+
   void _onCompleteEditingTextField() {
     onUpsertTask(
       Task(
         title: _titleFieldTextEditingController.value.text,
         id: upsertingTask?.id ?? upsertingTaskId,
         orientation: upsertingTask?.orientation ?? upsertingTaskOrientation,
+        status: upsertingTask?.status ?? _initialTaskStatus,
       ),
     );
 
