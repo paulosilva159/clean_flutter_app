@@ -47,6 +47,7 @@ class TaskCDS {
               id: newId,
               title: _movingTask.title,
               orientation: _movingTask.orientation,
+              status: _movingTask.status,
             ),
           )
               .then(
@@ -67,6 +68,7 @@ class TaskCDS {
                       id: _newIndex,
                       title: boxTask.title,
                       orientation: boxTask.orientation,
+                      status: boxTask.status,
                     ),
                   );
                 },
@@ -96,6 +98,7 @@ class TaskCDS {
                     id: _newIndex,
                     title: boxTask.title,
                     orientation: boxTask.orientation,
+                    status: boxTask.status,
                   ),
                 );
               },
