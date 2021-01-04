@@ -28,10 +28,9 @@ class TaskCM {
     @required this.title,
     @required this.status,
     @required this.orientation,
-    this.days,
+    this.deadline,
     this.steps,
     this.periodicity,
-    this.progress,
   })  : assert(id != null),
         assert(title != null),
         assert(status != null),
@@ -40,17 +39,15 @@ class TaskCM {
   @HiveField(0)
   final int id;
   @HiveField(1)
-  final int days;
+  final DateTime deadline;
   @HiveField(2)
   final List<Map<String, dynamic>> steps;
   @HiveField(3)
   final int periodicity;
   @HiveField(4)
-  final int progress;
-  @HiveField(5)
   final String title;
-  @HiveField(6)
+  @HiveField(5)
   final String status;
-  @HiveField(7)
+  @HiveField(6)
   final String orientation;
 }

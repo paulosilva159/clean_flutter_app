@@ -1,5 +1,5 @@
 import 'package:clean_flutter_app/data/cache/model/task_cm.dart';
-import 'package:clean_flutter_app/data/mapper/storage_to_domain.dart';
+import 'package:clean_flutter_app/data/mapper/task_step_mappers.dart';
 import 'package:clean_flutter_app/data/storage_model/task_step_sm.dart';
 import 'package:domain/model/task.dart';
 import 'package:domain/model/task_list_orientation.dart';
@@ -18,13 +18,28 @@ extension CacheToDomain on TaskCM {
           TaskListOrientation.values,
           orientation,
         ),
-        days: days,
+        deadline: deadline,
         steps: steps
             .map(
               (step) => TaskStepSM.fromJson(step).toDM(),
             )
             .toList(),
         periodicity: periodicity,
-        progress: progress,
+      );
+}
+
+extension DomainToCache on Task {
+  TaskCM toCM() => TaskCM(
+        id: id,
+        title: title,
+        status: EnumToString.convertToString(status),
+        orientation: EnumToString.convertToString(orientation),
+        deadline: deadline,
+        steps: steps
+            .map(
+              (step) => step.toSM().toJson(),
+            )
+            .toList(),
+        periodicity: periodicity,
       );
 }

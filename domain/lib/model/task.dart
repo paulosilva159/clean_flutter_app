@@ -9,20 +9,18 @@ class Task {
     @required this.title,
     @required this.status,
     @required this.orientation,
-    this.days,
+    this.deadline,
     this.steps,
     this.periodicity,
-    this.progress,
   })  : assert(id != null),
         assert(title != null),
         assert(status != null),
         assert(orientation != null);
 
   final int id;
-  final int days;
+  final DateTime deadline;
   final List<TaskStep> steps;
   final int periodicity;
-  final int progress;
   final String title;
   final TaskStatus status;
   final TaskListOrientation orientation;
