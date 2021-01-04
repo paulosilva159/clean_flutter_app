@@ -11,9 +11,9 @@ import 'package:clean_flutter_app/presentation/common/task_list_status.dart';
 import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view_bloc.dart';
 import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view_model.dart';
 import 'package:domain/data_observables.dart';
-import 'package:domain/data_repository/task_repository.dart';
 import 'package:domain/exceptions.dart';
 import 'package:domain/model/task.dart';
+import 'package:domain/model/task_list_orientation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -1,0 +1,4 @@
+enum TaskListOrientation {
+  vertical,
+  horizontal,
+}

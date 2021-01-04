@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:domain/model/task.dart';
+import 'package:domain/model/task_list_orientation.dart';
 import 'package:meta/meta.dart';
 
 abstract class TaskDataRepository {
@@ -19,9 +20,4 @@ abstract class TaskDataRepository {
     @required int oldId,
     @required int newId,
   });
-}
-
-enum TaskListOrientation {
-  vertical,
-  horizontal,
 }

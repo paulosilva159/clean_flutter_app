@@ -165,57 +165,50 @@ class __HorizontalTaskListState extends State<_HorizontalTaskList> {
   bool _isShowingHorizontalTaskDetails = false;
 
   @override
-  Widget build(BuildContext context) => Container(
-        color: Colors.pink,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              height: 120,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) => _HorizontalTaskItem(
-                  task: widget.tasks[index],
-                  onRemoveTask: widget.onRemoveTask,
-                  onUpdateTask: widget.onUpdateTask,
-                ),
-                itemCount: widget.tasks.length,
+  Widget build(BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            height: 120,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) => _HorizontalTaskItem(
+                task: widget.tasks[index],
+                onRemoveTask: widget.onRemoveTask,
+                onUpdateTask: widget.onUpdateTask,
               ),
+              itemCount: widget.tasks.length,
             ),
-            Visibility(
-              visible: _isShowingHorizontalTaskDetails,
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  final _task = widget.tasks[index];
+          ),
+          Visibility(
+            visible: _isShowingHorizontalTaskDetails,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                final _task = widget.tasks[index];
 
-                  return _HorizontalTaskItemDetails(
-                    task: _task,
-                    onUpdateTask: widget.onUpdateTask,
-                    onRemoveTask: widget.onRemoveTask,
-                  );
-                },
-                itemCount: widget.tasks.length,
-              ),
+                return _HorizontalTaskItemDetails(
+                  task: _task,
+                  onUpdateTask: widget.onUpdateTask,
+                  onRemoveTask: widget.onRemoveTask,
+                );
+              },
+              itemCount: widget.tasks.length,
             ),
-            FlatButton.icon(
+          ),
+          IconButton(
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
+              icon: Icon(_isShowingHorizontalTaskDetails
+                  ? Icons.keyboard_arrow_up_rounded
+                  : Icons.keyboard_arrow_down_rounded),
               onPressed: () {
                 setState(() {
                   _isShowingHorizontalTaskDetails =
                       !_isShowingHorizontalTaskDetails;
                 });
-              },
-              icon: Icon(
-                _isShowingHorizontalTaskDetails
-                    ? Icons.keyboard_arrow_up_rounded
-                    : Icons.keyboard_arrow_down_rounded,
-              ),
-              label: Container(),
-            ),
-          ],
-        ),
+              }),
+        ],
       );
 }
 
@@ -238,6 +231,14 @@ class _HorizontalTaskItem extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         margin: const EdgeInsets.all(10),
         decoration: BoxDecoration(
+          boxShadow: const [
+            BoxShadow(
+              blurRadius: 4,
+              spreadRadius: 1,
+              color: Colors.black26,
+              offset: Offset(0, 4),
+            ),
+          ],
           borderRadius: BorderRadius.circular(50),
           color: Colors.amber,
         ),
