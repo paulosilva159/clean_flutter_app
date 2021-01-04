@@ -101,6 +101,8 @@ class TaskScreenBloc with SubscriptionHolder {
         ShowSuccessTaskAction(type: _actionType),
       );
     } catch (error) {
+      print(error);
+
       actionSink.add(
         ShowFailTaskAction(type: _actionType),
       );

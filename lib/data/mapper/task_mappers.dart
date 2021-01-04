@@ -19,11 +19,7 @@ extension CacheToDomain on TaskCM {
           orientation,
         ),
         deadline: deadline,
-        steps: steps
-            .map(
-              (step) => TaskStepSM.fromJson(step).toDM(),
-            )
-            .toList(),
+        steps: steps?.map((step) => TaskStepSM.fromJson(step).toDM())?.toList(),
         periodicity: periodicity,
       );
 }
@@ -35,11 +31,7 @@ extension DomainToCache on Task {
         status: EnumToString.convertToString(status),
         orientation: EnumToString.convertToString(orientation),
         deadline: deadline,
-        steps: steps
-            .map(
-              (step) => step.toSM().toJson(),
-            )
-            .toList(),
+        steps: steps?.map((step) => step.toSM().toJson())?.toList(),
         periodicity: periodicity,
       );
 }
