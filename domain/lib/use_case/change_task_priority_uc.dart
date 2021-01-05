@@ -1,4 +1,3 @@
-import 'package:domain/common/task_priority.dart';
 import 'package:domain/data_observables.dart';
 import 'package:domain/data_repository/task_data_repository.dart';
 import 'package:domain/logger.dart';
@@ -20,7 +19,7 @@ class ChangeTaskPriorityUC extends UseCase<void, ChangeTaskPriorityUCParams> {
 
   @override
   Future<void> getRawFuture({ChangeTaskPriorityUCParams params}) =>
-      repository.changeTaskPriority(params.task, params.newPriority).then(
+      repository.upsertTask(params.task).then(
             (_) => activeTaskStorageUpdateSinkWrapper.value.add(null),
           );
 }
@@ -28,10 +27,7 @@ class ChangeTaskPriorityUC extends UseCase<void, ChangeTaskPriorityUCParams> {
 class ChangeTaskPriorityUCParams {
   ChangeTaskPriorityUCParams({
     @required this.task,
-    @required this.newPriority,
-  })  : assert(task != null),
-        assert(newPriority != null);
+  }) : assert(task != null);
 
   final Task task;
-  final TaskPriority newPriority;
 }
