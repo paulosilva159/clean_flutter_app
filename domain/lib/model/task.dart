@@ -1,5 +1,6 @@
-import 'package:domain/model/task_list_orientation.dart';
-import 'package:domain/model/task_status.dart';
+import 'package:domain/common/task_list_orientation.dart';
+import 'package:domain/common/task_priority.dart';
+import 'package:domain/common/task_status.dart';
 import 'package:domain/model/task_step.dart';
 import 'package:meta/meta.dart';
 
@@ -9,19 +10,29 @@ class Task {
     @required this.title,
     @required this.status,
     @required this.orientation,
+    @required this.priority,
+    @required this.creationTime,
     this.deadline,
     this.steps,
     this.periodicity,
   })  : assert(id != null),
         assert(title != null),
         assert(status != null),
-        assert(orientation != null);
+        assert(priority != null),
+        assert(creationTime != null),
+        assert(orientation != null),
+        assert(
+          (orientation == TaskListOrientation.horizontal && steps != null) ||
+              (orientation == TaskListOrientation.vertical && deadline != null),
+        );
 
   final int id;
-  final DateTime deadline;
-  final List<TaskStep> steps;
   final int periodicity;
   final String title;
+  final DateTime deadline;
+  final DateTime creationTime;
   final TaskStatus status;
+  final TaskPriority priority;
+  final List<TaskStep> steps;
   final TaskListOrientation orientation;
 }

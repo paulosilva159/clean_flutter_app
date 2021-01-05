@@ -1,8 +1,8 @@
 import 'dart:async';
 
+import 'package:domain/common/task_list_orientation.dart';
+import 'package:domain/common/task_priority.dart';
 import 'package:domain/model/task.dart';
-import 'package:domain/model/task_list_orientation.dart';
-import 'package:meta/meta.dart';
 
 abstract class TaskDataRepository {
   const TaskDataRepository();
@@ -15,9 +15,5 @@ abstract class TaskDataRepository {
 
   Future<void> removeTask(Task task);
 
-  Future<void> reorderTask(
-    TaskListOrientation orientation, {
-    @required int oldId,
-    @required int newId,
-  });
+  Future<void> changeTaskPriority(Task task, TaskPriority newPriority);
 }

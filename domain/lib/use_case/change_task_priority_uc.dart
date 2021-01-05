@@ -1,3 +1,4 @@
+import 'package:domain/common/task_priority.dart';
 import 'package:domain/data_observables.dart';
 import 'package:domain/data_repository/task_data_repository.dart';
 import 'package:domain/logger.dart';
@@ -5,11 +6,11 @@ import 'package:domain/model/task.dart';
 import 'package:domain/use_case/use_case.dart';
 import 'package:meta/meta.dart';
 
-class AddTaskUC extends UseCase<void, AddTaskUCParams> {
-  AddTaskUC({
+class ChangeTaskPriorityUC extends UseCase<void, ChangeTaskPriorityUCParams> {
+  ChangeTaskPriorityUC({
     @required this.repository,
-    @required ErrorLogger logger,
     @required this.activeTaskStorageUpdateSinkWrapper,
+    @required ErrorLogger logger,
   })  : assert(repository != null),
         assert(activeTaskStorageUpdateSinkWrapper != null),
         super(logger: logger);
@@ -18,16 +19,19 @@ class AddTaskUC extends UseCase<void, AddTaskUCParams> {
   final ActiveTaskStorageUpdateSinkWrapper activeTaskStorageUpdateSinkWrapper;
 
   @override
-  Future<void> getRawFuture({AddTaskUCParams params}) =>
-      repository.upsertTask(params.task).then(
+  Future<void> getRawFuture({ChangeTaskPriorityUCParams params}) =>
+      repository.changeTaskPriority(params.task, params.newPriority).then(
             (_) => activeTaskStorageUpdateSinkWrapper.value.add(null),
           );
 }
 
-class AddTaskUCParams {
-  AddTaskUCParams({
+class ChangeTaskPriorityUCParams {
+  ChangeTaskPriorityUCParams({
     @required this.task,
-  }) : assert(task != null);
+    @required this.newPriority,
+  })  : assert(task != null),
+        assert(newPriority != null);
 
   final Task task;
+  final TaskPriority newPriority;
 }
