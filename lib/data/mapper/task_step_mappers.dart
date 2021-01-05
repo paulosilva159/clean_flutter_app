@@ -6,6 +6,7 @@ extension DomainToStorage on TaskStep {
         id: id,
         title: title,
         status: status,
+        creationTime: creationTime,
       );
 }
 
@@ -14,5 +15,6 @@ extension StorageToDomain on TaskStepSM {
         id: id,
         title: title,
         status: status,
+        creationTime: creationTime,
       );
 }

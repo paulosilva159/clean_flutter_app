@@ -11,6 +11,7 @@ TaskStepSM _$TaskStepSMFromJson(Map<String, dynamic> json) {
     id: json['id'] as int,
     title: json['title'] as String,
     status: _$enumDecode(_$TaskStatusEnumMap, json['status']),
+    creationTime: DateTime.parse(json['creationTime'] as String),
   );
 }
 
@@ -19,6 +20,7 @@ Map<String, dynamic> _$TaskStepSMToJson(TaskStepSM instance) =>
       'id': instance.id,
       'title': instance.title,
       'status': _$TaskStatusEnumMap[instance.status],
+      'creationTime': instance.creationTime.toIso8601String(),
     };
 
 T _$enumDecode<T>(

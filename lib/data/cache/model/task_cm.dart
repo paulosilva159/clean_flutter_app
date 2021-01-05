@@ -1,25 +1,14 @@
+import 'package:domain/common/task_list_orientation.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:hive/hive.dart';
 import 'package:meta/meta.dart';
 
 part 'task_cm.g.dart';
 
-// @HiveType(typeId: 0)
-// class TaskCM {
-//   const TaskCM({
-//     @required this.id,
-//     @required this.title,
-//     @required this.orientation,
-//   })  : assert(id != null),
-//         assert(title != null),
-//         assert(orientation != null);
-//
-//   @HiveField(0)
-//   final int id;
-//   @HiveField(1)
-//   final String title;
-//   @HiveField(2)
-//   final String orientation;
-// }
+final _taskListHorizontalOrientationString =
+    EnumToString.convertToString(TaskListOrientation.horizontal);
+final _taskListVerticalOrientationString =
+    EnumToString.convertToString(TaskListOrientation.vertical);
 
 @HiveType(typeId: 0)
 class TaskCM {
@@ -28,26 +17,40 @@ class TaskCM {
     @required this.title,
     @required this.status,
     @required this.orientation,
+    @required this.priority,
+    @required this.creationTime,
     this.deadline,
     this.steps,
     this.periodicity,
   })  : assert(id != null),
         assert(title != null),
         assert(status != null),
-        assert(orientation != null);
+        assert(priority != null),
+        assert(creationTime != null),
+        assert(orientation != null),
+        assert(
+          (orientation == _taskListHorizontalOrientationString &&
+                  steps != null) ||
+              (orientation == _taskListVerticalOrientationString &&
+                  deadline != null),
+        );
 
   @HiveField(0)
   final int id;
   @HiveField(1)
-  final DateTime deadline;
-  @HiveField(2)
-  final List<Map<String, dynamic>> steps;
-  @HiveField(3)
   final int periodicity;
-  @HiveField(4)
+  @HiveField(2)
   final String title;
-  @HiveField(5)
+  @HiveField(3)
   final String status;
-  @HiveField(6)
+  @HiveField(4)
+  final String priority;
+  @HiveField(5)
   final String orientation;
+  @HiveField(6)
+  final DateTime deadline;
+  @HiveField(7)
+  final DateTime creationTime;
+  @HiveField(8)
+  final List<Map<String, dynamic>> steps;
 }
