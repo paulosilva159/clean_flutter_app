@@ -1,7 +1,8 @@
 import 'package:clean_flutter_app/presentation/common/dialogs/simple_dialogs/adaptive_form_dialog.dart';
+import 'package:domain/common/task_list_orientation.dart';
+import 'package:domain/common/task_priority.dart';
+import 'package:domain/common/task_status.dart';
 import 'package:domain/model/task.dart';
-import 'package:domain/model/task_list_orientation.dart';
-import 'package:domain/model/task_status.dart';
 import 'package:flutter/material.dart';
 
 void showUpsertTaskFormDialog(
@@ -28,6 +29,9 @@ void showUpsertTaskFormDialog(
         id: upsertingTask?.id ?? upsertingTaskId,
         orientation: upsertingTask?.orientation ?? upsertingTaskOrientation,
         status: upsertingTask?.status ?? _initialTaskStatus,
+        priority: TaskPriority.normal,
+        creationTime: DateTime.now(),
+        deadline: DateTime.utc(2022),
       ),
     );
 

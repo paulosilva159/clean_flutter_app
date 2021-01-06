@@ -7,7 +7,6 @@ import 'package:clean_flutter_app/presentation/common/indicator/empty_list_indic
 import 'package:clean_flutter_app/presentation/common/indicator/error_indicator.dart';
 import 'package:clean_flutter_app/presentation/common/indicator/loading_indicator.dart';
 import 'package:clean_flutter_app/presentation/common/snackbar/task_action_message_snackbar.dart';
-import 'package:clean_flutter_app/presentation/common/task_list_status.dart';
 import 'package:clean_flutter_app/presentation/task_screen/horizontal_task_list_view/horizontal_task_list_view_bloc.dart';
 import 'package:clean_flutter_app/presentation/task_screen/horizontal_task_list_view/horizontal_task_list_view_model.dart';
 import 'package:domain/data_observables.dart';
@@ -15,18 +14,14 @@ import 'package:domain/exceptions.dart';
 import 'package:domain/model/task.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-typedef TaskListStatusUpdateCallback = void Function(TaskListStatus);
+import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 class HorizontalTaskListView extends StatelessWidget {
   const HorizontalTaskListView({
     @required this.bloc,
-    @required this.onNewTaskListStatus,
-  })  : assert(bloc != null),
-        assert(onNewTaskListStatus != null);
+  }) : assert(bloc != null);
 
   final HorizontalTaskListViewBloc bloc;
-  final TaskListStatusUpdateCallback onNewTaskListStatus;
 
   static Widget create(
           {@required TaskListStatusUpdateCallback onNewTaskListStatus}) =>
@@ -40,6 +35,7 @@ class HorizontalTaskListView extends StatelessWidget {
         ) =>
             taskListViewBloc ??
             HorizontalTaskListViewBloc(
+              onNewTaskListStatus: onNewTaskListStatus,
               activeTaskStorageUpdateStreamWrapper:
                   activeTaskStorageUpdateStreamWrapper,
               useCases: taskListViewUseCases,
@@ -48,7 +44,6 @@ class HorizontalTaskListView extends StatelessWidget {
         child: Consumer<HorizontalTaskListViewBloc>(
           builder: (context, bloc, child) => HorizontalTaskListView(
             bloc: bloc,
-            onNewTaskListStatus: onNewTaskListStatus,
           ),
         ),
       );
@@ -96,37 +91,20 @@ class HorizontalTaskListView extends StatelessWidget {
             showSuccessTask(context, message: _message);
           }
         },
-        child: StreamBuilder<Object>(
+        child: StreamBuilder<HorizontalTaskListViewState>(
           stream: bloc.onNewState,
           builder: (context, snapshot) =>
               AsyncSnapshotResponseView<Loading, Error, Success>(
-            loadingWidgetBuilder: (context, loading) {
-              onNewTaskListStatus(
-                TaskListLoading(),
-              );
-
-              return LoadingIndicator();
-            },
+            loadingWidgetBuilder: (context, loading) => LoadingIndicator(),
             errorWidgetBuilder: (context, error) => ErrorIndicator(
               error: error,
               onTryAgainTap: () => bloc.onTryAgain.add(null),
             ),
             successWidgetBuilder: (context, success) {
-              onNewTaskListStatus(
-                TaskListLoaded(
-                  listSize: success.listSize,
-                ),
-              );
-
               if (success is Listing) {
                 return _HorizontalTaskList(
                   onRemoveTask: bloc.onRemoveTask.add,
                   onUpdateTask: bloc.onUpdateTask.add,
-                  onReorderTasks: (oldId, newId) {
-                    bloc.onReorderTask.add(
-                      ReorderableTaskIds(oldId: oldId, newId: newId),
-                    );
-                  },
                   tasks: success.tasks,
                 );
               } else if (success is Empty) {
@@ -145,16 +123,13 @@ class _HorizontalTaskList extends StatefulWidget {
   const _HorizontalTaskList({
     @required this.onRemoveTask,
     @required this.onUpdateTask,
-    @required this.onReorderTasks,
     @required this.tasks,
   })  : assert(tasks != null),
         assert(onUpdateTask != null),
-        assert(onRemoveTask != null),
-        assert(onReorderTasks != null);
+        assert(onRemoveTask != null);
 
   final void Function(Task) onRemoveTask;
   final void Function(Task) onUpdateTask;
-  final void Function(int, int) onReorderTasks;
   final List<Task> tasks;
 
   @override
@@ -244,9 +219,10 @@ class _HorizontalTaskItem extends StatelessWidget {
         ),
         height: 100,
         width: 100,
-        child: Center(
-          child: Text('${task.id}'),
-        ),
+        // child: Center(
+        //   child: Text('${task.id}'),
+        // ),
+        child: CircularStepProgressIndicator(totalSteps: task.steps.length),
       );
 }
 

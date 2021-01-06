@@ -10,63 +10,43 @@ class TaskScreenBloc with SubscriptionHolder {
   TaskScreenBloc({
     @required this.useCases,
   }) : assert(useCases != null) {
-    addTaskItemSubject(
-      _onAddTaskItemSubject.stream,
-    ).listen(_onNewStateSubject.add).addTo(subscriptions);
+    _onAddTaskItemSubject.stream
+        .listen(
+          (task) => _addData(
+            task: task,
+            actionSink: _onNewActionSubject.sink,
+          ),
+        )
+        .addTo(subscriptions);
 
-    updateTaskListStatusSubject(
+    Rx.combineLatest2<TaskListStatus, TaskListStatus, CombinedTaskListStatus>(
       _onNewVerticalTaskListStatusSubject.stream,
       _onNewHorizontalTaskListStatusSubject.stream,
-    ).distinct().listen((combinedTaskListStatus) {
-      final _verticalListStatus = combinedTaskListStatus.verticalListStatus;
-      final _horizontalListStatus = combinedTaskListStatus.horizontalListStatus;
-      final _listingState = _onNewStateSubject.value;
+      (verticalListStatus, horizontalListStatus) => CombinedTaskListStatus(
+        verticalListStatus: verticalListStatus,
+        horizontalListStatus: horizontalListStatus,
+      ),
+    ).distinct().listen(
+      (combinedTaskListStatus) {
+        final _lastListingState = _onNewStateSubject.value;
 
-      if (_verticalListStatus is TaskListLoaded &&
-          _horizontalListStatus is TaskListLoaded) {
-        final _isInitialListingState = _listingState is! Done;
-
-        final _listsSizeHaveChanged = _listingState is Done &&
-            (_listingState.verticalListSize != _verticalListStatus.listSize ||
-                _listingState.horizontalListSize !=
-                    _horizontalListStatus.listSize);
-
-        if (_isInitialListingState || _listsSizeHaveChanged) {
+        if (_lastListingState is! Idle &&
+            combinedTaskListStatus.horizontalListStatus is TaskListLoaded &&
+            combinedTaskListStatus.verticalListStatus is TaskListLoaded) {
           _onNewStateSubject.add(
-            Done(
-              verticalListSize: _verticalListStatus.listSize,
-              horizontalListSize: _horizontalListStatus.listSize,
-            ),
+            Idle(),
           );
         }
-      }
-    }).addTo(subscriptions);
+      },
+    ).addTo(subscriptions);
   }
-
-  Stream<TaskScreenState> addTaskItemSubject(Stream<Task> inputStream) =>
-      inputStream.flatMap<TaskScreenState>(
-        (task) => _addData(task: task, actionSink: _onNewActionSubject.sink),
-      );
-
-  Stream<CombinedTaskListStatus> updateTaskListStatusSubject(
-    Stream<TaskListStatus> verticalListInputStream,
-    Stream<TaskListStatus> horizontalListInputStream,
-  ) =>
-      Rx.combineLatest2<TaskListStatus, TaskListStatus, CombinedTaskListStatus>(
-        verticalListInputStream,
-        horizontalListInputStream,
-        (verticalListStatus, horizontalListStatus) => CombinedTaskListStatus(
-          verticalListStatus: verticalListStatus,
-          horizontalListStatus: horizontalListStatus,
-        ),
-      );
 
   final TaskScreenUseCases useCases;
 
   final _onNewActionSubject = PublishSubject<TaskScreenAction>();
   final _onAddTaskItemSubject = PublishSubject<Task>();
   final _onNewStateSubject = BehaviorSubject<TaskScreenState>.seeded(
-    Waiting(),
+    Loading(),
   );
   final _onNewVerticalTaskListStatusSubject =
       BehaviorSubject<TaskListStatus>.seeded(
@@ -82,31 +62,33 @@ class TaskScreenBloc with SubscriptionHolder {
       _onNewVerticalTaskListStatusSubject.sink;
   Sink<TaskListStatus> get onNewHorizontalTaskListStatus =>
       _onNewHorizontalTaskListStatusSubject.sink;
+  Sink<TaskScreenAction> get onNewActionSink => _onNewActionSubject.sink;
 
   Stream<TaskScreenState> get onNewState => _onNewStateSubject.stream;
-  Stream<TaskScreenAction> get onNewAction => _onNewActionSubject.stream;
+  Stream<TaskScreenAction> get onNewActionStream => _onNewActionSubject.stream;
 
-  Stream<TaskScreenState> _addData({
+  Future<void> _addData({
     @required Task task,
     @required Sink<TaskScreenAction> actionSink,
-  }) async* {
+  }) async {
     const _actionType = TaskScreenActionType.addTask;
 
-    try {
-      await useCases.addTask(
-        AddTaskUCParams(task: task),
-      );
-
-      actionSink.add(
-        ShowSuccessTaskAction(type: _actionType),
-      );
-    } catch (error) {
-      print(error);
-
-      actionSink.add(
-        ShowFailTaskAction(type: _actionType),
-      );
-    }
+    await useCases
+        .addTask(
+          AddTaskUCParams(task: task),
+        )
+        .then(
+          (_) => actionSink.add(
+            ShowSuccessTaskAction(type: _actionType),
+          ),
+        )
+        .catchError(
+      (error) {
+        actionSink.add(
+          ShowFailTaskAction(type: _actionType),
+        );
+      },
+    );
   }
 
   void dispose() {

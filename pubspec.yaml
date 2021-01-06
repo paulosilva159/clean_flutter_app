@@ -16,6 +16,7 @@ dependencies:
   enum_to_string: ^1.0.14
   path_provider: ^1.6.24
   json_serializable: ^3.5.1
+  step_progress_indicator: ^0.2.5+8
   rxdart: ^0.24.1
 
   flutter_localizations:

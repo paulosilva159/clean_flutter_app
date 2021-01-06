@@ -8,12 +8,14 @@ import 'package:clean_flutter_app/presentation/task_screen/horizontal_task_list_
 import 'package:clean_flutter_app/presentation/task_screen/task_screen_bloc.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_screen_model.dart';
 import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view.dart';
-import 'package:domain/model/task_list_orientation.dart';
+import 'package:domain/common/task_list_orientation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class TaskScreen extends StatelessWidget {
-  const TaskScreen({@required this.bloc}) : assert(bloc != null);
+  const TaskScreen({
+    @required this.bloc,
+  }) : assert(bloc != null);
 
   final TaskScreenBloc bloc;
 
@@ -37,6 +39,7 @@ class TaskScreen extends StatelessWidget {
     }
   }
 
+  // TODO(paulosilva159): adicionar ActionListener
   @override
   Widget build(BuildContext context) => StreamBuilder<TaskScreenState>(
         stream: bloc.onNewState,
@@ -50,20 +53,17 @@ class TaskScreen extends StatelessWidget {
             resizeToAvoidBottomPadding: false,
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
-            floatingActionButton: screenState is Done
+            floatingActionButton: screenState is Idle
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       FloatingActionButton(
                         heroTag: null,
                         onPressed: () {
-                          showUpsertTaskFormDialog(
-                            context,
-                            formDialogTitle: S.of(context).addTaskDialogTitle,
-                            onUpsertTask: bloc.onAddTaskItem.add,
-                            upsertingTaskId: screenState.horizontalListSize + 1,
-                            upsertingTaskOrientation:
-                                TaskListOrientation.horizontal,
+                          bloc.onNewActionSink.add(
+                            ShowAddTaskFormAction(
+                              orientation: TaskListOrientation.horizontal,
+                            ),
                           );
                         },
                         child: const Icon(Icons.horizontal_split_rounded),
@@ -74,13 +74,10 @@ class TaskScreen extends StatelessWidget {
                       FloatingActionButton(
                         heroTag: null,
                         onPressed: () {
-                          showUpsertTaskFormDialog(
-                            context,
-                            formDialogTitle: S.of(context).addTaskDialogTitle,
-                            onUpsertTask: bloc.onAddTaskItem.add,
-                            upsertingTaskId: screenState.verticalListSize + 1,
-                            upsertingTaskOrientation:
-                                TaskListOrientation.vertical,
+                          bloc.onNewActionSink.add(
+                            ShowAddTaskFormAction(
+                              orientation: TaskListOrientation.vertical,
+                            ),
                           );
                         },
                         child: const Icon(Icons.vertical_split_rounded),
@@ -90,11 +87,18 @@ class TaskScreen extends StatelessWidget {
                 : null,
             body: Builder(
               builder: (context) => ActionStreamListener<TaskScreenAction>(
-                actionStream: bloc.onNewAction,
+                actionStream: bloc.onNewActionStream,
                 onReceived: (action) {
                   final _message = _snackBarMessage(context, action: action);
 
-                  if (action is ShowFailTaskAction) {
+                  if (action is ShowAddTaskFormAction) {
+                    showUpsertTaskFormDialog(
+                      context,
+                      formDialogTitle: S.of(context).addTaskDialogTitle,
+                      onUpsertTask: bloc.onAddTaskItem.add,
+                      upsertingTaskOrientation: action.orientation,
+                    );
+                  } else if (action is ShowFailTaskAction) {
                     showFailTask(context, message: _message);
                   } else {
                     showSuccessTask(context, message: _message);
@@ -129,14 +133,16 @@ class _TaskListsView extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const TaskListSectionTitle(title: 'Lista Horizontal'),
+          // TODO(paulosilva159): mudar strings hardcoded para variavel
+          const _TaskListSectionTitle(title: 'Lista Horizontal'),
           Padding(
             padding: const EdgeInsets.all(15),
             child: HorizontalTaskListView.create(
               onNewTaskListStatus: onNewHorizontalTaskListStatus,
             ),
           ),
-          const TaskListSectionTitle(title: 'Lista Vertical'),
+          // TODO(paulosilva159): mudar strings hardcoded para variavel
+          const _TaskListSectionTitle(title: 'Lista Vertical'),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(15),
@@ -149,8 +155,8 @@ class _TaskListsView extends StatelessWidget {
       );
 }
 
-class TaskListSectionTitle extends StatelessWidget {
-  const TaskListSectionTitle({
+class _TaskListSectionTitle extends StatelessWidget {
+  const _TaskListSectionTitle({
     @required this.title,
   }) : assert(title != null);
 
