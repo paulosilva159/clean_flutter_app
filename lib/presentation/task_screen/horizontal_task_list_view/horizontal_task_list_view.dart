@@ -172,17 +172,20 @@ class __HorizontalTaskListState extends State<_HorizontalTaskList> {
             ),
           ),
           IconButton(
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              icon: Icon(_isShowingHorizontalTaskDetails
-                  ? Icons.keyboard_arrow_up_rounded
-                  : Icons.keyboard_arrow_down_rounded),
-              onPressed: () {
-                setState(() {
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            icon: Icon(_isShowingHorizontalTaskDetails
+                ? Icons.keyboard_arrow_up_rounded
+                : Icons.keyboard_arrow_down_rounded),
+            onPressed: () {
+              setState(
+                () {
                   _isShowingHorizontalTaskDetails =
                       !_isShowingHorizontalTaskDetails;
-                });
-              }),
+                },
+              );
+            },
+          ),
         ],
       );
 }
@@ -219,10 +222,10 @@ class _HorizontalTaskItem extends StatelessWidget {
         ),
         height: 100,
         width: 100,
-        // child: Center(
-        //   child: Text('${task.id}'),
-        // ),
-        child: CircularStepProgressIndicator(totalSteps: task.steps.length),
+        child: CircularStepProgressIndicator(
+          totalSteps: task.steps.length,
+          child: const Center(child: Text('a')),
+        ),
       );
 }
 
@@ -254,7 +257,7 @@ class _HorizontalTaskItemDetails extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              EditTaskButton(
+              UpdateTaskButton(
                 iconSize: _denseIconSize,
                 task: task,
                 onUpdateTask: onUpdateTask,

@@ -5,9 +5,9 @@ import 'package:meta/meta.dart';
 
 part 'task_cm.g.dart';
 
-final _taskListHorizontalOrientationString =
+final _taskListHorizontalOrientation =
     EnumToString.convertToString(TaskListOrientation.horizontal);
-final _taskListVerticalOrientationString =
+final _taskListVerticalOrientation =
     EnumToString.convertToString(TaskListOrientation.vertical);
 
 @HiveType(typeId: 0)
@@ -29,10 +29,8 @@ class TaskCM {
         assert(creationTime != null),
         assert(orientation != null),
         assert(
-          (orientation == _taskListHorizontalOrientationString &&
-                  steps != null) ||
-              (orientation == _taskListVerticalOrientationString &&
-                  deadline != null),
+          (orientation == _taskListHorizontalOrientation && steps != null) ||
+              (orientation == _taskListVerticalOrientation && deadline != null),
         );
 
   @HiveField(0)

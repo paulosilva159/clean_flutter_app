@@ -12,7 +12,9 @@ void showActionMessageSnackBar(
       SnackBar(
         content: Text(
           message,
-          style: TextStyle(color: isFailMessage ? Colors.red : Colors.green),
+          style: TextStyle(
+            color: isFailMessage ? Colors.red : Colors.green,
+          ),
         ),
       ),
     );

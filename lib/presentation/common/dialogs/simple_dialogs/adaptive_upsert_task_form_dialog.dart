@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:clean_flutter_app/presentation/common/upsert_task_dialog_button.dart';
+import 'package:clean_flutter_app/presentation/common/buttons/upsert_task_dialog_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class AdaptiveFormDialog extends StatelessWidget {
-  AdaptiveFormDialog({
+class AdaptiveUpsertTaskFormDialog extends StatelessWidget {
+  AdaptiveUpsertTaskFormDialog({
     @required this.formDialogTitle,
     @required this.onSaveFieldFunction,
     @required this.onTextEditingControllerDispose,
@@ -28,14 +28,14 @@ class AdaptiveFormDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Platform.isIOS
-      ? _CupertinoFormDialog(
+      ? _CupertinoUpsertTaskFormDialog(
           formDialogTitle: formDialogTitle,
           onSaveFieldFunction: onSaveFieldFunction,
           onTextEditingControllerDispose: onTextEditingControllerDispose,
           formFields: formFields,
           formKey: _formKey,
         )
-      : _MaterialFormDialog(
+      : _MaterialUpsertTaskFormDialog(
           formDialogTitle: formDialogTitle,
           onSaveFieldFunction: onSaveFieldFunction,
           onTextEditingControllerDispose: onTextEditingControllerDispose,
@@ -44,8 +44,8 @@ class AdaptiveFormDialog extends StatelessWidget {
         );
 }
 
-class _MaterialFormDialog extends StatelessWidget {
-  const _MaterialFormDialog({
+class _MaterialUpsertTaskFormDialog extends StatelessWidget {
+  const _MaterialUpsertTaskFormDialog({
     @required this.formDialogTitle,
     @required this.onSaveFieldFunction,
     @required this.onTextEditingControllerDispose,
@@ -79,18 +79,15 @@ class _MaterialFormDialog extends StatelessWidget {
 
               onSaveFieldFunction();
 
-              await Future.delayed(
-                const Duration(milliseconds: 275),
-                Navigator.of(context).pop,
-              );
+              await _onCloseDialog(context);
             },
           ),
         ],
       );
 }
 
-class _CupertinoFormDialog extends StatelessWidget {
-  const _CupertinoFormDialog({
+class _CupertinoUpsertTaskFormDialog extends StatelessWidget {
+  const _CupertinoUpsertTaskFormDialog({
     @required this.formDialogTitle,
     @required this.onSaveFieldFunction,
     @required this.onTextEditingControllerDispose,
@@ -133,10 +130,7 @@ class _CupertinoFormDialog extends StatelessWidget {
 
                       onSaveFieldFunction();
 
-                      await Future.delayed(
-                        const Duration(milliseconds: 275),
-                        Navigator.of(context).pop,
-                      );
+                      await _onCloseDialog(context);
                     },
                   ),
                 ],
@@ -146,3 +140,8 @@ class _CupertinoFormDialog extends StatelessWidget {
         ),
       );
 }
+
+Future<void> _onCloseDialog(BuildContext context) => Future.delayed(
+      const Duration(milliseconds: 275),
+      Navigator.of(context).pop,
+    );

@@ -10,7 +10,7 @@ class TaskCDS {
   Future<List<TaskCM>> getTaskList(TaskListOrientation orientation) =>
       Hive.openBox<TaskCM>(
         _chooseBox(
-          EnumToString.convertToString(orientation),
+          _convertTaskListOrientationToString(orientation),
         ),
       ).then<List<TaskCM>>(
         (box) => box.values.toList(),
@@ -29,13 +29,19 @@ class TaskCDS {
       );
 
   String _chooseBox(String orientation) {
-    final _orientation = EnumToString.fromString<TaskListOrientation>(
-      TaskListOrientation.values,
-      orientation,
-    );
+    final _orientation = _convertStingToTaskListOrientation(orientation);
 
     return _orientation == TaskListOrientation.vertical
         ? _verticalTaskBoxName
         : _horizontalTaskBoxName;
   }
 }
+
+String _convertTaskListOrientationToString(TaskListOrientation orientation) =>
+    EnumToString.convertToString(orientation);
+
+TaskListOrientation _convertStingToTaskListOrientation(String orientation) =>
+    EnumToString.fromString<TaskListOrientation>(
+      TaskListOrientation.values,
+      orientation,
+    );

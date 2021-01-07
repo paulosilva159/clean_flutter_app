@@ -39,7 +39,6 @@ class TaskScreen extends StatelessWidget {
     }
   }
 
-  // TODO(paulosilva159): adicionar ActionListener
   @override
   Widget build(BuildContext context) => StreamBuilder<TaskScreenState>(
         stream: bloc.onNewState,
@@ -92,11 +91,11 @@ class TaskScreen extends StatelessWidget {
                   final _message = _snackBarMessage(context, action: action);
 
                   if (action is ShowAddTaskFormAction) {
-                    showUpsertTaskFormDialog(
+                    showAddTaskFormDialog(
                       context,
                       formDialogTitle: S.of(context).addTaskDialogTitle,
-                      onUpsertTask: bloc.onAddTaskItem.add,
-                      upsertingTaskOrientation: action.orientation,
+                      onAddTask: bloc.onAddTaskItem.add,
+                      addingTaskOrientation: action.orientation,
                     );
                   } else if (action is ShowFailTaskAction) {
                     showFailTask(context, message: _message);

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class EmptyListIndicator extends StatelessWidget {
   @override
-  Widget build(BuildContext context) =>
-      Text(S.of(context).emptyListIndicatorMessage);
+  Widget build(BuildContext context) => Text(
+        S.of(context).emptyListIndicatorMessage,
+      );
 }

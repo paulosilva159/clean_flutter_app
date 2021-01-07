@@ -5,11 +5,10 @@ class TaskStep {
   TaskStep({
     @required this.id,
     @required this.title,
-    @required this.status,
     @required this.creationTime,
+    this.status = TaskStatus.undone,
   })  : assert(id != null),
         assert(title != null),
-        assert(status != null),
         assert(creationTime != null);
 
   final int id;

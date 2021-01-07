@@ -3,8 +3,8 @@ import 'package:clean_flutter_app/presentation/common/dialogs/simple_dialogs/tas
 import 'package:domain/model/task.dart';
 import 'package:flutter/material.dart';
 
-class EditTaskButton extends StatelessWidget {
-  const EditTaskButton({
+class UpdateTaskButton extends StatelessWidget {
+  const UpdateTaskButton({
     @required this.task,
     @required this.onUpdateTask,
     this.iconSize = 24.0,

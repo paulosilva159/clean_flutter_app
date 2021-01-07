@@ -186,7 +186,7 @@ class _VerticalTaskListItem extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                EditTaskButton(
+                UpdateTaskButton(
                   task: task,
                   onUpdateTask: onUpdateTask,
                 ),

@@ -6,9 +6,7 @@ import 'package:domain/model/task.dart';
 abstract class TaskDataRepository {
   const TaskDataRepository();
 
-  Future<List<Task>> getTaskList(
-    TaskListOrientation orientation,
-  );
+  Future<List<Task>> getTaskList(TaskListOrientation orientation);
 
   Future<void> upsertTask(Task task);
 
