@@ -75,9 +75,9 @@ class TaskScreen extends StatelessWidget {
                       onUpsertTask: bloc.onAddTaskItem.add,
                     );
                   } else if (action is ShowFailTaskAction) {
-                    showFailTask(context, message: _message);
+                    showFailTaskMessage(context, message: _message);
                   } else {
-                    showSuccessTask(context, message: _message);
+                    showSuccessTaskMessage(context, message: _message);
                   }
                 },
                 child: snapshot.hasData

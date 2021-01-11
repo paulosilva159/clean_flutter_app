@@ -87,10 +87,12 @@ class VerticalTaskListView extends StatelessWidget {
             action: action,
           );
 
+          // TODO(paulosilva159): aplicar interpretação das actions
+
           if (action is ShowFailTaskAction) {
-            showFailTask(context, message: _message);
+            showFailTaskMessage(context, message: _message);
           } else {
-            showSuccessTask(context, message: _message);
+            showSuccessTaskMessage(context, message: _message);
           }
         },
         child: StreamBuilder<VerticalTaskListViewState>(

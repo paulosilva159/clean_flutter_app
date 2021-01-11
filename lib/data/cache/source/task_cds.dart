@@ -29,7 +29,7 @@ class TaskCDS {
       );
 
   String _chooseBox(String orientation) {
-    final _orientation = _convertStingToTaskListOrientation(orientation);
+    final _orientation = _convertStringToTaskListOrientation(orientation);
 
     return _orientation == TaskListOrientation.vertical
         ? _verticalTaskBoxName
@@ -40,7 +40,7 @@ class TaskCDS {
 String _convertTaskListOrientationToString(TaskListOrientation orientation) =>
     EnumToString.convertToString(orientation);
 
-TaskListOrientation _convertStingToTaskListOrientation(String orientation) =>
+TaskListOrientation _convertStringToTaskListOrientation(String orientation) =>
     EnumToString.fromString<TaskListOrientation>(
       TaskListOrientation.values,
       orientation,

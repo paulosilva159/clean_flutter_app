@@ -85,10 +85,12 @@ class HorizontalTaskListView extends StatelessWidget {
             action: action,
           );
 
+          // TODO(paulosilva159): aplicar interpretação das actions
+
           if (action is ShowFailTaskAction) {
-            showFailTask(context, message: _message);
+            showFailTaskMessage(context, message: _message);
           } else {
-            showSuccessTask(context, message: _message);
+            showSuccessTaskMessage(context, message: _message);
           }
         },
         child: StreamBuilder<HorizontalTaskListViewState>(
@@ -222,6 +224,7 @@ class _HorizontalTaskItem extends StatelessWidget {
         ),
         height: 100,
         width: 100,
+        // TODO(paulosilva159): fazer integração com task.steps.status
         child: CircularStepProgressIndicator(
           totalSteps: task.steps.length,
           child: Center(

@@ -77,8 +77,10 @@ class HorizontalTaskListViewBloc with SubscriptionHolder {
     try {
       final taskList = await useCases.getTasksList().then((list) {
         onNewTaskListStatus(
-          TaskListLoaded(),
+          TaskListStatus.loaded,
         );
+
+        // TODO(paulosilva159): aplicar ordenação por priority
 
         return list
           ..sort(

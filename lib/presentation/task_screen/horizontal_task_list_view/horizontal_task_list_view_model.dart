@@ -35,6 +35,8 @@ enum HorizontalTaskListActionType {
   removeTask,
 }
 
+// TODO(paulosilva159): criar actions que correspondem aos actionstypes
+
 abstract class HorizontalTaskListAction {
   HorizontalTaskListAction({
     @required this.type,

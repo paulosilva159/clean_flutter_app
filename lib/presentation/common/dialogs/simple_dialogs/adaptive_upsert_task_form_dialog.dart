@@ -174,6 +174,84 @@ class _AdaptiveUpsertTaskFormDialogState
         );
 }
 
+class _DeadlinePickerFormField extends StatelessWidget {
+  const _DeadlinePickerFormField({
+    @required this.onPickDeadline,
+    this.deadline,
+  }) : assert(onPickDeadline != null);
+
+  final void Function(DateTime) onPickDeadline;
+  final DateTime deadline;
+
+  @override
+  Widget build(BuildContext context) => FormField<DateTime>(
+        builder: (_) => FlatButton.icon(
+          onPressed: () async {
+            final _pickedDeadline = await showDatePicker(
+              context: context,
+              initialDate: deadline ?? DateTime.now(),
+              firstDate: DateTime.now(),
+              lastDate: DateTime.utc(DateTime.now().year + 10),
+            );
+
+            onPickDeadline(_pickedDeadline);
+          },
+          icon: const Icon(
+            Icons.calendar_today_rounded,
+          ),
+          label: Text(
+            deadline?.toString() ?? 'CHOOSE',
+          ),
+        ),
+      );
+}
+
+class _TaskStepFormField extends StatelessWidget {
+  const _TaskStepFormField({
+    @required this.taskSteps,
+    @required this.onAddTaskStep,
+    @required this.isHorizontalTaskList,
+  })  : assert(taskSteps != null),
+        assert(onAddTaskStep != null),
+        assert(isHorizontalTaskList != null);
+
+  final List<TaskStep> taskSteps;
+  final void Function(TaskStep) onAddTaskStep;
+  final bool isHorizontalTaskList;
+
+  @override
+  Widget build(BuildContext context) => FormField<TaskStep>(
+        builder: (_) => Visibility(
+          visible: isHorizontalTaskList,
+          child: Column(
+            children: [
+              ...taskSteps
+                  .map(
+                    (step) => Container(
+                      child: Text(step.title),
+                    ),
+                  )
+                  .toList(),
+              FlatButton.icon(
+                onPressed: () {
+                  // TODO(paulosilva159): criar form para criação de task step
+                  onAddTaskStep(
+                    TaskStep(
+                      id: uuidGenerator.uuid,
+                      title: 'sexo',
+                      creationTime: DateTime.now(),
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.add),
+                label: const Text('adiconar step'),
+              ),
+            ],
+          ),
+        ),
+      );
+}
+
 class _MaterialUpsertTaskFormDialog extends StatelessWidget {
   const _MaterialUpsertTaskFormDialog({
     @required this.formDialogTitle,
@@ -268,83 +346,6 @@ class _CupertinoUpsertTaskFormDialog extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      );
-}
-
-class _DeadlinePickerFormField extends StatelessWidget {
-  const _DeadlinePickerFormField({
-    @required this.onPickDeadline,
-    this.deadline,
-  }) : assert(onPickDeadline != null);
-
-  final void Function(DateTime) onPickDeadline;
-  final DateTime deadline;
-
-  @override
-  Widget build(BuildContext context) => FormField<DateTime>(
-        builder: (_) => FlatButton.icon(
-          onPressed: () async {
-            final _pickedDeadline = await showDatePicker(
-              context: context,
-              initialDate: deadline ?? DateTime.now(),
-              firstDate: DateTime.now(),
-              lastDate: DateTime.utc(DateTime.now().year + 10),
-            );
-
-            onPickDeadline(_pickedDeadline);
-          },
-          icon: const Icon(
-            Icons.calendar_today_rounded,
-          ),
-          label: Text(
-            deadline?.toString() ?? 'CHOOSE',
-          ),
-        ),
-      );
-}
-
-class _TaskStepFormField extends StatelessWidget {
-  const _TaskStepFormField({
-    @required this.taskSteps,
-    @required this.onAddTaskStep,
-    @required this.isHorizontalTaskList,
-  })  : assert(taskSteps != null),
-        assert(onAddTaskStep != null),
-        assert(isHorizontalTaskList != null);
-
-  final List<TaskStep> taskSteps;
-  final void Function(TaskStep) onAddTaskStep;
-  final bool isHorizontalTaskList;
-
-  @override
-  Widget build(BuildContext context) => FormField<TaskStep>(
-        builder: (_) => Visibility(
-          visible: isHorizontalTaskList,
-          child: Column(
-            children: [
-              ...taskSteps
-                  .map(
-                    (step) => Container(
-                      child: Text(step.title),
-                    ),
-                  )
-                  .toList(),
-              FlatButton.icon(
-                onPressed: () {
-                  onAddTaskStep(
-                    TaskStep(
-                      id: uuidGenerator.uuid,
-                      title: 'sexo',
-                      creationTime: DateTime.now(),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.add),
-                label: const Text('adiconar step'),
-              ),
-            ],
-          ),
         ),
       );
 }

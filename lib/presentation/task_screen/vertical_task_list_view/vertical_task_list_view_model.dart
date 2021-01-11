@@ -41,6 +41,8 @@ abstract class VerticalTaskListAction {
   final VerticalTaskListActionType type;
 }
 
+// TODO(paulosilva159): criar actions que correspondem aos actionstypes
+
 class ShowFailTaskAction extends VerticalTaskListAction {
   ShowFailTaskAction({@required VerticalTaskListActionType type})
       : assert(type != null),

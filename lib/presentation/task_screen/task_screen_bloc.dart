@@ -31,8 +31,10 @@ class TaskScreenBloc with SubscriptionHolder {
         final _lastListingState = _onNewStateSubject.value;
 
         if (_lastListingState is! Idle &&
-            combinedTaskListStatus.horizontalListStatus is TaskListLoaded &&
-            combinedTaskListStatus.verticalListStatus is TaskListLoaded) {
+            combinedTaskListStatus.horizontalListStatus ==
+                TaskListStatus.loaded &&
+            combinedTaskListStatus.verticalListStatus ==
+                TaskListStatus.loaded) {
           _onNewStateSubject.add(
             Idle(),
           );
@@ -50,11 +52,11 @@ class TaskScreenBloc with SubscriptionHolder {
   );
   final _onNewVerticalTaskListStatusSubject =
       BehaviorSubject<TaskListStatus>.seeded(
-    TaskListLoading(),
+    TaskListStatus.loading,
   );
   final _onNewHorizontalTaskListStatusSubject =
       BehaviorSubject<TaskListStatus>.seeded(
-    TaskListLoading(),
+    TaskListStatus.loading,
   );
 
   Sink<Task> get onAddTaskItem => _onAddTaskItemSubject.sink;

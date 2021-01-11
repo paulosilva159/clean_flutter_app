@@ -15,7 +15,9 @@ class ErrorIndicator extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         children: [
           Text(S.of(context).errorIndicatorMessage),
-          TryAgainButton(onTryAgainTap: onTryAgainTap),
+          TryAgainButton(
+            onTryAgainTap: onTryAgainTap,
+          ),
         ],
       );
 }

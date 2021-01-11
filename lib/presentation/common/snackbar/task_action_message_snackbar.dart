@@ -20,7 +20,7 @@ void showActionMessageSnackBar(
     );
 }
 
-void showFailTask(BuildContext context, {String message}) {
+void showFailTaskMessage(BuildContext context, {String message}) {
   showActionMessageSnackBar(
     context,
     message: message ?? S.of(context).genericFailTaskSnackBarMessage,
@@ -28,7 +28,7 @@ void showFailTask(BuildContext context, {String message}) {
   );
 }
 
-void showSuccessTask(BuildContext context, {String message}) {
+void showSuccessTaskMessage(BuildContext context, {String message}) {
   showActionMessageSnackBar(
     context,
     message: message ?? S.of(context).genericSuccessTaskSnackBarMessage,
