@@ -78,7 +78,10 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
           TaskListLoaded(),
         );
 
-        return list;
+        return list
+          ..sort(
+            (a, b) => a.creationTime.compareTo(b.creationTime),
+          );
       });
 
       if (taskList == null || taskList.isEmpty) {
@@ -87,8 +90,6 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
         yield Listing(tasks: taskList);
       }
     } catch (error) {
-      print(error);
-
       yield Error(error: error);
     }
   }
@@ -103,11 +104,13 @@ class VerticalTaskListViewBloc with SubscriptionHolder {
         .updateTask(
           UpdateTaskUCParams(task: task),
         )
-        .then((_) => actionSink.add(
-              ShowSuccessTaskAction(
-                type: _actionType,
-              ),
-            ))
+        .then(
+          (_) => actionSink.add(
+            ShowSuccessTaskAction(
+              type: _actionType,
+            ),
+          ),
+        )
         .catchError(
           (error) => actionSink.add(
             ShowFailTaskAction(

@@ -24,7 +24,7 @@ class Task {
               (orientation == TaskListOrientation.vertical && deadline != null),
         );
 
-  final int id;
+  final String id;
   final int periodicity;
   final String title;
   final DateTime deadline;

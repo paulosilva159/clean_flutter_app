@@ -8,7 +8,7 @@ part of 'task_step_sm.dart';
 
 TaskStepSM _$TaskStepSMFromJson(Map<String, dynamic> json) {
   return TaskStepSM(
-    id: json['id'] as int,
+    id: json['id'] as String,
     title: json['title'] as String,
     status: _$enumDecode(_$TaskStatusEnumMap, json['status']),
     creationTime: DateTime.parse(json['creationTime'] as String),

@@ -11,7 +11,7 @@ class TaskStep {
         assert(title != null),
         assert(creationTime != null);
 
-  final int id;
+  final String id;
   final String title;
   final TaskStatus status;
   final DateTime creationTime;

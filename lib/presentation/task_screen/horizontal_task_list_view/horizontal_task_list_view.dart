@@ -224,7 +224,9 @@ class _HorizontalTaskItem extends StatelessWidget {
         width: 100,
         child: CircularStepProgressIndicator(
           totalSteps: task.steps.length,
-          child: const Center(child: Text('a')),
+          child: Center(
+            child: Text(task.title),
+          ),
         ),
       );
 }
@@ -247,7 +249,6 @@ class _HorizontalTaskItemDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ListTile(
         dense: true,
-        leading: Text('#${task.id}'),
         title: Text(
           task.title,
           style: const TextStyle(fontSize: 16.5),

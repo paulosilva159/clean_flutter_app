@@ -21,7 +21,7 @@ class TaskStepSM {
 
   Map<String, dynamic> toJson() => _$TaskStepSMToJson(this);
 
-  final int id;
+  final String id;
   final String title;
   final TaskStatus status;
   final DateTime creationTime;

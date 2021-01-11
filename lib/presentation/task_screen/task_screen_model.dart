@@ -1,5 +1,4 @@
 import 'package:clean_flutter_app/presentation/common/task_list_status.dart';
-import 'package:domain/common/task_list_orientation.dart';
 import 'package:meta/meta.dart';
 
 class CombinedTaskListStatus {
@@ -32,10 +31,7 @@ abstract class TaskScreenAction {
 }
 
 class ShowAddTaskFormAction extends TaskScreenAction {
-  ShowAddTaskFormAction({@required this.orientation})
-      : super(type: TaskScreenActionType.addTask);
-
-  final TaskListOrientation orientation;
+  ShowAddTaskFormAction() : super(type: TaskScreenActionType.addTask);
 }
 
 class ShowFailTaskAction extends TaskScreenAction {

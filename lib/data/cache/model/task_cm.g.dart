@@ -17,7 +17,7 @@ class TaskCMAdapter extends TypeAdapter<TaskCM> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TaskCM(
-      id: fields[0] as int,
+      id: fields[0] as String,
       title: fields[2] as String,
       status: fields[3] as String,
       orientation: fields[5] as String,

@@ -80,7 +80,10 @@ class HorizontalTaskListViewBloc with SubscriptionHolder {
           TaskListLoaded(),
         );
 
-        return list;
+        return list
+          ..sort(
+            (a, b) => a.creationTime.compareTo(b.creationTime),
+          );
       });
 
       if (taskList == null || taskList.isEmpty) {

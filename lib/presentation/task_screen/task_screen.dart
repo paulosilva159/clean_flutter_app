@@ -8,7 +8,6 @@ import 'package:clean_flutter_app/presentation/task_screen/horizontal_task_list_
 import 'package:clean_flutter_app/presentation/task_screen/task_screen_bloc.dart';
 import 'package:clean_flutter_app/presentation/task_screen/task_screen_model.dart';
 import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view.dart';
-import 'package:domain/common/task_list_orientation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -53,35 +52,14 @@ class TaskScreen extends StatelessWidget {
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
             floatingActionButton: screenState is Idle
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      FloatingActionButton(
-                        heroTag: null,
-                        onPressed: () {
-                          bloc.onNewActionSink.add(
-                            ShowAddTaskFormAction(
-                              orientation: TaskListOrientation.horizontal,
-                            ),
-                          );
-                        },
-                        child: const Icon(Icons.horizontal_split_rounded),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      FloatingActionButton(
-                        heroTag: null,
-                        onPressed: () {
-                          bloc.onNewActionSink.add(
-                            ShowAddTaskFormAction(
-                              orientation: TaskListOrientation.vertical,
-                            ),
-                          );
-                        },
-                        child: const Icon(Icons.vertical_split_rounded),
-                      ),
-                    ],
+                ? FloatingActionButton(
+                    heroTag: null,
+                    onPressed: () {
+                      bloc.onNewActionSink.add(
+                        ShowAddTaskFormAction(),
+                      );
+                    },
+                    child: const Icon(Icons.add),
                   )
                 : null,
             body: Builder(
@@ -91,11 +69,10 @@ class TaskScreen extends StatelessWidget {
                   final _message = _snackBarMessage(context, action: action);
 
                   if (action is ShowAddTaskFormAction) {
-                    showAddTaskFormDialog(
+                    showAddTaskActionForm(
                       context,
                       formDialogTitle: S.of(context).addTaskDialogTitle,
-                      onAddTask: bloc.onAddTaskItem.add,
-                      addingTaskOrientation: action.orientation,
+                      onUpsertTask: bloc.onAddTaskItem.add,
                     );
                   } else if (action is ShowFailTaskAction) {
                     showFailTask(context, message: _message);

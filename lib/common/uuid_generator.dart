@@ -110,13 +110,13 @@ class _HexOctet {
         (index) => _HexDigit(),
       );
 
-  List<String> _hexDigitsUnsigned() {
+  List<String> hexDigitsUnsigned() {
     final _hexDigits = hexDigits ?? _randomHexDigitListGenerator();
 
     return _hexDigits.map((digit) => digit.unsignedBit).toList();
   }
 
-  String get digits => _hexDigitsUnsigned().join();
+  String get digits => hexDigitsUnsigned().join();
 }
 
 class _HexDigit {
