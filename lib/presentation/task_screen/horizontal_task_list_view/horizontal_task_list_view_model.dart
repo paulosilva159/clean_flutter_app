@@ -1,17 +1,6 @@
 import 'package:domain/model/task.dart';
 import 'package:meta/meta.dart';
 
-class ReorderableTaskIds {
-  ReorderableTaskIds({
-    @required this.oldId,
-    @required this.newId,
-  })  : assert(oldId != null),
-        assert(newId != null);
-
-  final int oldId;
-  final int newId;
-}
-
 abstract class HorizontalTaskListViewState {}
 
 class Loading implements HorizontalTaskListViewState {}

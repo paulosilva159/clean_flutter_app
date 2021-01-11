@@ -5,11 +5,11 @@ import 'package:clean_flutter_app/presentation/task_screen/horizontal_task_list_
 import 'package:clean_flutter_app/presentation/task_screen/task_screen_bloc.dart';
 import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view_bloc.dart';
 import 'package:domain/data_observables.dart';
-import 'package:domain/data_repository/task_repository.dart';
+import 'package:domain/data_repository/task_data_repository.dart';
 import 'package:domain/use_case/add_task_uc.dart';
+import 'package:domain/use_case/change_task_priority_uc.dart';
 import 'package:domain/use_case/get_task_list_uc.dart';
 import 'package:domain/use_case/remove_task_uc.dart';
-import 'package:domain/use_case/reorder_task_uc.dart';
 import 'package:domain/use_case/update_task_uc.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -101,10 +101,10 @@ class _GlobalProviderState extends State<GlobalProvider> {
           ),
         ),
         ProxyProvider3<Log, TaskDataRepository,
-            ActiveTaskStorageUpdateSinkWrapper, ReorderTaskUC>(
+            ActiveTaskStorageUpdateSinkWrapper, ChangeTaskPriorityUC>(
           update: (context, log, taskRepository,
                   activeTaskStorageUpdateSinkWrapper, _) =>
-              ReorderTaskUC(
+              ChangeTaskPriorityUC(
             logger: log.errorLogger,
             repository: taskRepository,
             activeTaskStorageUpdateSinkWrapper:
@@ -119,26 +119,26 @@ class _GlobalProviderState extends State<GlobalProvider> {
             addTaskUC: addTaskUC,
           ),
         ),
-        ProxyProvider4<GetTaskListUC, UpdateTaskUC, RemoveTaskUC, ReorderTaskUC,
-            VerticalTaskListViewUseCases>(
+        ProxyProvider4<GetTaskListUC, UpdateTaskUC, RemoveTaskUC,
+            ChangeTaskPriorityUC, VerticalTaskListViewUseCases>(
           update: (context, getTaskListUC, updateTaskUC, removeTaskUC,
-                  reorderTasksUC, _) =>
+                  changeTaskPriorityUC, _) =>
               VerticalTaskListViewUseCases(
             getTaskListUC: getTaskListUC,
             removeTaskUC: removeTaskUC,
             updateTaskUC: updateTaskUC,
-            reorderTasksUC: reorderTasksUC,
+            changeTaskPriorityUC: changeTaskPriorityUC,
           ),
         ),
-        ProxyProvider4<GetTaskListUC, UpdateTaskUC, RemoveTaskUC, ReorderTaskUC,
-            HorizontalTaskListViewUseCases>(
+        ProxyProvider4<GetTaskListUC, UpdateTaskUC, RemoveTaskUC,
+            ChangeTaskPriorityUC, HorizontalTaskListViewUseCases>(
           update: (context, getTaskListUC, updateTaskUC, removeTaskUC,
-                  reorderTasksUC, _) =>
+                  changeTaskPriorityUC, _) =>
               HorizontalTaskListViewUseCases(
             getTaskListUC: getTaskListUC,
             removeTaskUC: removeTaskUC,
             updateTaskUC: updateTaskUC,
-            reorderTasksUC: reorderTasksUC,
+            changeTaskPriorityUC: changeTaskPriorityUC,
           ),
         )
       ];

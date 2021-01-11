@@ -1,17 +1,6 @@
 import 'package:domain/model/task.dart';
 import 'package:meta/meta.dart';
 
-class ReorderableTaskIds {
-  ReorderableTaskIds({
-    @required this.oldId,
-    @required this.newId,
-  })  : assert(oldId != null),
-        assert(newId != null);
-
-  final int oldId;
-  final int newId;
-}
-
 abstract class VerticalTaskListViewState {}
 
 class Loading implements VerticalTaskListViewState {}
@@ -26,8 +15,6 @@ abstract class Success implements VerticalTaskListViewState {
   Success({@required this.tasks}) : assert(tasks != null);
 
   final List<Task> tasks;
-
-  int get listSize => tasks.length;
 }
 
 class Empty extends Success {

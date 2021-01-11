@@ -11,7 +11,6 @@ import 'package:clean_flutter_app/presentation/common/task_list_status.dart';
 import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view_bloc.dart';
 import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view_model.dart';
 import 'package:domain/data_observables.dart';
-import 'package:domain/data_repository/task_repository.dart';
 import 'package:domain/exceptions.dart';
 import 'package:domain/model/task.dart';
 import 'package:flutter/material.dart';
@@ -22,12 +21,9 @@ typedef TaskListStatusUpdateCallback = void Function(TaskListStatus);
 class VerticalTaskListView extends StatelessWidget {
   const VerticalTaskListView({
     @required this.bloc,
-    @required this.onNewTaskListStatus,
-  })  : assert(bloc != null),
-        assert(onNewTaskListStatus != null);
+  }) : assert(bloc != null);
 
   final VerticalTaskListViewBloc bloc;
-  final TaskListStatusUpdateCallback onNewTaskListStatus;
 
   static Widget create(
           {@required TaskListStatusUpdateCallback onNewTaskListStatus}) =>
@@ -41,6 +37,7 @@ class VerticalTaskListView extends StatelessWidget {
         ) =>
             taskListViewBloc ??
             VerticalTaskListViewBloc(
+              onNewTaskListStatus: onNewTaskListStatus,
               activeTaskStorageUpdateStreamWrapper:
                   activeTaskStorageUpdateStreamWrapper,
               useCases: taskListViewUseCases,
@@ -49,7 +46,6 @@ class VerticalTaskListView extends StatelessWidget {
         child: Consumer<VerticalTaskListViewBloc>(
           builder: (context, bloc, child) => VerticalTaskListView(
             bloc: bloc,
-            onNewTaskListStatus: onNewTaskListStatus,
           ),
         ),
       );
@@ -97,7 +93,7 @@ class VerticalTaskListView extends StatelessWidget {
             showSuccessTask(context, message: _message);
           }
         },
-        child: StreamBuilder<Object>(
+        child: StreamBuilder<VerticalTaskListViewState>(
           stream: bloc.onNewState,
           builder: (context, snapshot) =>
               AsyncSnapshotResponseView<Loading, Error, Success>(
@@ -107,21 +103,10 @@ class VerticalTaskListView extends StatelessWidget {
               onTryAgainTap: () => bloc.onTryAgain.add(null),
             ),
             successWidgetBuilder: (context, success) {
-              onNewTaskListStatus(
-                TaskListLoaded(
-                  listSize: success.listSize,
-                ),
-              );
-
               if (success is Listing) {
                 return _VerticalTaskList(
                   onRemoveTask: bloc.onRemoveTask.add,
                   onUpdateTask: bloc.onUpdateTask.add,
-                  onReorderTasks: (oldId, newId) {
-                    bloc.onReorderTask.add(
-                      ReorderableTaskIds(oldId: oldId, newId: newId),
-                    );
-                  },
                   tasks: success.tasks,
                 );
               } else if (success is Empty) {
@@ -136,46 +121,27 @@ class VerticalTaskListView extends StatelessWidget {
       );
 }
 
-// TODO(paulosilva159): Refazer ReorderableListView
-
 class _VerticalTaskList extends StatelessWidget {
   const _VerticalTaskList({
     @required this.onRemoveTask,
     @required this.onUpdateTask,
-    @required this.onReorderTasks,
     @required this.tasks,
   })  : assert(tasks != null),
         assert(onUpdateTask != null),
-        assert(onRemoveTask != null),
-        assert(onReorderTasks != null);
+        assert(onRemoveTask != null);
 
   final void Function(Task) onRemoveTask;
   final void Function(Task) onUpdateTask;
-  final void Function(int, int) onReorderTasks;
   final List<Task> tasks;
 
   @override
-  Widget build(BuildContext context) => Material(
-        child: ReorderableListView(
-          key: const ValueKey<TaskListOrientation>(
-            TaskListOrientation.vertical,
-          ),
-          scrollDirection: Axis.vertical,
-          onReorder: (oldId, newId) {
-            onReorderTasks(
-              oldId + 1,
-              newId > oldId ? newId : newId + 1,
-            );
-          },
-          children: tasks
-              .map((task) => _VerticalTaskListItem(
-                    key: ValueKey<int>(task.id),
-                    onRemoveTask: onRemoveTask,
-                    onUpdateTask: onUpdateTask,
-                    task: task,
-                  ))
-              .toList(),
+  Widget build(BuildContext context) => ListView.builder(
+        itemBuilder: (context, index) => _VerticalTaskListItem(
+          task: tasks[index],
+          onRemoveTask: onRemoveTask,
+          onUpdateTask: onUpdateTask,
         ),
+        itemCount: tasks.length,
       );
 }
 
@@ -220,7 +186,7 @@ class _VerticalTaskListItem extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                EditTaskButton(
+                UpdateTaskButton(
                   task: task,
                   onUpdateTask: onUpdateTask,
                 ),

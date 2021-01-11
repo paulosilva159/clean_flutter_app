@@ -10,6 +10,8 @@ class TryAgainButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => RaisedButton(
         onPressed: onTryAgainTap,
-        child: Text(S.of(context).tryAgainButtonLabel),
+        child: Text(
+          S.of(context).tryAgainButtonLabel,
+        ),
       );
 }

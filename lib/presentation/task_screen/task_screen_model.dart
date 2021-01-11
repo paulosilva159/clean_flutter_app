@@ -14,18 +14,9 @@ class CombinedTaskListStatus {
 
 abstract class TaskScreenState {}
 
-class Waiting implements TaskScreenState {}
+class Loading implements TaskScreenState {}
 
-class Done implements TaskScreenState {
-  Done({
-    @required this.verticalListSize,
-    @required this.horizontalListSize,
-  })  : assert(verticalListSize != null),
-        assert(horizontalListSize != null);
-
-  final int verticalListSize;
-  final int horizontalListSize;
-}
+class Idle implements TaskScreenState {}
 
 enum TaskScreenActionType {
   addTask,
@@ -39,14 +30,20 @@ abstract class TaskScreenAction {
   final TaskScreenActionType type;
 }
 
+class ShowAddTaskFormAction extends TaskScreenAction {
+  ShowAddTaskFormAction() : super(type: TaskScreenActionType.addTask);
+}
+
 class ShowFailTaskAction extends TaskScreenAction {
-  ShowFailTaskAction({@required TaskScreenActionType type})
-      : assert(type != null),
+  ShowFailTaskAction({
+    @required TaskScreenActionType type,
+  })  : assert(type != null),
         super(type: type);
 }
 
 class ShowSuccessTaskAction extends TaskScreenAction {
-  ShowSuccessTaskAction({@required TaskScreenActionType type})
-      : assert(type != null),
+  ShowSuccessTaskAction({
+    @required TaskScreenActionType type,
+  })  : assert(type != null),
         super(type: type);
 }

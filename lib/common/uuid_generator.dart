@@ -2,106 +2,98 @@ import 'dart:math';
 
 import 'package:meta/meta.dart';
 
-int _pseudoRandomNumberGenerator(int max) => Random.secure().nextInt(max);
-
-List<_HexDigit> randomHexDigitListGenerator([int listSize = 2]) =>
-    List<_HexDigit>.generate(
-      listSize,
-      (index) => _HexDigit(
-        integer: _pseudoRandomNumberGenerator(16),
-      ),
-    );
-
-List<_HexOctet> randomHexOctetListGenerator(int listSize) =>
-    List<_HexOctet>.generate(
-      listSize,
-      (index) => _HexOctet(
-        hexDigits: randomHexDigitListGenerator(),
-      ),
-    );
-
 class UUIDGenerator {
-  final _node = _UUIDField(6);
-  final _timeLow = _UUIDField(4);
-  final _timeMid = _UUIDField(2);
-  final _clockSeqLow = _UUIDField(1);
+  UUIDGenerator._({
+    @required this.node,
+    @required this.timeLow,
+    @required this.timeMid,
+    @required this.timeHighAndVersion,
+    @required this.clockSeqLow,
+    @required this.clockSeqHighAndReserved,
+  })  : assert(node != null),
+        assert(timeLow != null),
+        assert(timeMid != null),
+        assert(timeHighAndVersion != null),
+        assert(clockSeqLow != null),
+        assert(clockSeqHighAndReserved != null);
 
-  //setting for UUID Version 4
-  final _timeHighAndVersion = _UUIDField(
-    2,
-    hexOctets: <_HexOctet>[
-      _HexOctet(
-        hexDigits: <_HexDigit>[
-          _HexDigit(integer: 0),
-          _HexDigit(integer: 1),
-        ],
-      ),
-      _HexOctet(
-        hexDigits: <_HexDigit>[
-          _HexDigit(integer: 0),
-          _HexDigit(integer: 0),
-        ],
-      ),
-    ],
-  );
+  factory UUIDGenerator.version4() => UUIDGenerator._(
+        node: _UUIDField(6),
+        timeLow: _UUIDField(4),
+        timeMid: _UUIDField(2),
+        timeHighAndVersion: _UUIDField(
+          2,
+          hexOctets: <_HexOctet>[
+            _HexOctet(
+              hexDigits: <_HexDigit>[
+                _HexDigit(0),
+                _HexDigit(1),
+              ],
+            ),
+            _HexOctet(
+              hexDigits: <_HexDigit>[
+                _HexDigit(0),
+                _HexDigit(0),
+              ],
+            ),
+          ],
+        ),
+        clockSeqLow: _UUIDField(1),
+        clockSeqHighAndReserved: _UUIDField(
+          1,
+          hexOctets: <_HexOctet>[
+            _HexOctet(
+              hexDigits: <_HexDigit>[
+                _HexDigit(0),
+                _HexDigit(1),
+              ],
+            ),
+          ],
+        ),
+      );
 
-  //setting for UUID Variant 1
-  final _clockSeqHighAndReserved = _UUIDField(
-    1,
-    hexOctets: <_HexOctet>[
-      _HexOctet(
-        hexDigits: <_HexDigit>[
-          _HexDigit(integer: 0),
-          _HexDigit(integer: 1),
-        ],
-      ),
-    ],
-  );
+  final _UUIDField node;
+  final _UUIDField timeLow;
+  final _UUIDField timeMid;
+  final _UUIDField timeHighAndVersion;
+  final _UUIDField clockSeqLow;
+  final _UUIDField clockSeqHighAndReserved;
 
   String get uuid => <String>[
-        _timeLow.bits,
-        _timeMid.bits,
-        _timeHighAndVersion.bits,
+        timeLow.bits,
+        timeMid.bits,
+        timeHighAndVersion.bits,
         <String>[
-          _clockSeqHighAndReserved.bits,
-          _clockSeqLow.bits,
+          clockSeqHighAndReserved.bits,
+          clockSeqLow.bits,
         ].join(),
-        _node.bits,
+        node.bits,
       ].join('-');
 }
 
 class _UUIDField {
   _UUIDField(
-    this.fieldSize, {
+    this.listSize, {
     this.hexOctets,
-  })  : assert(fieldSize != null),
+  })  : assert(listSize != null),
         assert(
           hexOctets == null ||
-              (hexOctets != null && hexOctets.length == fieldSize),
+              (hexOctets != null && hexOctets.length == listSize),
         );
 
   final List<_HexOctet> hexOctets;
-  final int fieldSize;
+  final int listSize;
+
+  List<_HexOctet> _randomHexOctetListGenerator(int listSize) =>
+      List<_HexOctet>.generate(
+        listSize,
+        (index) => _HexOctet(),
+      );
 
   List<_HexOctet> _hexOctets() =>
-      hexOctets ?? randomHexOctetListGenerator(fieldSize);
+      hexOctets ?? _randomHexOctetListGenerator(listSize);
 
-  String get encodedBits {
-    final _integerEncodedList = _hexOctets()
-      ..map(
-        (octet) => BigInt.parse(octet.digits, radix: 16),
-      ).toList()
-      ..sort();
-
-    return _integerEncodedList.reversed.toList().join();
-  }
-
-  String get bits => _hexOctets()
-      .map(
-        (octet) => octet.digits,
-      )
-      .toList()
-      .join();
+  String get bits => _hexOctets().map((octet) => octet.digits).toList().join();
 }
 
 class _HexOctet {
@@ -112,19 +104,29 @@ class _HexOctet {
 
   final List<_HexDigit> hexDigits;
 
-  List<String> _hexDigitsUnsigned() {
-    final _digits = hexDigits ?? randomHexDigitListGenerator();
+  List<_HexDigit> _randomHexDigitListGenerator([int listSize = 2]) =>
+      List<_HexDigit>.generate(
+        listSize,
+        (index) => _HexDigit(),
+      );
 
-    return _digits.map((digit) => digit.unsignedBit).toList();
+  List<String> hexDigitsUnsigned() {
+    final _hexDigits = hexDigits ?? _randomHexDigitListGenerator();
+
+    return _hexDigits.map((digit) => digit.unsignedBit).toList();
   }
 
-  String get digits => _hexDigitsUnsigned().join();
+  String get digits => hexDigitsUnsigned().join();
 }
 
 class _HexDigit {
-  _HexDigit({@required this.integer}) : assert(integer != null);
+  _HexDigit([this.decimalDigit]);
 
-  final int integer;
+  final int decimalDigit;
 
-  String get unsignedBit => integer.toRadixString(16).toLowerCase();
+  String get unsignedBit {
+    final _decimalDigit = decimalDigit ?? Random.secure().nextInt(16);
+
+    return _decimalDigit.toRadixString(16);
+  }
 }
