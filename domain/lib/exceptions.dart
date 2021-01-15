@@ -4,4 +4,4 @@ class UseCaseException implements CleanTaskException {}
 
 class UnexpectedException implements CleanTaskException {}
 
-class UnkownStateException implements CleanTaskException {}
+class UnknowStateException implements CleanTaskException {}

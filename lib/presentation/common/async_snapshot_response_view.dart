@@ -34,7 +34,7 @@ class AsyncSnapshotResponseView<Loading, Error, Success>
     } else if (data is Loading || data == null) {
       return loadingWidgetBuilder(context, data);
     } else {
-      throw UnkownStateException();
+      throw UnknowStateException();
     }
   }
 }

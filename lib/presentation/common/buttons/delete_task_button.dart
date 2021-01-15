@@ -16,31 +16,30 @@ class DeleteTaskButton extends StatelessWidget {
   final void Function(Task) onRemoveTask;
 
   @override
-  Widget build(BuildContext context) => Expanded(
-        child: IconButton(
-          iconSize: iconSize,
-          icon: const Icon(Icons.delete),
-          onPressed: () {
-            AdaptiveAlertDialog(
-              title: S.of(context).deleteTaskDialogTitle,
-              message: S.of(context).deleteTaskDialogMessage,
-              actions: [
-                AdaptiveAlertDialogAction(
-                  title: S.of(context).confirmDialogActionTitle,
-                  isDefaultAction: true,
-                  onPressed: () {
-                    onRemoveTask(task);
+  Widget build(BuildContext context) => IconButton(
+        iconSize: iconSize,
+        icon: const Icon(Icons.delete),
+        onPressed: () {
+          // TODO(paulosilva159): separar func num showDeleteDialog
+          AdaptiveAlertDialog(
+            title: S.of(context).deleteTaskDialogTitle,
+            message: S.of(context).deleteTaskDialogMessage,
+            actions: [
+              AdaptiveAlertDialogAction(
+                title: S.of(context).confirmDialogActionTitle,
+                isDefaultAction: true,
+                onPressed: () {
+                  onRemoveTask(task);
 
-                    Navigator.of(context).pop();
-                  },
-                ),
-                AdaptiveAlertDialogAction(
-                  title: S.of(context).cancelDialogActionTitle,
-                  isDefaultAction: false,
-                ),
-              ],
-            ).show(context);
-          },
-        ),
+                  Navigator.of(context).pop();
+                },
+              ),
+              AdaptiveAlertDialogAction(
+                title: S.of(context).cancelDialogActionTitle,
+                isDefaultAction: false,
+              ),
+            ],
+          ).show(context);
+        },
       );
 }

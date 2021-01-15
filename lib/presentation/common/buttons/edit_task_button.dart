@@ -14,13 +14,11 @@ class UpdateTaskButton extends StatelessWidget {
   final void Function(Task) onUpdateTask;
 
   @override
-  Widget build(BuildContext context) => Expanded(
-        child: IconButton(
-          iconSize: iconSize,
-          icon: const Icon(Icons.edit_rounded),
-          onPressed: () {
-            // TODO(paulosilva159): aplicar showForm
-          },
-        ),
+  Widget build(BuildContext context) => IconButton(
+        iconSize: iconSize,
+        icon: const Icon(Icons.edit_rounded),
+        onPressed: () {
+          // TODO(paulosilva159): aplicar showForm
+        },
       );
 }

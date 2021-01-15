@@ -88,7 +88,9 @@ class _AdaptiveUpsertTaskFormDialogState
               .toList(),
           value: _selectedTaskListOrientation,
           onChanged: (orientation) {
-            _selectedTaskListOrientation = orientation;
+            setState(() {
+              _selectedTaskListOrientation = orientation;
+            });
             _taskListOrientationDropdownFocusNode.nextFocus();
           },
         ),
@@ -335,7 +337,7 @@ class _TaskStepFormField extends StatelessWidget {
                   onAddTaskStep(
                     TaskStep(
                       id: uuidGenerator.uuid,
-                      title: 'sexo',
+                      title: 'any text',
                       creationTime: DateTime.now(),
                     ),
                   );

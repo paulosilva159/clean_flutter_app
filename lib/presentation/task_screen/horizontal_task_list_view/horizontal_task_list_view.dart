@@ -111,7 +111,7 @@ class HorizontalTaskListView extends StatelessWidget {
                 return EmptyListIndicator();
               }
 
-              throw UnkownStateException();
+              throw UnknowStateException();
             },
             snapshot: snapshot,
           ),
@@ -258,15 +258,19 @@ class _HorizontalTaskItemDetails extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              UpdateTaskButton(
-                iconSize: _denseIconSize,
-                task: task,
-                onUpdateTask: onUpdateTask,
+              Expanded(
+                child: UpdateTaskButton(
+                  iconSize: _denseIconSize,
+                  task: task,
+                  onUpdateTask: onUpdateTask,
+                ),
               ),
-              DeleteTaskButton(
-                iconSize: _denseIconSize,
-                task: task,
-                onRemoveTask: onRemoveTask,
+              Expanded(
+                child: DeleteTaskButton(
+                  iconSize: _denseIconSize,
+                  task: task,
+                  onRemoveTask: onRemoveTask,
+                ),
               ),
             ],
           ),

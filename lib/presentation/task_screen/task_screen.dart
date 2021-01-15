@@ -1,6 +1,5 @@
 import 'package:clean_flutter_app/generated/l10n.dart';
 import 'package:clean_flutter_app/presentation/common/action_stream_listener.dart';
-import 'package:clean_flutter_app/presentation/common/dialogs/simple_dialogs/task_action_form_dialog.dart';
 import 'package:clean_flutter_app/presentation/common/indicator/loading_indicator.dart';
 import 'package:clean_flutter_app/presentation/common/snackbar/task_action_message_snackbar.dart';
 import 'package:clean_flutter_app/presentation/common/task_list_status.dart';
@@ -10,6 +9,8 @@ import 'package:clean_flutter_app/presentation/task_screen/task_screen_model.dar
 import 'package:clean_flutter_app/presentation/task_screen/vertical_task_list_view/vertical_task_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'file:///C:/Users/paulo/AndroidStudioProjects/todo_task_app/lib/presentation/common/dialogs/task_action_form_dialog.dart';
 
 class TaskScreen extends StatelessWidget {
   const TaskScreen({

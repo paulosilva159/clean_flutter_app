@@ -113,7 +113,7 @@ class VerticalTaskListView extends StatelessWidget {
                 return EmptyListIndicator();
               }
 
-              throw UnkownStateException();
+              throw UnknowStateException();
             },
             snapshot: snapshot,
           ),
@@ -186,13 +186,17 @@ class _VerticalTaskListItem extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                UpdateTaskButton(
-                  task: task,
-                  onUpdateTask: onUpdateTask,
+                Expanded(
+                  child: UpdateTaskButton(
+                    task: task,
+                    onUpdateTask: onUpdateTask,
+                  ),
                 ),
-                DeleteTaskButton(
-                  task: task,
-                  onRemoveTask: onRemoveTask,
+                Expanded(
+                  child: DeleteTaskButton(
+                    task: task,
+                    onRemoveTask: onRemoveTask,
+                  ),
                 ),
               ],
             ),
